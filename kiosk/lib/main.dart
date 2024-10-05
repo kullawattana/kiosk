@@ -1,125 +1,457 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/blocs/application_bloc/application_cubit.dart';
+import 'package:kiosk/jayne/common/theme_data.dart';
+import 'package:kiosk/jayne/enhances/condition.dart';
+import 'package:kiosk/jayne/routes/live_chat_routes_name.dart';
+import 'package:kiosk/jayne/secure_storage/secure_storage_service.dart';
+import 'package:kiosk/jayne/view/chatbot/splash_screen_page.dart';
+import 'package:kiosk/jayne/view/chatbot/welcome_start_chat_page.dart';
+import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-void main() {
-  runApp(const MyApp());
+main() async {
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await dotenv.load();
+    runApp(
+      MultiProvider(
+        providers: [],
+        child: MaterialApp(
+          builder: (context, child) {
+            return JayneApp(
+              context: context,
+            );
+          },
+        ),
+      ),
+    );
+  }, (error, stack) => {});
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class JayneApp extends JayneRootApp {
+  final BuildContext context;
 
-  // This widget is the root of your application.
+  JayneApp({
+    super.key,
+    required this.context,
+    Map<String, dynamic> args = const {},
+  }) : super(
+          view: () => JayneMainApp(context: context),
+          loading: () => const SplashScreenPage(),
+          system: () => JayneMainSystem(),
+          blocInjector: JayneBlocInjector(),
+          localization: JayneLocalization(),
+          args: () => args,
+        );
+}
+
+class JayneMainApp extends StatefulWidget {
+  final BuildContext context;
+
+  const JayneMainApp({
+    super.key,
+    required this.context,
+  });
+
+  @override
+  State<JayneMainApp> createState() => _JayneMainAppState();
+}
+
+class JayneMainSystem extends JayneMultiSystem {
+  JayneMainSystem()
+      : super(
+          systems: [
+            JayneStorageLanguageSystem(),
+            JayneTranslationLanguageSystem(),
+          ],
+        );
+}
+
+class JayneStorageLanguageSystem extends JayneSystem {
+  @override
+  Future<void> createDependencies(JayneGetItDependencies dependencies) async {
+    dependencies.add<SecureStorageLanguageService>(SecureStorageLanguageService());
+  }
+}
+
+class JayneTranslationLanguageSystem extends JayneSystem {
+  @override
+  Future<void> createDependencies(JayneGetItDependencies dependencies) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await EasyLocalization.ensureInitialized();
+  }
+}
+
+class JayneBlocInjector extends BlocInjector {
+  @override
+  injectBlocs(InjectBloc inject) {
+    inject(ApplicationCubit());
+  }
+}
+
+class ApplicationMixin {
+  final application = JayneGetItDependencies.of<ApplicationCubit>();
+}
+
+const supportedLocales = [Locale("en"), Locale("th")];
+
+class JayneLocalization extends JayneLocalizationConfig {
+  JayneLocalization()
+      : super(
+          supportedLocales: supportedLocales,
+          assetLoader: JayneAssetLoader(),
+        );
+
+  @override
+  Future<void> start() async {
+    for (final locale in supportedLocales) {
+      await loadTranslation(locale);
+    }
+  }
+}
+
+Future loadTranslation(Locale locale) async {
+  final translationPath = dotenv.get('TRANSLATION_PATH');
+  final storage = JayneGetItDependencies.of<SecureStorageLanguageService>();
+  final Map<String, dynamic> metaDataInfos = jsonDecode(await rootBundle.loadString("$translationPath/metadata.json"));
+  final fileLastModifiedDate = DateTime.parse(metaDataInfos[locale.languageCode]);
+  await _loadTranslationFromFile(storage, fileLastModifiedDate, locale); //TODO
+}
+
+class JayneAssetLoader extends AssetLoader {
+  @override
+  Future<Map<String, dynamic>> load(String path, Locale locale) async {
+    final translationsMap = json.decode(await readTranslationsJson(locale)); //TODO
+    return translationsMap;
+  }
+}
+
+abstract class JayneMultiSystem extends JayneSystem {
+  final List<JayneSystem> systems;
+
+  JayneMultiSystem({
+    required this.systems,
+  });
+
+  @override
+  void setContext(JayneSystemContext context) {
+    super.setContext(context);
+    for (final system in systems) {
+      system.setContext(context);
+    }
+  }
+
+  @override
+  Future<void> createDependencies(JayneGetItDependencies dependencies) async {
+    for (final system in systems) {
+      await system.createDependencies(dependencies);
+    }
+  }
+}
+
+class _JayneMainAppState extends State<JayneMainApp> {
+  late GoRouter _goRouter;
+
+  @override
+  void initState() {
+    super.initState();
+    _goRouter = LiveChatMainRoutes().init(context).router;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return FutureBuilder<bool>(
+      future: initializeLocale(context), //TODO
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return MaterialApp.router(
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                boldText: false,
+                textScaler: const TextScaler.linear(1.0),
+              ),
+              child: child ?? const SizedBox.shrink(),
+            ),
+            routerConfig: _goRouter,
+          );
+        }
+        return MaterialApp.router(
+          title: 'Jayne',
+          //TODO Fix
+          // localizationsDelegates: [
+          //   ...context.localizationDelegates,
+          //   ThBudhaMaterialLocalizations.delegate,
+          // ],
+          supportedLocales: [
+            ...context.supportedLocales,
+            const Locale('thBudha'),
+          ],
+          locale: context.locale,
+          theme: defaultThemeData,
+          routerConfig: _goRouter,
+        );
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+BuildContext? liveChatContext;
+final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+class LiveChatMainRoutes {
+  late final router = GoRouter(
+    debugLogDiagnostics: true,
+    observers: [GoRouterObserver()],
+    routes: <RouteBase>[
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (BuildContext context, GoRouterState state, Widget child) {
+          return child;
+        },
+        routes: liveChatRoutes,
+      )
+    ],
+    errorPageBuilder: (context, state) {
+      return buildPage(
+        context: context,
+        key: state.pageKey,
+        child: const SizedBox.shrink(),
+        arguments: state.extra,
+        disableBack: true,
+      );
+    },
+  );
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  LiveChatMainRoutes init(BuildContext? context) {
+    liveChatContext = context;
+    return this;
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+final liveChatRoutes = [
+  GoRoute(
+    name: RouteName.welcomeStartChatPage.name,
+    path: '/',
+    pageBuilder: (context, state) {
+      return buildPage(
+        context: context,
+        key: state.pageKey,
+        child: const WelcomeStartChatPage(),
+        arguments: state.extra,
+      );
+    },
+    routes: [
+      //TODO Create route
+    ],
+  ),
+];
 
-  void _incrementCounter() {
+class GoRouterObserver extends NavigatorObserver {
+  GoRouterObserver();
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    debugPrint('PUSHED SCREEN: ${route.settings.arguments}'); //name comes back null
+  }
+}
+
+class JayneRootApp extends StatefulWidget {
+  final Widget Function() view;
+  final Widget Function() loading;
+  final JayneSystem Function() system;
+  final BlocInjector blocInjector;
+  final JayneLocalizationConfig localization;
+  final Map<String, dynamic> Function()? args;
+
+  const JayneRootApp({
+    super.key,
+    required this.view,
+    required this.loading,
+    required this.system,
+    required this.blocInjector,
+    required this.localization,
+    this.args,
+  });
+
+  @override
+  _JayneRootAppState createState() => _JayneRootAppState();
+}
+
+class _JayneRootAppState extends State<JayneRootApp> {
+  bool readyToBuild = false;
+  final List<BlocProvider> providers = [];
+  final JayneGetItDependencies dependencies = JayneGetItDependencies();
+  late JayneSystemContext systemContext;
+
+  @override
+  void initState() {
+    super.initState();
+    startDependencies();
+  }
+
+  Future<void> startDependencies() async {
+    systemContext = JayneSystemContext(
+      system: widget.system(),
+      dependencies: dependencies,
+    );
+    await systemContext.start();
+    widget.blocInjector.injectBlocs(<T extends BlocBase>(
+      T bloc, {
+      bool lazy = false,
+    }) {
+      // register blocs to system dependencies
+      dependencies.add<T>(bloc, lazy: lazy);
+      providers.add(BlocProvider<T>.value(value: bloc));
+    });
+    await widget.localization.start();
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      readyToBuild = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    return Condition(
+      condition: readyToBuild,
+      builder: (BuildContext context) {
+        return EasyLocalization(
+          supportedLocales: widget.localization.supportedLocales,
+          path: "translations",
+          fallbackLocale: widget.localization.supportedLocales.first,
+          assetLoader: widget.localization.assetLoader,
+          child: MultiBlocProvider(
+            providers: providers,
+            child: widget.view(),
+          ),
+        );
+      },
+      //for waiting load
+      fallback: (_) => widget.loading(),
     );
   }
+}
+
+class JayneSystemContext {
+  final JayneSystem system;
+  final JayneGetItDependencies dependencies;
+
+  JayneSystemContext({
+    required this.system,
+    required this.dependencies,
+  });
+
+  Future<void> start() async {
+    system.setContext(this);
+    await system.createDependencies(dependencies);
+  }
+}
+
+abstract class JayneSystem {
+  late JayneSystemContext _context;
+  JayneGetItDependencies get dependencies => _context.dependencies;
+
+  void setContext(JayneSystemContext context) {
+    _context = context;
+  }
+
+  Future<void> createDependencies(JayneGetItDependencies dependencies);
+}
+
+class JayneGetItDependencies {
+  void add<T extends Object>(
+    T instance, {
+    bool lazy = false,
+  }) {
+    if (lazy) {
+      if (!GetIt.I.isRegistered<T>()) {
+        GetIt.I.registerLazySingleton<T>(() => instance);
+      }
+    } else {
+      if (!GetIt.I.isRegistered<T>()) {
+        GetIt.I.registerSingleton<T>(instance);
+      }
+    }
+  }
+
+  static T of<T extends Object>() {
+    return GetIt.I<T>();
+  }
+}
+
+typedef InjectBloc = void Function<T extends BlocBase>(
+  T bloc, {
+  bool lazy,
+});
+
+abstract class BlocInjector {
+  injectBlocs(InjectBloc inject);
+}
+
+abstract class JayneLocalizationConfig {
+  final List<Locale> supportedLocales;
+  final AssetLoader assetLoader;
+
+  JayneLocalizationConfig({
+    required this.supportedLocales,
+    required this.assetLoader,
+  });
+
+  Future<void> start();
+}
+
+MaterialPage<void> buildPage({
+  required BuildContext context,
+  required Widget child,
+  LocalKey? key,
+  Object? arguments,
+  bool disableBack = false,
+}) {
+  return MaterialPage<void>(
+    key: key,
+    child: disableBack ? _buildBlockerRouter(context, child) : child,
+    arguments: arguments,
+    fullscreenDialog: disableBack,
+  );
+}
+
+Router _buildBlockerRouter(BuildContext context, Widget child) {
+  BackButtonDispatcher dispatcher = Router.of(context).backButtonDispatcher!.createChildBackButtonDispatcher()..takePriority();
+  return Router(
+    routerDelegate: BackButtonBlockerDelegate(
+      child: child,
+    ),
+    backButtonDispatcher: dispatcher,
+  );
+}
+
+class BackButtonBlockerDelegate extends RouterDelegate with ChangeNotifier {
+  final Widget child;
+  BuildContext? context;
+
+  BackButtonBlockerDelegate({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    this.context = context;
+    return child;
+  }
+
+  @override
+  Future<bool> popRoute() async {
+    if (ModalRoute.of(context!)!.isCurrent) {
+      return SynchronousFuture(true);
+    }
+    return SynchronousFuture(false);
+  }
+
+  @override
+  Future<void> setNewRoutePath(configuration) async {}
 }
