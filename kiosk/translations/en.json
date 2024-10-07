@@ -1,0 +1,6 @@
+{
+  "jayne.verification_success_page.app_bar": "Verification - success",
+  "jayne.verification_success_page.title": "ยืนยันตัวตนเรียบร้อย",
+  "jayne.verification_success_page.hello_user_name": "สวัสดีค่ะ คุณ {userName}",
+  "jayne.verification_success_page.back_to_home_page": "กลับหน้าหลัก"
+}

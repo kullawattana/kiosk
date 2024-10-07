@@ -101,7 +101,7 @@ class ResponsiveImage extends StatelessWidget {
   }
 
   Widget _renderAsset() {
-    final localPath = dotenv.get('CHATBOT_IMAGE_PATH');
+    final localPath = dotenv.get('IMAGE_PATH');
     switch (assetType) {
       case AssetType.svg:
         if (themeDirectory != null && themeDirectory!.isNotEmpty) {

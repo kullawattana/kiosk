@@ -1,0 +1,2 @@
+IMAGE_PATH = "packages/kiosk/assets/images"
+TRANSLATION_PATH = "translations"

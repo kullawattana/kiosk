@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class VerificationSuccessPage extends StatelessWidget {
   final String userName = "สมร";
@@ -10,24 +11,25 @@ class VerificationSuccessPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Verification - success'),
+        title: Text("jayne.verification_success_page.app_bar".tr()),
       ),
-      body: Center( // Center the entire content
+      body: Center(
+        // Center the entire content
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'ยืนยันตัวตนเรียบร้อย',
+            Text(
+              "jayne.verification_success_page.title".tr(),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 20),
             Text(
-              'สวัสดีค่ะ คุณ$userName',
+              "jayne.verification_success_page.hello_user_name".tr().replaceAll("{userName}", userName),
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,
@@ -44,9 +46,9 @@ class VerificationSuccessPage extends StatelessWidget {
                 backgroundColor: Colors.black, // Button color
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
               ),
-              child: const Text(
-                'กลับหน้าหลัก',
-                style: TextStyle(
+              child: Text(
+                'jayne.verification_success_page.back_to_home_page'.tr(),
+                style: const TextStyle(
                   color: Colors.white, // Text color
                   fontSize: 16,
                 ),
