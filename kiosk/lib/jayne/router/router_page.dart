@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kiosk/jayne/router/live_chat_routes_name.dart';
+import 'package:kiosk/jayne/router/routes_name.dart';
 import 'package:kiosk/jayne/view/chatbot/login_page.dart';
 
 BuildContext? liveChatContext;
