@@ -1,21 +1,49 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/blocs/application_bloc/application_cubit.dart';
-import 'package:kiosk/jayne/common/theme_data.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/condition.dart';
-import 'package:kiosk/jayne/routes/live_chat_routes_name.dart';
+import 'package:kiosk/jayne/language/th_custom_intl.dart';
+import 'package:kiosk/jayne/router/router_page.dart';
+import 'package:kiosk/jayne/language/language_handler.dart';
+import 'package:kiosk/jayne/jayne_getit_dependencies.dart';
 import 'package:kiosk/jayne/secure_storage/secure_storage_service.dart';
 import 'package:kiosk/jayne/view/chatbot/splash_screen_page.dart';
-import 'package:kiosk/jayne/view/chatbot/welcome_start_chat_page.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+
+const supportedLocales = [Locale("en"), Locale("th")];
+
+abstract class BlocInjector {
+  injectBlocs(InjectBloc inject);
+}
+
+abstract class JayneMultiDependencies extends JayneSystem {
+  final List<JayneSystem> systems;
+
+  JayneMultiDependencies({
+    required this.systems,
+  });
+
+  @override
+  void setContext(JayneSystemContext context) {
+    super.setContext(context);
+    for (final system in systems) {
+      system.setContext(context);
+    }
+  }
+
+  @override
+  Future<void> createDependencies(JayneGetItDependencies dependencies) async {
+    for (final system in systems) {
+      await system.createDependencies(dependencies);
+    }
+  }
+}
 
 main() async {
   runZonedGuarded<Future<void>>(() async {
@@ -23,7 +51,7 @@ main() async {
     await dotenv.load();
     runApp(
       MultiProvider(
-        providers: [],
+        providers: const [],
         child: MaterialApp(
           builder: (context, child) {
             return JayneApp(
@@ -65,12 +93,12 @@ class JayneMainApp extends StatefulWidget {
   State<JayneMainApp> createState() => _JayneMainAppState();
 }
 
-class JayneMainSystem extends JayneMultiSystem {
+class JayneMainSystem extends JayneMultiDependencies {
   JayneMainSystem()
       : super(
           systems: [
             JayneStorageLanguageSystem(),
-            JayneTranslationLanguageSystem(),
+            JayneTranslationSystem(),
           ],
         );
 }
@@ -82,7 +110,7 @@ class JayneStorageLanguageSystem extends JayneSystem {
   }
 }
 
-class JayneTranslationLanguageSystem extends JayneSystem {
+class JayneTranslationSystem extends JayneSystem {
   @override
   Future<void> createDependencies(JayneGetItDependencies dependencies) async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -101,8 +129,6 @@ class ApplicationMixin {
   final application = JayneGetItDependencies.of<ApplicationCubit>();
 }
 
-const supportedLocales = [Locale("en"), Locale("th")];
-
 class JayneLocalization extends JayneLocalizationConfig {
   JayneLocalization()
       : super(
@@ -118,42 +144,11 @@ class JayneLocalization extends JayneLocalizationConfig {
   }
 }
 
-Future loadTranslation(Locale locale) async {
-  final translationPath = dotenv.get('TRANSLATION_PATH');
-  final storage = JayneGetItDependencies.of<SecureStorageLanguageService>();
-  final Map<String, dynamic> metaDataInfos = jsonDecode(await rootBundle.loadString("$translationPath/metadata.json"));
-  final fileLastModifiedDate = DateTime.parse(metaDataInfos[locale.languageCode]);
-  await _loadTranslationFromFile(storage, fileLastModifiedDate, locale); //TODO
-}
-
 class JayneAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String path, Locale locale) async {
-    final translationsMap = json.decode(await readTranslationsJson(locale)); //TODO
+    final translationsMap = json.decode(await readLanguageJson(locale));
     return translationsMap;
-  }
-}
-
-abstract class JayneMultiSystem extends JayneSystem {
-  final List<JayneSystem> systems;
-
-  JayneMultiSystem({
-    required this.systems,
-  });
-
-  @override
-  void setContext(JayneSystemContext context) {
-    super.setContext(context);
-    for (final system in systems) {
-      system.setContext(context);
-    }
-  }
-
-  @override
-  Future<void> createDependencies(JayneGetItDependencies dependencies) async {
-    for (final system in systems) {
-      await system.createDependencies(dependencies);
-    }
   }
 }
 
@@ -169,7 +164,7 @@ class _JayneMainAppState extends State<JayneMainApp> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: initializeLocale(context), //TODO
+      future: initializeLocale(context),
       builder: (context, snapshot) {
         if (snapshot.data == null) {
           return MaterialApp.router(
@@ -185,11 +180,10 @@ class _JayneMainAppState extends State<JayneMainApp> {
         }
         return MaterialApp.router(
           title: 'Jayne',
-          //TODO Fix
-          // localizationsDelegates: [
-          //   ...context.localizationDelegates,
-          //   ThBudhaMaterialLocalizations.delegate,
-          // ],
+          localizationsDelegates: [
+            ...context.localizationDelegates,
+            ThBudhaMaterialLocalizations.delegate,
+          ],
           supportedLocales: [
             ...context.supportedLocales,
             const Locale('thBudha'),
@@ -200,66 +194,6 @@ class _JayneMainAppState extends State<JayneMainApp> {
         );
       },
     );
-  }
-}
-
-BuildContext? liveChatContext;
-final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
-
-class LiveChatMainRoutes {
-  late final router = GoRouter(
-    debugLogDiagnostics: true,
-    observers: [GoRouterObserver()],
-    routes: <RouteBase>[
-      ShellRoute(
-        navigatorKey: _shellNavigatorKey,
-        builder: (BuildContext context, GoRouterState state, Widget child) {
-          return child;
-        },
-        routes: liveChatRoutes,
-      )
-    ],
-    errorPageBuilder: (context, state) {
-      return buildPage(
-        context: context,
-        key: state.pageKey,
-        child: const SizedBox.shrink(),
-        arguments: state.extra,
-        disableBack: true,
-      );
-    },
-  );
-
-  LiveChatMainRoutes init(BuildContext? context) {
-    liveChatContext = context;
-    return this;
-  }
-}
-
-final liveChatRoutes = [
-  GoRoute(
-    name: RouteName.welcomeStartChatPage.name,
-    path: '/',
-    pageBuilder: (context, state) {
-      return buildPage(
-        context: context,
-        key: state.pageKey,
-        child: const WelcomeStartChatPage(),
-        arguments: state.extra,
-      );
-    },
-    routes: [
-      //TODO Create route
-    ],
-  ),
-];
-
-class GoRouterObserver extends NavigatorObserver {
-  GoRouterObserver();
-
-  @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    debugPrint('PUSHED SCREEN: ${route.settings.arguments}'); //name comes back null
   }
 }
 
@@ -337,121 +271,4 @@ class _JayneRootAppState extends State<JayneRootApp> {
       fallback: (_) => widget.loading(),
     );
   }
-}
-
-class JayneSystemContext {
-  final JayneSystem system;
-  final JayneGetItDependencies dependencies;
-
-  JayneSystemContext({
-    required this.system,
-    required this.dependencies,
-  });
-
-  Future<void> start() async {
-    system.setContext(this);
-    await system.createDependencies(dependencies);
-  }
-}
-
-abstract class JayneSystem {
-  late JayneSystemContext _context;
-  JayneGetItDependencies get dependencies => _context.dependencies;
-
-  void setContext(JayneSystemContext context) {
-    _context = context;
-  }
-
-  Future<void> createDependencies(JayneGetItDependencies dependencies);
-}
-
-class JayneGetItDependencies {
-  void add<T extends Object>(
-    T instance, {
-    bool lazy = false,
-  }) {
-    if (lazy) {
-      if (!GetIt.I.isRegistered<T>()) {
-        GetIt.I.registerLazySingleton<T>(() => instance);
-      }
-    } else {
-      if (!GetIt.I.isRegistered<T>()) {
-        GetIt.I.registerSingleton<T>(instance);
-      }
-    }
-  }
-
-  static T of<T extends Object>() {
-    return GetIt.I<T>();
-  }
-}
-
-typedef InjectBloc = void Function<T extends BlocBase>(
-  T bloc, {
-  bool lazy,
-});
-
-abstract class BlocInjector {
-  injectBlocs(InjectBloc inject);
-}
-
-abstract class JayneLocalizationConfig {
-  final List<Locale> supportedLocales;
-  final AssetLoader assetLoader;
-
-  JayneLocalizationConfig({
-    required this.supportedLocales,
-    required this.assetLoader,
-  });
-
-  Future<void> start();
-}
-
-MaterialPage<void> buildPage({
-  required BuildContext context,
-  required Widget child,
-  LocalKey? key,
-  Object? arguments,
-  bool disableBack = false,
-}) {
-  return MaterialPage<void>(
-    key: key,
-    child: disableBack ? _buildBlockerRouter(context, child) : child,
-    arguments: arguments,
-    fullscreenDialog: disableBack,
-  );
-}
-
-Router _buildBlockerRouter(BuildContext context, Widget child) {
-  BackButtonDispatcher dispatcher = Router.of(context).backButtonDispatcher!.createChildBackButtonDispatcher()..takePriority();
-  return Router(
-    routerDelegate: BackButtonBlockerDelegate(
-      child: child,
-    ),
-    backButtonDispatcher: dispatcher,
-  );
-}
-
-class BackButtonBlockerDelegate extends RouterDelegate with ChangeNotifier {
-  final Widget child;
-  BuildContext? context;
-
-  BackButtonBlockerDelegate({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    this.context = context;
-    return child;
-  }
-
-  @override
-  Future<bool> popRoute() async {
-    if (ModalRoute.of(context!)!.isCurrent) {
-      return SynchronousFuture(true);
-    }
-    return SynchronousFuture(false);
-  }
-
-  @override
-  Future<void> setNewRoutePath(configuration) async {}
 }

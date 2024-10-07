@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kiosk/jayne/common/app_styles.dart';
-import 'package:kiosk/jayne/common/theme_data.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_element_functions.dart';
 import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:easy_localization/easy_localization.dart';

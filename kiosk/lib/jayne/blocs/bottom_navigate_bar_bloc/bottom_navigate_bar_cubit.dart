@@ -1,14 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kiosk/jayne/blocs/app_bottom_navigate_bar_bloc/main_bottom_navigate_bar_state.dart';
+import 'package:kiosk/jayne/blocs/bottom_navigate_bar_bloc/bottom_navigate_bar_state.dart';
 
-class AppBottomNavigateBarCubit extends Cubit<AppBottomNavigateBarState> {
-  AppBottomNavigateBarCubit() : super(const AppBottomNavigateBarState());
+class BottomNavigateBarCubit extends Cubit<BottomNavigateBarState> {
+  BottomNavigateBarCubit() : super(const BottomNavigateBarState());
 
   init({required int bottomNavigationIndex}) {
     emit(state.copyWith(
       initBottomNavigationIndex: bottomNavigationIndex,
       currentBottomNavigationIndex: bottomNavigationIndex,
-      status: AppBottomNavigateBarStatus.init,
+      status: BottomNavigateBarStatus.init,
     ));
   }
 
@@ -36,7 +36,7 @@ class AppBottomNavigateBarCubit extends Cubit<AppBottomNavigateBarState> {
   }
 
   rebuild() {
-    emit(state.copyWith(status: AppBottomNavigateBarStatus.processing));
-    emit(state.copyWith(status: AppBottomNavigateBarStatus.init));
+    emit(state.copyWith(status: BottomNavigateBarStatus.processing));
+    emit(state.copyWith(status: BottomNavigateBarStatus.init));
   }
 }

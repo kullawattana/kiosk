@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kiosk/jayne/common/default_theme_color.dart';
+import 'package:kiosk/jayne/common/default_color.dart';
 import 'package:kiosk/jayne/components/atoms/primary_button.dart';
 import 'package:kiosk/jayne/utils/condition_functions.dart';
 

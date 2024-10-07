@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum AppBottomNavigateBarStatus {
+enum BottomNavigateBarStatus {
   init,
   processing,
   unableToProceed,
@@ -9,26 +9,26 @@ enum AppBottomNavigateBarStatus {
   goToQrPage,
 }
 
-class AppBottomNavigateBarState extends Equatable {
+class BottomNavigateBarState extends Equatable {
   final int currentBottomNavigationIndex;
   final int initBottomNavigationIndex;
   final String? errorCode;
-  final AppBottomNavigateBarStatus? status;
+  final BottomNavigateBarStatus? status;
 
-  const AppBottomNavigateBarState({
+  const BottomNavigateBarState({
     this.currentBottomNavigationIndex = 0,
     this.initBottomNavigationIndex = 0,
     this.errorCode,
     this.status,
   });
 
-  AppBottomNavigateBarState copyWith({
+  BottomNavigateBarState copyWith({
     int? currentBottomNavigationIndex,
     int? initBottomNavigationIndex,
     String? errorCode,
-    AppBottomNavigateBarStatus? status,
+    BottomNavigateBarStatus? status,
   }) {
-    return AppBottomNavigateBarState(
+    return BottomNavigateBarState(
       currentBottomNavigationIndex: currentBottomNavigationIndex ?? this.currentBottomNavigationIndex,
       initBottomNavigationIndex: initBottomNavigationIndex ?? this.initBottomNavigationIndex,
       errorCode: errorCode ?? this.errorCode,

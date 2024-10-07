@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kiosk/jayne/common/app_styles.dart';
-import 'package:kiosk/jayne/common/default_theme_color.dart';
-import 'package:kiosk/jayne/common/theme_data.dart';
+import 'package:kiosk/jayne/common/default_color.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/components/atoms/message_time.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
-import 'package:kiosk/jayne/enhances/widget_spacer.dart';
 
 class SendMessage extends StatelessWidget {
   final String message;
@@ -44,9 +43,7 @@ class SendMessage extends StatelessWidget {
             ),
           ],
         ),
-        const WidgetSpacer(
-          size: spaceSmall - 4,
-        ),
+        const SizedBox(height: 4),
         MessageTime(time: time)
       ],
     );

@@ -103,7 +103,7 @@ class Notification {
         displayOnBackground: true,
         wakeUpScreen: true,
         payload: {
-          'key': 'chatbot',
+          'key': 'jayne',
         },
       ),
     );
@@ -125,7 +125,7 @@ class Notification {
         displayOnBackground: true,
         wakeUpScreen: true,
         payload: {
-          'key': 'chatbot',
+          'key': 'jayne',
         },
       ),
       schedule: NotificationInterval(
@@ -139,8 +139,8 @@ class Notification {
   void sendNotification() {
     Notification().createNotification(
       1,
-      "chatbot.notification.time_out.title".tr(),
-      "chatbot.notification.time_out.description".tr(),
+      "jayne.notification.time_out.title".tr(),
+      "jayne.notification.time_out.description".tr(),
     );
   }
 
@@ -171,7 +171,7 @@ class NotificationController {
   static Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
     Map<String, String?> payload = receivedAction.payload ?? {};
     if (payload.isNotEmpty) {
-      if (payload.values.contains("chatbot")) {
+      if (payload.values.contains("jayne")) {
         gotoChatBotByClickNotification();
       } else {
         gotoOtherNotification(payload: payload);

@@ -5,14 +5,14 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:kiosk/jayne/repository/amazon_lex_bot_service.dart';
 import 'package:uuid/uuid.dart';
 
-class ChatBotScreenPage extends StatefulWidget {
-  const ChatBotScreenPage({super.key});
+class ChatBotPage extends StatefulWidget {
+  const ChatBotPage({super.key});
 
   @override
-  _ChatBotScreenPageState createState() => _ChatBotScreenPageState();
+  _ChatBotPageState createState() => _ChatBotPageState();
 }
 
-class _ChatBotScreenPageState extends State<ChatBotScreenPage> {
+class _ChatBotPageState extends State<ChatBotPage> {
   List<types.Message> messages = [];
   final _user = const types.User(id: '1234556');
   final _bot = const types.User(id: "123");
