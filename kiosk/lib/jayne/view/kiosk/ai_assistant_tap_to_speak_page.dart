@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
-class AIAssistantTapToSpeakPage extends StatelessWidget {
+class AIAssistantTapToSpeakPage extends StatefulWidget {
   const AIAssistantTapToSpeakPage({super.key});
+
+  @override
+  State<AIAssistantTapToSpeakPage> createState() => _AIAssistantTapToSpeakPageState();
+}
+
+class _AIAssistantTapToSpeakPageState extends State<AIAssistantTapToSpeakPage> {
+  FlutterTts flutterTts = FlutterTts();
+  String _textToSpeak = "Hello, welcome to Flutter text to speech example.";
+
+  Future _speak() async {
+    //await flutterTts.setLanguage("en-US");
+    await flutterTts.setLanguage("th-TH");
+    await flutterTts.setPitch(1.0);
+    await flutterTts.speak(_textToSpeak);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +46,7 @@ class AIAssistantTapToSpeakPage extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               // Avatar and Greeting
               Column(
                 children: [
@@ -51,7 +67,7 @@ class AIAssistantTapToSpeakPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  
+
                   // Greeting message
                   const Text(
                     'สวัสดีค่ะ ให้เจนช่วยอะไรดีคะคุณลูกค้า',
@@ -63,16 +79,33 @@ class AIAssistantTapToSpeakPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   // Voice Wave Animation
-                  Container(
-                    height: 60,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.graphic_eq,
-                      color: Colors.white,
-                      size: 50,
-                    ), // Placeholder for the voice wave animation
+                  //TODO TTS
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _textToSpeak = value;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Enter text to speak',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
+                  const SizedBox(height: 20),
+
+                  InkWell(
+                    onLongPress: _speak,
+                    child: Container(
+                      height: 60,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.graphic_eq,
+                        color: Colors.white,
+                        size: 50,
+                      ), // Placeholder for the voice wave animation
+                    ),
+                  )
                 ],
               ),
             ],
