@@ -2,7 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
+import 'package:kiosk/jayne/view/chatbot/location_page.dart';
 import 'package:kiosk/jayne/view/chatbot/login_page.dart';
+import 'package:kiosk/jayne/view/chatbot/queue_service_page.dart';
+import 'package:kiosk/jayne/view/chatbot/register_page.dart';
+import 'package:kiosk/jayne/view/kiosk/cart_page.dart';
+import 'package:kiosk/jayne/view/kiosk/home_page.dart';
 
 BuildContext? liveChatContext;
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
@@ -17,7 +22,7 @@ class LiveChatMainRoutes {
         builder: (BuildContext context, GoRouterState state, Widget child) {
           return child;
         },
-        routes: liveChatRoutes,
+        routes: chatBotRoutes,
       )
     ],
     errorPageBuilder: (context, state) {
@@ -46,9 +51,9 @@ class GoRouterObserver extends NavigatorObserver {
   }
 }
 
-final liveChatRoutes = [
+final chatBotRoutes = [
   GoRoute(
-    name: RouteName.welcomeStartChatPage.name,
+    name: RouteName.splashScreenPage.name,
     path: '/',
     pageBuilder: (context, state) {
       return buildPage(
@@ -59,7 +64,191 @@ final liveChatRoutes = [
       );
     },
     routes: [
-      //TODO Create route
+      GoRoute(
+        name: RouteName.loginPage.name,
+        path: 'login_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const LoginPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.registerPage.name,
+        path: 'register_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.chatInstructionPage.name,
+        path: 'chat_instruction_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.locationPage.name,
+        path: 'location_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const LocationPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.queueServicePage.name,
+        path: 'queue_service_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const QueueServicePage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+    ],
+  ),
+];
+
+final kioskRoutes = [
+  GoRoute(
+    name: RouteName.homePage.name,
+    path: '/',
+    pageBuilder: (context, state) {
+      return buildPage(
+        context: context,
+        key: state.pageKey,
+        child: const HomePage(),
+        arguments: state.extra,
+      );
+    },
+    routes: [
+      GoRoute(
+        name: RouteName.cartPage.name,
+        path: 'cart_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const CartPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.productIndividualPage.name,
+        path: 'product_individual_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.productRecommendPage.name,
+        path: 'product_recommend_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.productFilterPage.name,
+        path: 'product_filter_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.promotionPage.name,
+        path: 'promotion_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.aiAssistantPage.name,
+        path: 'ai_assistant_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.aiAssistantChatPage.name,
+        path: 'ai_assistant_chat_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.aiAssistantTapToSpeakPage.name,
+        path: 'ai_assistant_tap_to_speak_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
+      GoRoute(
+        name: RouteName.aiAssistantChatPage.name,
+        path: 'ai_assistant_chat_page',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const RegisterPage(),
+            arguments: state.extra,
+          );
+        },
+      ),
     ],
   ),
 ];

@@ -1,39 +1,66 @@
 enum RouteName {
-  welcomeStartChatPage,
-  welcomeLoginPage,
-  splashScreenPage,
+  //Chatbot
+  chatInstructionPage,
+  locationPage,
+  loginPage,
   queueServicePage,
-  loginYourAccountPage,
-  locationServicePage,
-  createAccountPage,
-  chatBotScreenPage,
-  introductionChatPage,
-  avatarChatPage,
+  registerPage,
+  splashScreenPage,
+  //Kiosk
+  homePage,
+  cartPage,
+  productIndividualPage,
+  productRecommendPage,
+  productFilterPage,
+  promotionPage,
+  aiAssistantPage,
+  aiAssistantChatPage,
+  aiAssistantTapToSpeakPage,
+  aiAssistantResponsePage,
+  thankYouPage,
+  verificationSuccessPage,
+
 }
 
 extension RouteNameExtensions on RouteName {
   String get name {
     switch (this) {
-      case RouteName.welcomeStartChatPage:
-        return "welcome start chat page";
-      case RouteName.welcomeLoginPage:
-        return "welcome login page";
-      case RouteName.splashScreenPage:
-        return "splash screen page";
+      case RouteName.chatInstructionPage:
+        return "chat instruction page";
+      case RouteName.locationPage:
+        return "location page";
+      case RouteName.loginPage:
+        return "login page";
       case RouteName.queueServicePage:
         return "queue service page";
-      case RouteName.loginYourAccountPage:
-        return "login your account page";
-      case RouteName.locationServicePage:
-        return "location service page";
-      case RouteName.introductionChatPage:
-        return "introduction chat page";
-      case RouteName.createAccountPage:
-        return "create account page";
-      case RouteName.chatBotScreenPage:
-        return "chatbot screen page";
-      case RouteName.avatarChatPage:
-        return "avatar chat page";
+      case RouteName.registerPage:
+        return "register page";
+      case RouteName.splashScreenPage:
+        return "splash screen page";
+      case RouteName.homePage:
+        return "home page";
+      case RouteName.cartPage:
+        return "cart page";
+      case RouteName.productIndividualPage:
+        return "product individual page";
+      case RouteName.productRecommendPage:
+        return "product recommend page";
+      case RouteName.productFilterPage:
+        return "product filter page";
+      case RouteName.promotionPage:
+        return "promotion page";
+      case RouteName.aiAssistantPage:
+        return "ai assistant page";
+      case RouteName.aiAssistantChatPage:
+        return "ai assistant chat page";
+      case RouteName.aiAssistantTapToSpeakPage:
+        return "ai assistant tap to speak page";
+      case RouteName.aiAssistantResponsePage:
+        return "ai assistant response page";
+      case RouteName.thankYouPage:
+        return "thank you page";
+      case RouteName.verificationSuccessPage:
+        return "verification success page";
       default:
         return "";
     }

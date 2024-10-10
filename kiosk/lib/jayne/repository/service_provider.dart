@@ -1,36 +1,49 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:kiosk/jayne/model/request/product_request.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:kiosk/jayne/model/request/bot_request.dart';
 import 'package:http/http.dart' as http;
+import 'package:kiosk/jayne/model/response/bot_response.dart';
 
-const devEnv = "dev";
-const androidIpAddress = "10.0.2.2:4001";
-const iOSIpAddress = "127.0.0.1:4001";
+const ipAddress = "184.72.103.175:5000";
 
 class ServiceProvider {
-  final environment = dotenv.get('ENVIRONMENT');
-  final serverUri = dotenv.get('SERVER_URL');
-
-  Future<ApiResponse> requestProduct() async {
-    final request = ProductRequest(
-      message: "",
+  Future<ApiResponse> requestProduct({
+    required String userContent,
+    required String botContent,
+    required String inputText,
+    required int minPrice,
+    required int maxPrice,
+    required int minDiscountPc,
+    required int minDiscountValue,
+    required int minPoint,
+  }) async {
+    List<ChatHistory> messages = [
+      ChatHistory(role: "user", content: userContent),
+      ChatHistory(role: "bot", content: botContent),
+    ];
+    final request = BotRequest(
+      inputText: inputText,
+      chatHistory: messages,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      minDiscountPc: minDiscountPc,
+      minDiscountValue: minDiscountValue,
+      minPoint: minPoint,
     );
-    final response = await http.post(
-      environment == devEnv
-          ? Uri.http(
-              Platform.isIOS //
-                  ? iOSIpAddress
-                  : androidIpAddress,
-              '/oauth2/token',
-            )
-          : Uri.https(serverUri, ''),
+    final response = await http.post(Uri.http(ipAddress, '/chat'),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: request,
     );
     if (response.statusCode == HttpStatus.ok) {
+      final responseApi = BotResponse.fromJson(json.decode(response.body));
+      debugPrint(responseApi.output);
+      debugPrint(responseApi.retrievedReferences?[0].content);
+      debugPrint(responseApi.retrievedReferences?[0].metadata?.code);
+      debugPrint(responseApi.retrievedReferences?[0].metadata?.productUrl);
       return ApiResponse(
         isSuccess: true,
         statusCode: response.statusCode,

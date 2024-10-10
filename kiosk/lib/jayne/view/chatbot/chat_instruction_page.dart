@@ -25,12 +25,12 @@ class ChatInstructionsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back),
+                          icon: const Icon(Icons.arrow_back),
                           onPressed: () {
                             // ฟังก์ชันเมื่อกดปุ่มย้อนกลับ
                           },
                         ),
-                        Icon(Icons.more_horiz, color: Colors.grey), // จุดสามจุดทางขวา
+                        const Icon(Icons.more_horiz, color: Colors.grey), // จุดสามจุดทางขวา
                       ],
                     ),
                     const SizedBox(height: 30),
@@ -46,15 +46,15 @@ class ChatInstructionsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 50),
                     // ข้อความคำอธิบาย
-                    InstructionCard(
+                    const InstructionCard(
                       text: 'Remembers what user said earlier in the conversation',
                     ),
                     const SizedBox(height: 20),
-                    InstructionCard(
+                    const InstructionCard(
                       text: 'Allows user to provide follow-up corrections With Ai',
                     ),
                     const SizedBox(height: 20),
-                    InstructionCard(
+                    const InstructionCard(
                       text: 'Limited knowledge of world and events after 2021',
                     ),
                   ],
