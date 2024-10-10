@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class VerificationSuccessPage extends StatelessWidget {
   final String userName = "สมร";
@@ -55,6 +56,29 @@ class VerificationSuccessPage extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+//TODO
+class QrCodeScreen extends StatelessWidget {
+  const QrCodeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    String dataToEncode = "https://example.com";
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Generate QR Code'),
+      ),
+      body: Center(
+        child: QrImageView(
+          data: dataToEncode,
+          version: QrVersions.auto,
+          size: 200.0,
         ),
       ),
     );
