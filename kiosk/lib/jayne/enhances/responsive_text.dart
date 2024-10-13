@@ -32,26 +32,26 @@ class ResponsiveText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final double _fontSize = getResponsiveFontSize(screenWidth, textStyle.fontSize!);
-    final String _content = overFlowEllipsis
+    final double fontSize = getResponsiveFontSize(screenWidth, textStyle.fontSize!);
+    final String contents = overFlowEllipsis
         ? //
         content.characters.replaceAll(Characters(''), Characters('\u{200B}')).toString()
         : content;
     return Condition(
       condition: autoSize && content.isNotEmpty,
       builder: (_) => AutoSizeText(
-        overFlowEllipsis ? _content : content,
+        overFlowEllipsis ? contents : content,
         key: tag != null ? Key(tag!) : null,
-        style: textStyle.copyWith(fontSize: _fontSize),
+        style: textStyle.copyWith(fontSize: fontSize),
         maxLines: maxLines,
         textAlign: textAlign,
         minFontSize: minFontSize,
-        maxFontSize: _fontSize <= minFontSize ? minFontSize : _fontSize,
+        maxFontSize: fontSize <= minFontSize ? minFontSize : fontSize,
         softWrap: softWrap,
         overflow: overFlowEllipsis ? TextOverflow.ellipsis : textOverFlow,
       ),
       fallback: (_) => Text(
-        overFlowEllipsis ? _content : content,
+        overFlowEllipsis ? contents : content,
         key: tag != null ? Key(tag!) : null,
         style: calculateFontSize(screenWidth, textStyle),
         textAlign: textAlign,

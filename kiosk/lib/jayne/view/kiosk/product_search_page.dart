@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_text.dart';
+import 'package:kiosk/jayne/layouts/popup_container.dart';
+import 'package:kiosk/jayne/layouts/popup_layout.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProductFilterPage extends StatefulWidget {
   const ProductFilterPage({super.key});
 
   @override
-  _ProductFilterPageState createState() => _ProductFilterPageState();
+  State<ProductFilterPage> createState() => _ProductFilterPageState();
 }
 
 class _ProductFilterPageState extends State<ProductFilterPage> {
@@ -27,15 +33,15 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                     flex: 2,
                     child: Container(
                       color: Colors.white,
-                      child: const Column(
+                      child: Column(
                         children: [
-                          MenuItem(label: 'แนะนำ'),
-                          MenuItem(label: 'มือถือ', isSelected: true),
-                          MenuItem(label: 'แท็บเล็ต'),
-                          MenuItem(label: 'โน้ตบุ๊ค'),
-                          MenuItem(label: 'สมาร์ทวอทช์'),
-                          MenuItem(label: 'หูฟัง'),
-                          MenuItem(label: 'อุปกรณ์เสริม'),
+                          MenuItem(label: 'jayne.product_recommend_page.recommend_tab'.tr()),
+                          MenuItem(label: 'jayne.product_recommend_page.mobile_tab'.tr(), isSelected: true),
+                          MenuItem(label: 'jayne.product_recommend_page.tablet_tab'.tr()),
+                          MenuItem(label: "jayne.product_recommend_page.notebook_tab".tr()),
+                          MenuItem(label: 'jayne.product_recommend_page.smartwatch_tab'.tr()),
+                          MenuItem(label: 'jayne.product_recommend_page.earphones_tab'.tr()),
+                          MenuItem(label: 'jayne.product_recommend_page.accessories_tab'.tr()),
                         ],
                       ),
                     ),
@@ -49,23 +55,19 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'มือถือ',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          ResponsiveText(
+                            content: 'jayne.product_recommend_page.mobile_tab'.tr(),
+                            textStyle: JTextTheme.highlightHeader,
                           ),
                           const SizedBox(height: 20),
-
                           // Filters
                           Row(
                             children: [
                               Expanded(
                                 child: DropdownButtonFormField<String>(
-                                  decoration: const InputDecoration(
-                                    labelText: 'เลือกแบรนด์',
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    labelText: 'jayne.product_individual_page.select_brand'.tr(),
+                                    border: const OutlineInputBorder(),
                                   ),
                                   value: selectedBrand,
                                   onChanged: (newValue) {
@@ -90,9 +92,9 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                               const SizedBox(width: 10),
                               Expanded(
                                 child: DropdownButtonFormField<String>(
-                                  decoration: const InputDecoration(
-                                    labelText: 'เลือกการใช้งาน',
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    labelText: "jayne.product_individual_page.choose_usage".tr(),
+                                    border: const OutlineInputBorder(),
                                   ),
                                   value: selectedUsage,
                                   onChanged: (newValue) {
@@ -116,9 +118,9 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                               const SizedBox(width: 10),
                               Expanded(
                                 child: DropdownButtonFormField<String>(
-                                  decoration: const InputDecoration(
-                                    labelText: 'ราคาสูงสุด',
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    labelText: 'jayne.product_individual_page.highest_price'.tr(),
+                                    border: const OutlineInputBorder(),
                                   ),
                                   value: selectedPrice,
                                   onChanged: (newValue) {
@@ -153,7 +155,6 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                             ],
                           ),
                           const SizedBox(height: 20),
-
                           // Product Grid
                           Expanded(
                             child: GridView.builder(
@@ -166,8 +167,8 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                               itemCount: 6, // Number of products
                               itemBuilder: (context, index) {
                                 return ProductCard(
-                                  name: index < 3 ? 'iPhone ${16 + index}' : 'XXX',
-                                  price: index < 3 ? '${30000 + (5000 * index)}' : 'XXXX',
+                                  name: index < 3 ? 'iPhone ${16 + index}' : '',
+                                  price: index < 3 ? '${30000 + (5000 * index)}' : '',
                                 );
                               },
                             ),
@@ -179,7 +180,6 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                 ],
               ),
             ),
-
             // Bottom Navigation
             Container(
               color: Colors.black,
@@ -189,14 +189,18 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Back action
+                      // TODO Back action
+                      context.pop();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
                       minimumSize: const Size(150, 50),
                     ),
-                    child: const Text('ย้อนกลับ'),
+                    child: ResponsiveText(
+                      content: "jayne.common.back".tr(),
+                      textStyle: JTextTheme.captionMedium,
+                    ),
                   ),
                   Row(
                     children: [
@@ -204,7 +208,7 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                         icon: Icons.shopping_cart,
                         label: 'ตะกร้าสินค้า',
                         onPressed: () {
-                          // Cart action
+                          // TODO Cart action
                         },
                       ),
                       const SizedBox(width: 10),
@@ -212,7 +216,7 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                         icon: Icons.smart_toy,
                         label: 'ปรึกษา AI',
                         onPressed: () {
-                          // AI consultation action
+                          // TODO AI consultation action
                         },
                       ),
                     ],
@@ -334,4 +338,20 @@ class BottomActionButton extends StatelessWidget {
       label: Text(label, style: const TextStyle(color: Colors.black)),
     );
   }
+}
+
+Future<void> openMethodBottomSheet({
+  required BuildContext context,
+}) async {
+  const scaleHeight = 690.0;
+  await showPopup(
+    context: context,
+    child: PopupLayout(
+      title: "chatbot.view.chatbot_page.upload_attachment_bottom_sheet_title".tr(),
+      child: Container(),
+    ),
+    size: MediaQuery.of(context).size.height <= scaleHeight ? PopupSize.half : PopupSize.medium,
+  ).then((_) async {
+
+  });
 }

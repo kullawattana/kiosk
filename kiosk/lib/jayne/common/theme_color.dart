@@ -263,19 +263,19 @@ class JTextTheme {
 }
 
 class ColorTheme {
-  static final _ColorPrimaryTheme primary = _ColorPrimaryTheme();
-  static final _ColorSecondaryTheme secondary = _ColorSecondaryTheme();
-  static final _ColorTertiaryTheme tertiary = _ColorTertiaryTheme();
-  static final _ColorNeutralTheme neutral = _ColorNeutralTheme();
-  static final _ColorErrorTheme error = _ColorErrorTheme();
+  static final ColorPrimaryTheme primary = ColorPrimaryTheme();
+  static final ColorSecondaryTheme secondary = ColorSecondaryTheme();
+  static final ColorTertiaryTheme tertiary = ColorTertiaryTheme();
+  static final ColorNeutralTheme neutral = ColorNeutralTheme();
+  static final ColorErrorTheme error = ColorErrorTheme();
 }
 
-class _ColorPrimaryTheme {
+class ColorPrimaryTheme {
   final Color red = colorPrimaryRed;
   final Color yellow = colorPrimaryYellow;
 }
 
-class _ColorSecondaryTheme {
+class ColorSecondaryTheme {
   final Color red = colorSecondaryRed;
   final Color darkRed = colorSecondaryDarkRed;
   final Color shadowRed = colorSecondaryShadowRed;
@@ -286,7 +286,7 @@ class _ColorSecondaryTheme {
   final Color green = colorSecondaryGreen;
 }
 
-class _ColorTertiaryTheme {
+class ColorTertiaryTheme {
   final Color blue = colorTertiaryBlue;
   final Color navyBlue = colorTertiaryNavyBlue;
   final Color lightPink = colorTertiaryLightPink;
@@ -304,7 +304,7 @@ class _ColorTertiaryTheme {
   final Color red = colorTertiaryRed;
 }
 
-class _ColorNeutralTheme {
+class ColorNeutralTheme {
   final Color black = colorNeutralBlack;
   final Color white = colorNeutralWhite;
   final Color darkGrey = colorNeutralDarkGrey;
@@ -312,7 +312,7 @@ class _ColorNeutralTheme {
   final Color lightGrey = colorNeutralLightGrey;
 }
 
-class _ColorErrorTheme {
+class ColorErrorTheme {
   final Color red = colorErrorRed;
   final Color lightRed = colorErrorLightRed;
 }

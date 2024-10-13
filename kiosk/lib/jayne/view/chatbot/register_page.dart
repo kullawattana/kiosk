@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -24,24 +26,24 @@ class RegisterPage extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    // ฟังก์ชันเมื่อกดปุ่มย้อนกลับ
+                    // TODO back
+                    context.pop();
                   },
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'Create your\nAccount',
-                  style: TextStyle(
+                Text(
+                  'chatbot.register_page.create_account'.tr(),
+                  style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 30),
-                // ช่องกรอก Full Name
                 TextField(
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.person_outline),
-                    labelText: 'Full Name',
+                    labelText: 'chatbot.register_page.full_name'.tr(),
                     filled: true,
                     fillColor: Colors.grey[100],
                     border: OutlineInputBorder(
@@ -51,11 +53,10 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // ช่องกรอก Email
                 TextField(
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.email_outlined),
-                    labelText: 'Enter Your Email',
+                    labelText: 'chatbot.register_page.email'.tr(),
                     filled: true,
                     fillColor: Colors.grey[100],
                     border: OutlineInputBorder(
@@ -65,12 +66,11 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // ช่องกรอก Password
                 TextField(
                   obscureText: true,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.lock_outline),
-                    labelText: 'Password',
+                    labelText: 'chatbot.register_page.password'.tr(),
                     suffixIcon: const Icon(Icons.visibility_off_outlined),
                     filled: true,
                     fillColor: Colors.grey[100],
@@ -81,12 +81,11 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                // ปุ่ม Register
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      // ฟังก์ชันเมื่อกด Register
+                      // TODO Press to register
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
@@ -95,9 +94,9 @@ class RegisterPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(
+                    child: Text(
+                      'chatbot.register_page.register'.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,
                       ),
@@ -107,14 +106,16 @@ class RegisterPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 Center(
                   child: RichText(
-                    text: const TextSpan(
-                      text: 'Already Have An Account? ',
-                      style: TextStyle(color: Colors.grey),
-                      children: <TextSpan>[
+                    text: TextSpan(
+                      text: 'chatbot.register_page.already_have_an_account'.tr(),
+                      style: const TextStyle(color: Colors.grey),
+                      children: const [
                         TextSpan(
                           text: 'Sign In',
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -123,7 +124,7 @@ class RegisterPage extends StatelessWidget {
                 const SizedBox(height: 30),
                 Center(
                   child: Text(
-                    'Continue With Accounts',
+                    'chatbot.register_page.continue_with_account'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey[600],
@@ -131,7 +132,6 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // ปุ่มเข้าสู่ระบบ Google และ Facebook
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -140,7 +140,7 @@ class RegisterPage extends StatelessWidget {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // ฟังก์ชันเมื่อกด Google
+                            // TODO Google
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red[100],
@@ -148,9 +148,9 @@ class RegisterPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text(
-                            'GOOGLE',
-                            style: TextStyle(
+                          child: Text(
+                            'chatbot.register_page.google'.tr(),
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),
@@ -164,7 +164,7 @@ class RegisterPage extends StatelessWidget {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // ฟังก์ชันเมื่อกด Facebook
+                            // TODO Facebook
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue[100],
@@ -172,9 +172,9 @@ class RegisterPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text(
-                            'FACEBOOK',
-                            style: TextStyle(
+                          child: Text(
+                            'chatbot.register_page.facebook'.tr(),
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),

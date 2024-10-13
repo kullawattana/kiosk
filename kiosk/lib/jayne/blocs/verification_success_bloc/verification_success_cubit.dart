@@ -4,4 +4,7 @@ import 'package:kiosk/jayne/blocs/verification_success_bloc/verification_success
 class VerificationSuccessCubit extends Cubit<VerificationSuccessState> {
   VerificationSuccessCubit() : super(const VerificationSuccessState());
 
+  void getProduct() {
+
+  }
 }

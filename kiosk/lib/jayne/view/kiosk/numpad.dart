@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // For currency formatting
+import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class NumPad extends StatefulWidget {
   const NumPad({super.key});
 
   @override
-  _NumPadState createState() => _NumPadState();
+  State<NumPad> createState() => _NumPadState();
 }
 
 class _NumPadState extends State<NumPad> {
@@ -106,7 +107,7 @@ class _NumPadState extends State<NumPad> {
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,
                       ),
-                      child: const Text('ยกเลิก'),
+                      child: Text('jayne.common.confirm'.tr()),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -119,7 +120,7 @@ class _NumPadState extends State<NumPad> {
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text('ยืนยัน'),
+                      child: Text('jayne.common.cancel'.tr()),
                     ),
                   ),
                 ],

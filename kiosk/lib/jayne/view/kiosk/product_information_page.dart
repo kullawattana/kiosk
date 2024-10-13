@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProductIndividualPage extends StatefulWidget {
   const ProductIndividualPage({super.key});
 
   @override
-  _ProductIndividualPageState createState() => _ProductIndividualPageState();
+  State<ProductIndividualPage> createState() => _ProductIndividualPageState();
 }
 
 class _ProductIndividualPageState extends State<ProductIndividualPage> {
@@ -17,7 +21,10 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Product - Individual Page (Press Buy)'),
+        title: ResponsiveText(
+          content: "jayne.product_individual_page.app_bar".tr(),
+          textStyle: JTextTheme.title1,
+        ),
         backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
@@ -87,7 +94,10 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      const Text('หน่วยความจำ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      ResponsiveText(
+                        content: 'jayne.product_individual_page.memory'.tr(),
+                        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                       const SizedBox(height: 10),
                       Row(
                         children: [
@@ -107,7 +117,10 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
                       // Quantity selector
                       Row(
                         children: [
-                          const Text('จำนวน', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          ResponsiveText(
+                            content: 'jayne.product_individual_page.number_of_quantity'.tr(),
+                            textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
                           const Spacer(),
                           IconButton(
                             onPressed: () => setState(() => quantity = quantity > 1 ? quantity - 1 : 1),
@@ -123,13 +136,16 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
-                          // Action for 'Buy' button
+                          // TODO Action for 'Buy' button
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
                           backgroundColor: Colors.black,
                         ),
-                        child: const Text('สั่งซื้อ', style: TextStyle(fontSize: 18)),
+                        child: const ResponsiveText(
+                          content: 'สั่งซื้อ',
+                          textStyle: TextStyle(fontSize: 18),
+                        )
                       ),
                     ],
                   ),
@@ -138,26 +154,20 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
             ),
             const SizedBox(height: 20),
             // Product Description Section
-            const Text(
-              'คุณสมบัติ',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            const ResponsiveText(
+              content: 'คุณสมบัติ',
+              textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'ควบคุมเต็มตัวด้วยตัวควบคุมกล้อง',
-              style: TextStyle(fontSize: 16),
+            const ResponsiveText(
+              content: 'ควบคุมเต็มตัวด้วยตัวควบคุมกล้อง',
+              textStyle: TextStyle(fontSize: 16),
             ),
-            Text(
-              'ตัวควบคุมกล้องให้คุณมีวิธีที่ง่ายขึ้นในการเข้าถึงเครื่องมือของกล้องได้อย่างรวดเร็ว',
-              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            ResponsiveText(
+              content: 'ตัวควบคุมกล้องให้คุณมีวิธีที่ง่ายขึ้นในการเข้าถึงเครื่องมือของกล้องได้อย่างรวดเร็ว',
+              textStyle: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
             const SizedBox(height: 20),
-            // Placeholder for more description
-            const Text('XXXXX', style: TextStyle(fontSize: 16)),
-            const Text('XXXXXXXXXXXXXXXXXXXXXXXXXXXX', style: TextStyle(fontSize: 16)),
-            const SizedBox(height: 20),
-            const Text('XXXXX', style: TextStyle(fontSize: 16)),
-            const Text('XXXXXXXXXXXXXXXXXXXXXXXXXXXX', style: TextStyle(fontSize: 16)),
           ],
         ),
       ),
@@ -167,9 +177,13 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
           children: [
             TextButton(
               onPressed: () {
-                // Action for 'Back' button
+                // TODO Go back action
+                context.pop();
               },
-              child: const Text('ย้อนกลับ', style: TextStyle(fontSize: 18)),
+              child: ResponsiveText(
+                content: "jayne.common.back".tr(),
+                textStyle: JTextTheme.captionMedium,
+              ),
             ),
             Row(
               children: [
@@ -177,7 +191,7 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        // Action for 'Cart' button
+                        // TODO Action for 'Cart' button
                       },
                       icon: const Icon(Icons.shopping_cart),
                     ),
@@ -199,7 +213,7 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    // Action for 'Consult AI' button
+                    // TODO Action for 'Consult AI' button
                   },
                   icon: const Icon(Icons.support_agent),
                 ),

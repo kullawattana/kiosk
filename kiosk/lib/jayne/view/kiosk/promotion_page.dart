@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PromotionPage extends StatefulWidget {
   const PromotionPage({super.key});
 
   @override
-  _PromotionPageState createState() => _PromotionPageState();
+  State<PromotionPage> createState() => _PromotionPageState();
 }
 
 class _PromotionPageState extends State<PromotionPage> {
@@ -15,7 +18,11 @@ class _PromotionPageState extends State<PromotionPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Promotion'),
+        //jayne.promotion_page.app_bar
+        title: ResponsiveText(
+          content: "jayne.promotion_page.app_bar".tr(),
+          textStyle: JTextTheme.highlightHeader,
+        ),
       ),
       body: Column(
         children: [
@@ -37,14 +44,20 @@ class _PromotionPageState extends State<PromotionPage> {
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
-                  destinations: const [
+                  destinations: [
                     NavigationRailDestination(
-                      icon: SizedBox.shrink(), // You can replace this with actual icons if needed
-                      label: Text('โปรโมชั่น'),
+                      icon: const SizedBox.shrink(), // You can replace this with actual icons if needed
+                      label: ResponsiveText(
+                        content: "jayne.promotion_page.promotion_tab".tr(),
+                        textStyle: JTextTheme.captionMedium,
+                      )
                     ),
                     NavigationRailDestination(
-                      icon: SizedBox.shrink(), // You can replace this with actual icons if needed
-                      label: Text('ส่วนลด'),
+                      icon: const SizedBox.shrink(), // You can replace this with actual icons if needed
+                      label: ResponsiveText(
+                        content: "jayne.promotion_page.discount_tab".tr(),
+                        textStyle: JTextTheme.captionMedium,
+                      ),
                     ),
                   ],
                   selectedIconTheme: const IconThemeData(color: Colors.black),
@@ -59,7 +72,7 @@ class _PromotionPageState extends State<PromotionPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          selectedIndex == 0 ? 'โปรโมชั่น' : 'ส่วนลด',
+                          selectedIndex == 0 ? "jayne.promotion_page.promotion_tab".tr() : "jayne.promotion_page.discount_tab".tr(),
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -89,7 +102,6 @@ class _PromotionPageState extends State<PromotionPage> {
               ],
             ),
           ),
-          
           // Bottom Navigation
           Container(
             padding: const EdgeInsets.all(16),
@@ -99,28 +111,31 @@ class _PromotionPageState extends State<PromotionPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Go back action
+                    // TODO Go back action
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
                     minimumSize: const Size(150, 50),
                   ),
-                  child: const Text('ย้อนกลับ'),
+                  child: ResponsiveText(
+                    content: "jayne.common.back".tr(),
+                    textStyle: JTextTheme.captionMedium,
+                  ),
                 ),
                 Row(
                   children: [
                     IconButton(
                       icon: const Icon(Icons.shopping_cart),
                       onPressed: () {
-                        // Go to cart action
+                        // TODO Go to cart action
                       },
                       color: Colors.white,
                     ),
                     IconButton(
                       icon: const Icon(Icons.smart_toy),
                       onPressed: () {
-                        // AI consultation action
+                        // TODO AI consultation action
                       },
                       color: Colors.white,
                     ),

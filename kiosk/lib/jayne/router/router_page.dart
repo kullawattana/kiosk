@@ -2,9 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
-import 'package:kiosk/jayne/view/chatbot/location_page.dart';
 import 'package:kiosk/jayne/view/chatbot/login_page.dart';
-import 'package:kiosk/jayne/view/chatbot/queue_service_page.dart';
 import 'package:kiosk/jayne/view/chatbot/register_page.dart';
 import 'package:kiosk/jayne/view/kiosk/cart_page.dart';
 import 'package:kiosk/jayne/view/kiosk/home_page.dart';
@@ -96,30 +94,6 @@ final chatBotRoutes = [
             context: context,
             key: state.pageKey,
             child: const RegisterPage(),
-            arguments: state.extra,
-          );
-        },
-      ),
-      GoRoute(
-        name: RouteName.locationPage.name,
-        path: 'location_page',
-        pageBuilder: (context, state) {
-          return buildPage(
-            context: context,
-            key: state.pageKey,
-            child: const LocationPage(),
-            arguments: state.extra,
-          );
-        },
-      ),
-      GoRoute(
-        name: RouteName.queueServicePage.name,
-        path: 'queue_service_page',
-        pageBuilder: (context, state) {
-          return buildPage(
-            context: context,
-            key: state.pageKey,
-            child: const QueueServicePage(),
             arguments: state.extra,
           );
         },

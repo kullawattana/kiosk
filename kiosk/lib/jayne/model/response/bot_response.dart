@@ -1,10 +1,12 @@
 class BotResponse {
   String? output;
+  String? messageType;
   List<RetrievedReferences>? retrievedReferences;
 
   BotResponse({this.output, this.retrievedReferences});
 
   BotResponse.fromJson(Map<String, dynamic> json) {
+    messageType = json['messageType'];
     output = json['output'];
     if (json['retrieved_references'] != null) {
       retrievedReferences = <RetrievedReferences>[];
@@ -16,6 +18,7 @@ class BotResponse {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['messageType'] = messageType;
     data['output'] = output;
     if (retrievedReferences != null) {
       data['retrieved_references'] = retrievedReferences!.map((v) => v.toJson()).toList();

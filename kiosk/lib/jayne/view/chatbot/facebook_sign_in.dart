@@ -5,33 +5,33 @@ class FacebookSignInDemo extends StatefulWidget {
   const FacebookSignInDemo({super.key});
 
   @override
-  _FacebookSignInDemoState createState() => _FacebookSignInDemoState();
+  State<FacebookSignInDemo> createState() => _FacebookSignInDemoState();
 }
 
 class _FacebookSignInDemoState extends State<FacebookSignInDemo> {
   Map<String, dynamic>? _userData;
-  AccessToken? _accessToken;
+  AccessToken? accessToken;
 
   Future<void> _loginWithFacebook() async {
-    final LoginResult result = await FacebookAuth.instance.login(); // เริ่มการเข้าสู่ระบบ
+    final LoginResult result = await FacebookAuth.instance.login();
 
     if (result.status == LoginStatus.success) {
-      _accessToken = result.accessToken;
-      final userData = await FacebookAuth.instance.getUserData(); // ดึงข้อมูลผู้ใช้
+      accessToken = result.accessToken;
+      final userData = await FacebookAuth.instance.getUserData();
       setState(() {
         _userData = userData;
       });
     } else {
-      print(result.status);
-      print(result.message);
+      debugPrint(result.status.toString());
+      debugPrint(result.message.toString());
     }
   }
 
   Future<void> _logout() async {
-    await FacebookAuth.instance.logOut(); // ออกจากระบบ
+    await FacebookAuth.instance.logOut();
     setState(() {
       _userData = null;
-      _accessToken = null;
+      accessToken = null;
     });
   }
 

@@ -2,12 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class FaceDetectionPage extends StatefulWidget {
   const FaceDetectionPage({super.key});
 
   @override
-  _FaceDetectionPageState createState() => _FaceDetectionPageState();
+  State<FaceDetectionPage> createState() => _FaceDetectionPageState();
 }
 
 class _FaceDetectionPageState extends State<FaceDetectionPage> {
@@ -53,7 +54,7 @@ class _FaceDetectionPageState extends State<FaceDetectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Face Detection'),
+        title: Text("jayne.face_detection_page.face_detection".tr()),
       ),
       body: Center(
         child: Column(

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_text.dart';
 
 class ThankYouPage extends StatelessWidget {
   const ThankYouPage({super.key});
@@ -8,7 +11,10 @@ class ThankYouPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Thank you'),
+        title: ResponsiveText(
+          content: 'jayne.thank_you_page.app_bar'.tr(),
+          textStyle: JTextTheme.highlightHeader,
+        ),
       ),
       body: Center(
         child: Padding(
@@ -16,37 +22,22 @@ class ThankYouPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'ขอบพระคุณที่ใช้บริการกับ Jaymart',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'กรุณานับใบสั่งซื้อสินค้าไปยื่นให้กับพนักงานค่ะ',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                ),
+              ResponsiveText(
+                content: 'jayne.thank_you_page.message'.tr(),
+                textStyle: JTextTheme.highlightHeader,
               ),
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
-                  // Navigate back to the main page
+                  // TODO Navigate back to the main page
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black, // Button color
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                 ),
-                child: const Text(
-                  'กลับหน้าหลัก',
-                  style: TextStyle(
-                    color: Colors.white, // Text color
-                    fontSize: 16,
-                  ),
+                child: ResponsiveText(
+                  content: 'jayne.common.back_to_home_page'.tr(),
+                  textStyle: JTextTheme.subtitle1,
                 ),
               ),
             ],

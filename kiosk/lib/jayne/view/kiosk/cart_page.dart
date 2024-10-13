@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/enhances/responsive_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
   @override
-  _CartPageState createState() => _CartPageState();
+  State<CartPage> createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
-  // Example cart data
   int iphone16Quantity = 1;
   int iphone16ProQuantity = 2;
   int totalPrice = 100000;
@@ -18,7 +20,10 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Cart Page'),
+        title: ResponsiveText(
+          content: 'jayne.cart_page.cart'.tr(),
+          textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
       ),
       backgroundColor: Colors.white,
       body: Padding(
@@ -27,9 +32,9 @@ class _CartPageState extends State<CartPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Cart Title
-            const Text(
-              'ตะกร้าสินค้า',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ResponsiveText(
+              content: 'jayne.cart_page.shopping_cart'.tr(),
+              textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
 
@@ -92,14 +97,12 @@ class _CartPageState extends State<CartPage> {
               },
             ),
             const SizedBox(height: 20),
-
             // Promotion Section
-            const Text(
-              'โปรโมชั่น',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ResponsiveText(
+              content: 'jayne.cart_page.promotion'.tr(),
+              textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-
             // Promotion Item
             buildPromotionItem(
               title: 'iPhone 16 Pro แถม airpod air 2',
@@ -118,25 +121,33 @@ class _CartPageState extends State<CartPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Go back
+                    // TODO Go back
+                    context.pop();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
                     minimumSize: const Size(150, 50),
                   ),
-                  child: const Text('ย้อนกลับ'),
+                  //jayne.common.back
+                  child: ResponsiveText(
+                    content: 'jayne.common.back'.tr(),
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Confirm purchase
+                    // TODO Confirm purchase
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
                     minimumSize: const Size(150, 50),
                   ),
-                  child: const Text('ยืนยัน'),
+                  child: ResponsiveText(
+                    content: 'jayne.common.confirm'.tr(),
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
                 ),
               ],
             ),
@@ -185,12 +196,18 @@ class _CartPageState extends State<CartPage> {
                     Text(storage),
                     Row(
                       children: [
-                        const Text('จำนวน'),
+                        ResponsiveText(
+                          content: "jayne.cart_page.total".tr(),
+                          textStyle: const TextStyle(fontSize: 16),
+                        ),
                         IconButton(icon: const Icon(Icons.remove), onPressed: onDecrease),
                         Text('$quantity'),
                         IconButton(icon: const Icon(Icons.add), onPressed: onIncrease),
                         const Spacer(),
-                        Text('฿ $price'),
+                        ResponsiveText(
+                          content: '฿ $price',
+                          textStyle: const TextStyle(fontSize: 16),
+                        ),
                       ],
                     ),
                   ],
@@ -225,9 +242,9 @@ class _CartPageState extends State<CartPage> {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                child: ResponsiveText(
+                  content: title,
+                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
               IconButton(
@@ -236,16 +253,24 @@ class _CartPageState extends State<CartPage> {
               ),
             ],
           ),
-          ...details.map((detail) => Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(detail),
-                    const Text('X 1'),
-                  ],
-                ),
-              )),
+          ...details.map(
+            (detail) => Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ResponsiveText(
+                    content: detail,
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
+                  const ResponsiveText(
+                    content: 'X 1',
+                    textStyle: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -260,22 +285,46 @@ class _CartPageState extends State<CartPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('ราคาสินค้ารวม', style: TextStyle(fontSize: 16)),
-            Text('฿ $totalPrice', style: const TextStyle(fontSize: 16)),
-          ],
-        ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('ส่วนลด', style: TextStyle(fontSize: 16)),
-            Text('฿ 0', style: TextStyle(fontSize: 16)),
+            ResponsiveText(
+              content: "jayne.cart_page.total_product_price".tr(),
+              textStyle: const TextStyle(fontSize: 16),
+            ),
+            ResponsiveText(
+              content: '฿ $totalPrice',
+              textStyle: const TextStyle(fontSize: 16),
+            ),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('รวมยอดสั่งซื้อ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            Text('฿ $totalPrice', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ResponsiveText(
+              content: "jayne.cart_page.discount".tr(),
+              textStyle: const TextStyle(fontSize: 16),
+            ),
+            const ResponsiveText(
+              content: '฿ 0',
+              textStyle: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ResponsiveText(
+              content: "jayne.cart_page.total_order_amount".tr(),
+              textStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ResponsiveText(
+              content: '฿ $totalPrice',
+              textStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ],

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_text.dart';
 
 class ProductRecommendPage extends StatelessWidget {
   const ProductRecommendPage({super.key});
@@ -18,20 +22,19 @@ class ProductRecommendPage extends StatelessWidget {
                     flex: 2,
                     child: Container(
                       color: Colors.white,
-                      child: const Column(
+                      child: Column(
                         children: [
-                          MenuItem(label: 'แนะนำ', isSelected: true),
-                          MenuItem(label: 'มือถือ'),
-                          MenuItem(label: 'แท็บเล็ต'),
-                          MenuItem(label: 'โน้ตบุ๊ค'),
-                          MenuItem(label: 'สมาร์ทวอทช์'),
-                          MenuItem(label: 'หูฟัง'),
-                          MenuItem(label: 'อุปกรณ์เสริม'),
+                          MenuItem(label: 'jayne.product_recommend_page.recommend_tab'.tr(), isSelected: true),
+                          MenuItem(label: 'jayne.product_recommend_page.mobile_tab'.tr()),
+                          MenuItem(label: 'jayne.product_recommend_page.tablet_tab'.tr()),
+                          MenuItem(label: "jayne.product_recommend_page.notebook_tab".tr()),
+                          MenuItem(label: 'jayne.product_recommend_page.smartwatch_tab'.tr()),
+                          MenuItem(label: 'jayne.product_recommend_page.earphones_tab'.tr()),
+                          MenuItem(label: 'jayne.product_recommend_page.accessories_tab'.tr()),
                         ],
                       ),
                     ),
                   ),
-
                   // Product Grid
                   Expanded(
                     flex: 8,
@@ -40,12 +43,9 @@ class ProductRecommendPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'สินค้าแนะนำ',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          ResponsiveText(
+                            content: "jayne.product_recommend_page.recommend_products".tr(),
+                            textStyle: JTextTheme.highlightHeader,
                           ),
                           const SizedBox(height: 10),
                           Expanded(
@@ -59,8 +59,8 @@ class ProductRecommendPage extends StatelessWidget {
                               itemCount: 6, // Number of products
                               itemBuilder: (context, index) {
                                 return ProductCard(
-                                  name: index < 3 ? 'iPhone ${16 + index}' : 'XXX',
-                                  price: index < 3 ? '${30000 + (5000 * index)}' : 'XXXX',
+                                  name: index < 3 ? 'iPhone ${16 + index}' : '',
+                                  price: index < 3 ? '${30000 + (5000 * index)}' : '',
                                 );
                               },
                             ),
@@ -72,41 +72,42 @@ class ProductRecommendPage extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Bottom Navigation
             Container(
+              padding: const EdgeInsets.all(16),
               color: Colors.black,
-              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Back action
+                      // TODO Go back action
+                      context.pop();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
                       minimumSize: const Size(150, 50),
                     ),
-                    child: const Text('ย้อนกลับ'),
+                    child: ResponsiveText(
+                      content: "jayne.common.back".tr(),
+                      textStyle: JTextTheme.captionMedium,
+                    ),
                   ),
                   Row(
                     children: [
-                      BottomActionButton(
-                        icon: Icons.shopping_cart,
-                        label: 'ตะกร้าสินค้า',
+                      IconButton(
+                        icon: const Icon(Icons.shopping_cart),
                         onPressed: () {
-                          // Cart action
+                          // TODO Go to cart action
                         },
+                        color: Colors.white,
                       ),
-                      const SizedBox(width: 10),
-                      BottomActionButton(
-                        icon: Icons.smart_toy,
-                        label: 'ปรึกษา AI',
+                      IconButton(
+                        icon: const Icon(Icons.smart_toy),
                         onPressed: () {
-                          // AI consultation action
+                          // TODO AI consultation action
                         },
+                        color: Colors.white,
                       ),
                     ],
                   ),
@@ -147,7 +148,7 @@ class MenuItem extends StatelessWidget {
           ),
         ),
         onTap: () {
-          // Handle category selection
+          // TODO Handle category selection
         },
       ),
     );
@@ -224,7 +225,12 @@ class BottomActionButton extends StatelessWidget {
         minimumSize: const Size(150, 50),
       ),
       icon: Icon(icon, color: Colors.black),
-      label: Text(label, style: const TextStyle(color: Colors.black)),
+      label: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.black,
+        ),
+      ),
     );
   }
 }

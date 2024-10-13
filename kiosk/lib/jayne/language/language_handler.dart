@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:intl/intl.dart';
 import 'package:kiosk/jayne/blocs/application_bloc/application_cubit.dart';
 import 'package:kiosk/jayne/jayne_getit_dependencies.dart';
 import 'package:kiosk/jayne/secure_storage/secure_storage_service.dart';

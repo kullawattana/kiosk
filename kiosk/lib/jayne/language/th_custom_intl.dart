@@ -313,28 +313,17 @@ class _ThBudhaMaterialLocalizationsDelegate extends LocalizationsDelegate<Materi
 /// and formatting.
 class ThBudhaMaterialLocalizations extends GlobalMaterialLocalizations {
   const ThBudhaMaterialLocalizations({
-    String localeName = 'thBudha',
-    required intl.DateFormat fullYearFormat,
-    required intl.DateFormat compactDateFormat,
-    required intl.DateFormat shortDateFormat,
-    required intl.DateFormat mediumDateFormat,
-    required intl.DateFormat longDateFormat,
-    required intl.DateFormat yearMonthFormat,
-    required intl.DateFormat shortMonthDayFormat,
-    required intl.NumberFormat decimalFormat,
-    required intl.NumberFormat twoDigitZeroPaddedFormat,
-  }) : super(
-          localeName: localeName,
-          fullYearFormat: fullYearFormat,
-          compactDateFormat: compactDateFormat,
-          shortDateFormat: shortDateFormat,
-          mediumDateFormat: mediumDateFormat,
-          longDateFormat: longDateFormat,
-          yearMonthFormat: yearMonthFormat,
-          shortMonthDayFormat: shortMonthDayFormat,
-          decimalFormat: decimalFormat,
-          twoDigitZeroPaddedFormat: twoDigitZeroPaddedFormat,
-        );
+    super.localeName = 'thBudha',
+    required super.fullYearFormat,
+    required super.compactDateFormat,
+    required super.shortDateFormat,
+    required super.mediumDateFormat,
+    required super.longDateFormat,
+    required super.yearMonthFormat,
+    required super.shortMonthDayFormat,
+    required super.decimalFormat,
+    required super.twoDigitZeroPaddedFormat,
+  });
 
 // #docregion Getters
   @override

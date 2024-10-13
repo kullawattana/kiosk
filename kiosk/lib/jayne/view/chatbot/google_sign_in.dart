@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class GoogleSignInDemo extends StatefulWidget {
   const GoogleSignInDemo({super.key});
 
   @override
-  _GoogleSignInDemoState createState() => _GoogleSignInDemoState();
+  State<GoogleSignInDemo> createState() => _GoogleSignInDemoState();
 }
 
 class _GoogleSignInDemoState extends State<GoogleSignInDemo> {
@@ -33,7 +34,7 @@ class _GoogleSignInDemoState extends State<GoogleSignInDemo> {
     try {
       await _googleSignIn.signIn();
     } catch (error) {
-      print(error);
+      debugPrint(error.toString());
     }
   }
 
@@ -44,7 +45,7 @@ class _GoogleSignInDemoState extends State<GoogleSignInDemo> {
     GoogleSignInAccount? user = _currentUser;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Google Sign In Demo'),
+        title: Text("chatbot.google_sign_in".tr()),
       ),
       body: Center(
         child: user != null
@@ -58,13 +59,13 @@ class _GoogleSignInDemoState extends State<GoogleSignInDemo> {
                   ),
                   ElevatedButton(
                     onPressed: _handleSignOut,
-                    child: const Text('Sign Out'),
+                    child: Text("chatbot.google_sign_out".tr()),
                   ),
                 ],
               )
             : ElevatedButton(
                 onPressed: _handleSignIn,
-                child: const Text('Sign In with Google'),
+                child: Text('chatbot.google_sign_in_with_google'.tr()),
               ),
       ),
     );

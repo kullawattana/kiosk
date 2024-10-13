@@ -8,6 +8,8 @@ import 'package:kiosk/jayne/blocs/application_bloc/application_cubit.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/condition.dart';
 import 'package:kiosk/jayne/language/th_custom_intl.dart';
+import 'package:kiosk/jayne/providers/chatbot_scroll_page_provider.dart';
+import 'package:kiosk/jayne/repository/service_provider.dart';
 import 'package:kiosk/jayne/router/router_page.dart';
 import 'package:kiosk/jayne/language/language_handler.dart';
 import 'package:kiosk/jayne/jayne_getit_dependencies.dart';
@@ -51,7 +53,10 @@ main() async {
     await dotenv.load();
     runApp(
       MultiProvider(
-        providers: const [],
+        providers: [
+          Provider<ServiceProvider>(create: (_) => ServiceProvider()),
+          ChangeNotifierProvider(create: (_) => ChatBotScrollPageProvider()),
+        ],
         child: MaterialApp(
           builder: (context, child) {
             return JayneApp(
@@ -197,6 +202,8 @@ class _JayneMainAppState extends State<JayneMainApp> {
   }
 }
 
+
+
 class JayneRootApp extends StatefulWidget {
   final Widget Function() view;
   final Widget Function() loading;
@@ -216,7 +223,7 @@ class JayneRootApp extends StatefulWidget {
   });
 
   @override
-  _JayneRootAppState createState() => _JayneRootAppState();
+  State<JayneRootApp> createState() => _JayneRootAppState();
 }
 
 class _JayneRootAppState extends State<JayneRootApp> {

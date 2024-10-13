@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kiosk/jayne/enhances/responsive_image.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:kiosk/jayne/enhances/responsive_text.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,12 +21,13 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 50), // Space for the image if needed
-                  const Text(
-                    'สวัสดีครับ สุดหล่อ/สุดสวย',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  const ResponsiveImage(
+                    "jaymart",
+                    assetType: AssetType.image,
+                    baseHeight: 25,
+                    baseWidth: 25,
+                    themeDirectory: "",
+                    themeName: ""
                   ),
                   const SizedBox(height: 20),
                   Padding(
@@ -33,22 +38,22 @@ class HomePage extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
-                      children: const [
+                      children: [
                         MenuItemWidget(
                           icon: Icons.phone_android,
-                          label: 'สินค้า',
+                          label: 'jayne.home_page.product'.tr(),
                         ),
                         MenuItemWidget(
                           icon: Icons.local_offer,
-                          label: 'โปรโมชั่น',
+                          label: 'jayne.home_page.promotion'.tr(),
                         ),
                         MenuItemWidget(
                           icon: Icons.person,
-                          label: 'ยืนยันตัวตน',
+                          label: 'jayne.home_page.verification'.tr(),
                         ),
                         MenuItemWidget(
                           icon: Icons.smart_toy,
-                          label: 'คุยกับ AI',
+                          label: 'jayne.home_page.talk_with_janey'.tr(),
                         ),
                       ],
                     ),
@@ -71,15 +76,16 @@ class HomePage extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Handle staff call
+                          // TODO Handle staff call
+                          launchUrlString("tel:0123456789");
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
                           backgroundColor: Colors.black,
                         ),
-                        child: const Text(
-                          'เรียกพนักงาน',
-                          style: TextStyle(color: Colors.white),
+                        child: ResponsiveText(
+                          content: 'jayne.home_page.call_staff'.tr(),
+                          textStyle: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ),

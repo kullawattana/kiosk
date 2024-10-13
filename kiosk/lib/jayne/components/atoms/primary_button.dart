@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/components/atoms/base_button.dart';
 

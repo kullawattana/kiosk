@@ -1,21 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:kiosk/jayne/model/message/response_message_chat.dart';
-import 'package:kiosk/jayne/model/message/response_message_stream_controller.dart';
-import 'package:kiosk/jayne/model/message/response_message_web_socket.dart';
+import 'package:kiosk/jayne/model/response/bot_response.dart';
 
 class SendMessageStream {
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
-  final List<ResponseMessageChat> _chatSwitchingMessageList = [];
-  List<ResponseMessageWebSocket> _chatList = [];
-  List<ResponseMessageWebSocket> get chatList => _chatList;
-  List<ResponseMessageChat> get chatSwitchingMessageList => _chatSwitchingMessageList;
+  final List<BotResponse> _chatList = [];
+  List<BotResponse> get chatList => _chatList;
 
-  final _streamChatController = StreamController<List<ResponseMessageWebSocket>>.broadcast();
-  Stream<List<ResponseMessageWebSocket>> get streamChatMessage => _streamChatController.stream;
+  final _streamChatController = StreamController<List<BotResponse>>.broadcast();
+  Stream<List<BotResponse>> get streamChatMessage => _streamChatController.stream;
 
-  final _streamWebSocket = StreamController<ResponseMessageStreamController>.broadcast();
-  Stream<ResponseMessageStreamController> get streamWebSocket => _streamWebSocket.stream;
+  final _streamWebSocket = StreamController<BotResponse>.broadcast();
+  Stream<BotResponse> get streamWebSocket => _streamWebSocket.stream;
 
   static final SendMessageStream _instance = SendMessageStream._internal();
 
@@ -27,7 +23,6 @@ class SendMessageStream {
   void clearChatMessage() {
     _streamChatController.add([]);
     _chatList.clear();
-    _chatSwitchingMessageList.clear();
   }
 
   void clearStream() async {
@@ -36,7 +31,7 @@ class SendMessageStream {
   }
 
   void receiveNewMessage({
-    required ResponseMessageWebSocket messageBody,
+    required BotResponse messageBody,
     bool isWebsocketDisconnectAndGetChatHistory = false,
   }) {
     _chatList.add(messageBody);
@@ -46,29 +41,11 @@ class SendMessageStream {
     _streamChatController.sink.add(_chatList);
   }
 
-  void clearQuickReplyMessage() {
-    if (_chatList.isNotEmpty) {
-      _chatList[_chatList.length - 1].chatObject?.quickReplyMessage?.clear();
-    }
-  }
-
-  void receiveNewHistoryMessage({
-    required ResponseMessageWebSocket messageBody,
-  }) {
-    final sendMessageStream = SendMessageStream();
-    _chatList.insert(0, messageBody);
-    if (listKey.currentState != null) {
-      listKey.currentState?.insertItem(0);
-    }
-    _streamChatController.sink.add(_chatList);
-    //sendMessageStream.getCacheMessage();
-  }
-
   void disposeStreamChatController() {
     _streamChatController.close();
   }
 
-  void sendDataWebsocket(ResponseMessageStreamController data) {
+  void sendDataWebsocket(BotResponse data) {
     _streamWebSocket.sink.add(data);
   }
 }
