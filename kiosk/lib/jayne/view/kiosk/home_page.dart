@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/blocs/application_bloc/application_cubit.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<ApplicationCubit>().changeLanguage(context.locale.languageCode);
+    //context.read<ApplicationCubit>().changeLanguage(context.locale.languageCode);
   }
 
   @override
@@ -38,14 +39,19 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   const SizedBox(height: 50), // Space for the image if needed
                   const ResponsiveImage(
-                    'assets/images/th_flag.png',
+                    'assets/images/jaymart.png',
                     assetType: AssetType.image,
-                    baseHeight: 25,
-                    baseWidth: 25,
+                    baseHeight: 300,
+                    baseWidth: 300,
                     themeDirectory: "",
                     themeName: "",
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 50),
+                  const ResponsiveText(
+                    content: 'One stop service for buying smartphone of jaymart shop.',
+                    textStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: GridView.count(
@@ -108,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                             label: 'jayne.home_page.talk_with_janey'.tr(),
                           ),
                           onTap: () {
-                            context.pushNamed(RouteName.faceVerificationPage.name);
+                            context.pushNamed(RouteName.aiAssistantPage.name);
                           },
                         )
                       ],
@@ -116,60 +122,66 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // TODO Handle language change
-                            context.read<ApplicationCubit>().changeLanguage(const Locale('th'));
-                          },
-                          child: Image.asset(
-                            'assets/images/th_flag.png',
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () {
-                            // TODO Handle language change
-                            context.read<ApplicationCubit>().changeLanguage(const Locale('en'));
-                          },
-                          child: Image.asset(
-                            'assets/images/en_flag.png',
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // TODO Handle staff call
-                          launchUrlString("tel:0123456789");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Colors.black,
-                        ),
-                        child: ResponsiveText(
-                          content: 'jayne.home_page.call_staff'.tr(),
-                          textStyle: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // TODO Handle language change
+                    context.read<ApplicationCubit>().changeLanguage('th');
+                    context.read<ApplicationCubit>().changeLocale(context, const Locale('th'));
+                  },
+                  child: Image.asset(
+                    'assets/images/th_flag.png',
+                    width: 40,
+                    height: 40,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    // TODO Handle language change
+                    context.read<ApplicationCubit>().changeLanguage('en');
+                    context.read<ApplicationCubit>().changeLocale(context, const Locale('en'));
+                  },
+                  child: Image.asset(
+                    'assets/images/en_flag.png',
+                    width: 40,
+                    height: 40,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  // TODO Handle staff call
+                  launchUrlString("tel:0123456789");
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  backgroundColor: Colors.black,
+                ),
+                child: ResponsiveText(
+                  content: 'jayne.home_page.call_staff'.tr(),
+                  //textStyle: const TextStyle(color: Colors.white),
+                  textStyle: JTextTheme.title2.copyWith(
+                    color: Colors.white,
+                    fontFamily: "",
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

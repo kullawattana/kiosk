@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kiosk/jayne/repository/service_provider.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
 
 class PromotionPage extends StatefulWidget {
@@ -14,6 +15,16 @@ class PromotionPage extends StatefulWidget {
 
 class _PromotionPageState extends State<PromotionPage> {
   int selectedIndex = 0; // 0 for "โปรโมชั่น", 1 for "ส่วนลด"
+
+  bool isSelectRecommendTab = false;
+  bool isSelectMobileTab = false;
+
+  @override
+  void initState() {
+    isSelectRecommendTab = true;
+    isSelectMobileTab = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,39 +43,79 @@ class _PromotionPageState extends State<PromotionPage> {
           Expanded(
             child: Row(
               children: [
-                // Sidebar
-                NavigationRail(
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: (index) {
-                    setState(() {
-                      selectedIndex = index;
-                    });
-                  },
-                  // Show all labels
-                  labelType: NavigationRailLabelType.all,
-                  selectedLabelTextStyle: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            color: isSelectRecommendTab ? Colors.black : Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              'jayne.product_recommend_page.recommend_tab'.tr(),
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: isSelectRecommendTab ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            onTap: () {
+                              ServiceProvider().requestProduct(
+                                userContent: '',
+                                botContent: '',
+                                inputText: 'แนะนำสินค้า',
+                                minPrice: 1000,
+                                maxPrice: 99999,
+                                minDiscountPc: 0,
+                                minDiscountValue: 0,
+                                minPoint: 0,
+                              );
+                              setState(() {
+                                isSelectRecommendTab = true;
+                                isSelectMobileTab = false;
+                              });
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            color: isSelectMobileTab ? Colors.black : Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              'jayne.product_recommend_page.mobile_tab'.tr(),
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: isSelectMobileTab ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            onTap: () {
+                              ServiceProvider().requestProduct(
+                                userContent: '',
+                                botContent: '',
+                                inputText: 'มือถือ',
+                                minPrice: 1000,
+                                maxPrice: 99999,
+                                minDiscountPc: 0,
+                                minDiscountValue: 0,
+                                minPoint: 0,
+                              );
+                              setState(() {
+                                isSelectRecommendTab = false;
+                                isSelectMobileTab = true;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  destinations: [
-                    NavigationRailDestination(
-                      icon: const SizedBox.shrink(), // You can replace this with actual icons if needed
-                      label: ResponsiveText(
-                        content: "jayne.promotion_page.promotion_tab".tr(),
-                        textStyle: JTextTheme.captionMedium,
-                      )
-                    ),
-                    NavigationRailDestination(
-                      icon: const SizedBox.shrink(), // You can replace this with actual icons if needed
-                      label: ResponsiveText(
-                        content: "jayne.promotion_page.discount_tab".tr(),
-                        textStyle: JTextTheme.captionMedium,
-                      ),
-                    ),
-                  ],
-                  selectedIconTheme: const IconThemeData(color: Colors.black),
-                  unselectedLabelTextStyle: const TextStyle(color: Colors.black),
-                  unselectedIconTheme: const IconThemeData(color: Colors.grey),
                 ),
                 // Main content: Promotion or Discount content
                 Expanded(

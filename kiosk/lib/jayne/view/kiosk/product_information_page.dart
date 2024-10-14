@@ -138,6 +138,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                       ElevatedButton(
                         onPressed: () {
                           // TODO Action for 'Buy' button
+                          context.pushNamed(RouteName.shoppingCartPage.name);
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
@@ -193,6 +194,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                     IconButton(
                       onPressed: () {
                         // TODO Action for 'Cart' button
+                        context.pushNamed(RouteName.shoppingCartPage.name);
                       },
                       icon: const Icon(Icons.shopping_cart),
                     ),

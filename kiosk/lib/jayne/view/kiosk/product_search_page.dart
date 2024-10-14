@@ -560,7 +560,8 @@ class ProductCard extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add_shopping_cart),
             onPressed: () {
-              // Handle add to cart
+              // TODO Handle add to cart
+              context.pushNamed(RouteName.productInformationPage.name);
             },
           ),
         ],

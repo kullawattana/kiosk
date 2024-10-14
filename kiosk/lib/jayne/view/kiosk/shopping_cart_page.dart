@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kiosk/jayne/router/routes_name.dart';
 
 class ShoppingCartPage extends StatefulWidget {
   const ShoppingCartPage({super.key});
@@ -26,132 +27,135 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         ),
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Cart Title
-            ResponsiveText(
-              content: 'jayne.cart_page.shopping_cart'.tr(),
-              textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-
-            // Product 1: iPhone 16
-            buildCartItem(
-              productName: 'iPhone 16',
-              color: 'สีดำ',
-              storage: 'หน่วยความจำ 256 GB',
-              price: 30000,
-              quantity: iphone16Quantity,
-              onRemove: () {
-                setState(() {
-                  iphone16Quantity = 0;
-                  totalPrice -= 30000;
-                });
-              },
-              onDecrease: () {
-                if (iphone16Quantity > 1) {
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Cart Title
+              ResponsiveText(
+                content: 'jayne.cart_page.shopping_cart'.tr(),
+                textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+        
+              // Product 1: iPhone 16
+              buildCartItem(
+                productName: 'iPhone 16',
+                color: 'สีดำ',
+                storage: 'หน่วยความจำ 256 GB',
+                price: 30000,
+                quantity: iphone16Quantity,
+                onRemove: () {
                   setState(() {
-                    iphone16Quantity--;
+                    iphone16Quantity = 0;
                     totalPrice -= 30000;
                   });
-                }
-              },
-              onIncrease: () {
-                setState(() {
-                  iphone16Quantity++;
-                  totalPrice += 30000;
-                });
-              },
-            ),
-            const SizedBox(height: 10),
-
-            // Product 2: iPhone 16 Pro
-            buildCartItem(
-              productName: 'iPhone 16 Pro',
-              color: 'สีรุ้ง',
-              storage: 'หน่วยความจำ 1 TB',
-              price: 70000,
-              quantity: iphone16ProQuantity,
-              onRemove: () {
-                setState(() {
-                  iphone16ProQuantity = 0;
-                  totalPrice -= (70000 * iphone16ProQuantity);
-                });
-              },
-              onDecrease: () {
-                if (iphone16ProQuantity > 1) {
+                },
+                onDecrease: () {
+                  if (iphone16Quantity > 1) {
+                    setState(() {
+                      iphone16Quantity--;
+                      totalPrice -= 30000;
+                    });
+                  }
+                },
+                onIncrease: () {
                   setState(() {
-                    iphone16ProQuantity--;
-                    totalPrice -= 70000;
+                    iphone16Quantity++;
+                    totalPrice += 30000;
                   });
-                }
-              },
-              onIncrease: () {
-                setState(() {
-                  iphone16ProQuantity++;
-                  totalPrice += 70000;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            // Promotion Section
-            ResponsiveText(
-              content: 'jayne.cart_page.promotion'.tr(),
-              textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            // Promotion Item
-            buildPromotionItem(
-              title: 'iPhone 16 Pro แถม airpod air 2',
-              details: ['airpod air 2 ฟรี + ประกัน 2 ปี', 'ข้าวมันไก่ทอดพิเศษจากร้านเซฟหอย'],
-              onRemove: () {
-                // Remove promotion logic here
-              },
-            ),
-            const SizedBox(height: 20),
-            // Price Summary Section
-            buildPriceSummary(totalPrice),
-            const SizedBox(height: 20),
-            // Bottom Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // TODO Go back
-                    context.pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    minimumSize: const Size(150, 50),
+                },
+              ),
+              const SizedBox(height: 10),
+        
+              // Product 2: iPhone 16 Pro
+              buildCartItem(
+                productName: 'iPhone 16 Pro',
+                color: 'สีรุ้ง',
+                storage: 'หน่วยความจำ 1 TB',
+                price: 70000,
+                quantity: iphone16ProQuantity,
+                onRemove: () {
+                  setState(() {
+                    iphone16ProQuantity = 0;
+                    totalPrice -= (70000 * iphone16ProQuantity);
+                  });
+                },
+                onDecrease: () {
+                  if (iphone16ProQuantity > 1) {
+                    setState(() {
+                      iphone16ProQuantity--;
+                      totalPrice -= 70000;
+                    });
+                  }
+                },
+                onIncrease: () {
+                  setState(() {
+                    iphone16ProQuantity++;
+                    totalPrice += 70000;
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              // Promotion Section
+              ResponsiveText(
+                content: 'jayne.cart_page.promotion'.tr(),
+                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              // Promotion Item
+              buildPromotionItem(
+                title: 'iPhone 16 Pro แถม airpod air 2',
+                details: ['airpod air 2 ฟรี + ประกัน 2 ปี', 'ข้าวมันไก่ทอดพิเศษจากร้านเซฟหอย'],
+                onRemove: () {
+                  // Remove promotion logic here
+                },
+              ),
+              const SizedBox(height: 20),
+              // Price Summary Section
+              buildPriceSummary(totalPrice),
+              const SizedBox(height: 20),
+              // Bottom Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // TODO Go back
+                      context.pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      minimumSize: const Size(150, 50),
+                    ),
+                    //jayne.common.back
+                    child: ResponsiveText(
+                      content: 'jayne.common.back'.tr(),
+                      textStyle: const TextStyle(fontSize: 16),
+                    ),
                   ),
-                  //jayne.common.back
-                  child: ResponsiveText(
-                    content: 'jayne.common.back'.tr(),
-                    textStyle: const TextStyle(fontSize: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      // TODO Confirm purchase
+                      context.pushNamed(RouteName.thankYouPage.name);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(150, 50),
+                    ),
+                    child: ResponsiveText(
+                      content: 'jayne.common.confirm'.tr(),
+                      textStyle: const TextStyle(fontSize: 16),
+                    ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // TODO Confirm purchase
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(150, 50),
-                  ),
-                  child: ResponsiveText(
-                    content: 'jayne.common.confirm'.tr(),
-                    textStyle: const TextStyle(fontSize: 16),
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

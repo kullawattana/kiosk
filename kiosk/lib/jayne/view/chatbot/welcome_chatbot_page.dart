@@ -35,9 +35,9 @@ class WelcomeChatBotPage extends StatelessWidget {
                       TextSpan(
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            context.pushNamed(RouteName.registerPage.name);
+                            context.pushNamed(RouteName.loginPage.name);
                           },
-                        text: '> click',
+                        text: '> login',
                         style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,

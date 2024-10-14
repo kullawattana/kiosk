@@ -9,7 +9,7 @@ enum RouteName {
   chatInstructionPage,
   chatPage,
   //Kiosk
-  kioskPage,
+  welcomeKioskPage,
   homePage,
   productSearchPage,
   productInformationPage,
@@ -42,7 +42,7 @@ extension RouteNameExtensions on RouteName {
       case RouteName.chatPage:
         return "chat page";
       //Kiosk
-      case RouteName.kioskPage:
+      case RouteName.welcomeKioskPage:
         return "kiosk page";
       case RouteName.homePage:
         return "home page";

@@ -8,13 +8,14 @@ import 'package:kiosk/jayne/view/chatbot/register_page.dart';
 import 'package:kiosk/jayne/view/chatbot/welcome_chatbot_page.dart';
 import 'package:kiosk/jayne/view/kiosk/ai_assistant_page.dart';
 import 'package:kiosk/jayne/view/kiosk/face_verification_page.dart';
+import 'package:kiosk/jayne/view/kiosk/home_page.dart';
 import 'package:kiosk/jayne/view/kiosk/product_information_page.dart';
 import 'package:kiosk/jayne/view/kiosk/product_search_page.dart';
 import 'package:kiosk/jayne/view/kiosk/promotion_page.dart';
 import 'package:kiosk/jayne/view/kiosk/shopping_cart_page.dart';
-import 'package:kiosk/jayne/view/kiosk/home_page.dart';
 import 'package:kiosk/jayne/view/kiosk/thank_you_page.dart';
 import 'package:kiosk/jayne/view/kiosk/verification_success_page.dart';
+import 'package:kiosk/jayne/view/kiosk/welcome_kiosk_page.dart';
 
 BuildContext? liveChatContext;
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
@@ -29,7 +30,9 @@ class LiveChatMainRoutes {
         builder: (BuildContext context, GoRouterState state, Widget child) {
           return child;
         },
-        routes: chatBotRoutes,
+        //TODO Route
+        //routes: chatBotRoutes,
+        routes: kioskRoutes,
       )
     ],
     errorPageBuilder: (context, state) {
@@ -130,17 +133,29 @@ final kioskRoutes = [
   // 9. thankYouPage,
 
   GoRoute(
-    name: RouteName.homePage.name,
+    name: RouteName.welcomeKioskPage.name,
     path: '/',
     pageBuilder: (context, state) {
       return buildPage(
         context: context,
         key: state.pageKey,
-        child: const HomePage(),
+        child: const WelcomeKioskPage(),
         arguments: state.extra,
       );
     },
     routes: [
+      GoRoute(
+        name: RouteName.homePage.name,
+        path: 'home',
+        pageBuilder: (context, state) {
+          return buildPage(
+            context: context,
+            key: state.pageKey,
+            child: const HomePage(),
+            arguments: state.extra,
+          );
+        },
+      ),
       GoRoute(
         name: RouteName.productSearchPage.name,
         path: 'product_search',

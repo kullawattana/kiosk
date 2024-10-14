@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
 
@@ -24,6 +25,15 @@ class ThankYouPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const ResponsiveImage(
+                'assets/images/jaymart.png',
+                assetType: AssetType.image,
+                baseHeight: 200,
+                baseWidth: 200,
+                themeDirectory: "",
+                themeName: "",
+              ),
+              const SizedBox(height: 70),
               ResponsiveText(
                 content: 'jayne.thank_you_page.message'.tr(),
                 textStyle: JTextTheme.highlightHeader,
@@ -40,7 +50,9 @@ class ThankYouPage extends StatelessWidget {
                 ),
                 child: ResponsiveText(
                   content: 'jayne.common.back_to_home_page'.tr(),
-                  textStyle: JTextTheme.subtitle1,
+                  textStyle: JTextTheme.subtitle1.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
