@@ -2,6 +2,9 @@ import 'package:equatable/equatable.dart';
 
 enum ProductStatus {
   init,
+  successfully,
+  fail,
+  exception,
 }
 
 class ProductState extends Equatable {
@@ -44,12 +47,14 @@ class ProductState extends Equatable {
 }
 
 class ProductInfo {
+  final String imageUrl;
   final String brandName;
-  final int cost;
+  final double cost;
   final String color;
   final String detail;
 
   ProductInfo({
+    required this.imageUrl,
     required this.brandName,
     required this.cost,
     required this.color,
@@ -57,6 +62,7 @@ class ProductInfo {
   });
 
   factory ProductInfo.fromJson(Map<String, dynamic> json) => ProductInfo(
+        imageUrl: json['image_url'],
         brandName: json['brand_name'],
         cost: json['cost'],
         color: json['color'],

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:kiosk/jayne/controllers/send_message_stream.dart';
 import 'package:kiosk/jayne/model/request/bot_request.dart';
 import 'package:http/http.dart' as http;
@@ -54,10 +53,6 @@ class ServiceProvider {
     if (response.statusCode == HttpStatus.ok) {
       var decodedResponse = jsonDecode(response.body);
       final responseApi = BotResponse.fromJson(decodedResponse);
-      debugPrint(responseApi.output);
-      debugPrint(responseApi.retrievedReferences?[0].content);
-      debugPrint(responseApi.retrievedReferences?[0].metadata?.code);
-      debugPrint(responseApi.retrievedReferences?[0].metadata?.productUrl);
       sendMessageStream.sendDataWebsocket(responseApi);
       return ApiResponse(
         isSuccess: true,
@@ -81,7 +76,7 @@ class ServiceProvider {
     );
     final response = await http.post(Uri.http(ipAddress, '/chat'),
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
       body: request,
     );
