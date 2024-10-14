@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kiosk/jayne/router/routes_name.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -107,12 +109,16 @@ class RegisterPage extends StatelessWidget {
                 Center(
                   child: RichText(
                     text: TextSpan(
-                      text: 'chatbot.register_page.already_have_an_account'.tr(),
+                      text: "${"chatbot.register_page.already_have_an_account".tr()} ",
                       style: const TextStyle(color: Colors.grey),
-                      children: const [
+                      children: [
                         TextSpan(
-                          text: 'Sign In',
-                          style: TextStyle(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context.pop();
+                            },
+                          text: "Sign In",
+                          style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -141,6 +147,7 @@ class RegisterPage extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             // TODO Google
+                            context.pushNamed(RouteName.googleSignIn.name);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red[100],
@@ -165,6 +172,7 @@ class RegisterPage extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             // TODO Facebook
+                            context.pushNamed(RouteName.facebookSignIn.name);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue[100],

@@ -3,14 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class CartPage extends StatefulWidget {
-  const CartPage({super.key});
+class ShoppingCartPage extends StatefulWidget {
+  const ShoppingCartPage({super.key});
 
   @override
-  State<CartPage> createState() => _CartPageState();
+  State<ShoppingCartPage> createState() => _ShoppingCartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
+class _ShoppingCartPageState extends State<ShoppingCartPage> {
   int iphone16Quantity = 1;
   int iphone16ProQuantity = 2;
   int totalPrice = 100000;

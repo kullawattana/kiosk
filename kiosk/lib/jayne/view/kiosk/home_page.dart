@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/blocs/application_bloc/application_cubit.dart';
 import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
+import 'package:kiosk/jayne/repository/service_provider.dart';
+import 'package:kiosk/jayne/router/routes_name.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ApplicationCubit>().changeLanguage(context.locale.languageCode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +38,12 @@ class HomePage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 50), // Space for the image if needed
                   const ResponsiveImage(
-                    "jaymart",
+                    'assets/images/th_flag.png',
                     assetType: AssetType.image,
                     baseHeight: 25,
                     baseWidth: 25,
                     themeDirectory: "",
-                    themeName: ""
+                    themeName: "",
                   ),
                   const SizedBox(height: 20),
                   Padding(
@@ -39,22 +55,62 @@ class HomePage extends StatelessWidget {
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
                       children: [
-                        MenuItemWidget(
-                          icon: Icons.phone_android,
-                          label: 'jayne.home_page.product'.tr(),
+                        InkWell(
+                          child: MenuItemWidget(
+                            icon: Icons.phone_android,
+                            label: 'jayne.home_page.product'.tr(),
+                          ),
+                          onTap: () {
+                            ServiceProvider().requestProduct(
+                              userContent: '',
+                              botContent: '',
+                              inputText: 'ขอข้อมูลมือถือ',
+                              minPrice: 1000,
+                              maxPrice: 99999,
+                              minDiscountPc: 0,
+                              minDiscountValue: 0,
+                              minPoint: 0,
+                            );
+                            context.pushNamed(RouteName.productSearchPage.name);
+                          },
                         ),
-                        MenuItemWidget(
-                          icon: Icons.local_offer,
-                          label: 'jayne.home_page.promotion'.tr(),
+                        InkWell(
+                          child: MenuItemWidget(
+                            icon: Icons.local_offer,
+                            label: 'jayne.home_page.promotion'.tr(),
+                          ),
+                          onTap: () {
+                            ServiceProvider().requestProduct(
+                              userContent: '',
+                              botContent: '',
+                              inputText: 'ขอข้อมูลโปรโมชัน',
+                              minPrice: 1000,
+                              maxPrice: 99999,
+                              minDiscountPc: 0,
+                              minDiscountValue: 0,
+                              minPoint: 0,
+                            );
+                            context.pushNamed(RouteName.promotionPage.name);
+                          },
                         ),
-                        MenuItemWidget(
-                          icon: Icons.person,
-                          label: 'jayne.home_page.verification'.tr(),
+                        InkWell(
+                          child: MenuItemWidget(
+                            icon: Icons.person,
+                            label: 'jayne.home_page.verification'.tr(),
+                          ),
+                          onTap: () {
+                            context.pushNamed(RouteName.faceVerificationPage.name);
+                          },
                         ),
-                        MenuItemWidget(
-                          icon: Icons.smart_toy,
-                          label: 'jayne.home_page.talk_with_janey'.tr(),
-                        ),
+                        InkWell(
+                          child: MenuItemWidget(
+                            icon: Icons.smart_toy,
+                            label: 'jayne.home_page.talk_with_janey'.tr(),
+                          ),
+                          onTap: () {
+                            context.pushNamed(RouteName.faceVerificationPage.name);
+                          },
+                        )
                       ],
                     ),
                   ),
@@ -65,13 +121,33 @@ class HomePage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-//                 Row(
-//                   children: [
-//                     LanguageSwitcherButton(imagePath: 'assets/thai_flag.png'),
-//                     SizedBox(width: 10),
-//                     LanguageSwitcherButton(imagePath: 'assets/uk_flag.png'),
-//                   ],
-//                 ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            // TODO Handle language change
+                            context.read<ApplicationCubit>().changeLanguage(const Locale('th'));
+                          },
+                          child: Image.asset(
+                            'assets/images/th_flag.png',
+                            width: 40,
+                            height: 40,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            // TODO Handle language change
+                            context.read<ApplicationCubit>().changeLanguage(const Locale('en'));
+                          },
+                          child: Image.asset(
+                            'assets/images/en_flag.png',
+                            width: 40,
+                            height: 40,
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(width: 20),
                     Expanded(
                       child: ElevatedButton(
@@ -134,29 +210,6 @@ class MenuItemWidget extends StatelessWidget {
             style: const TextStyle(fontSize: 18),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class LanguageSwitcherButton extends StatelessWidget {
-  final String imagePath;
-
-  const LanguageSwitcherButton({
-    super.key,
-    required this.imagePath,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Handle language change
-      },
-      child: Image.asset(
-        imagePath,
-        width: 40,
-        height: 40,
       ),
     );
   }

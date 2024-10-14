@@ -1,66 +1,67 @@
 enum RouteName {
   //Chatbot
-  chatInstructionPage,
-  locationPage,
-  loginPage,
-  queueServicePage,
-  registerPage,
+  welcomeChatBotPage,
   splashScreenPage,
+  loginPage,
+  facebookSignIn,
+  googleSignIn,
+  registerPage,
+  chatInstructionPage,
+  chatPage,
   //Kiosk
+  kioskPage,
   homePage,
-  cartPage,
-  productIndividualPage,
-  productRecommendPage,
-  productFilterPage,
+  productSearchPage,
+  productInformationPage,
   promotionPage,
-  aiAssistantPage,
-  aiAssistantChatPage,
-  aiAssistantTapToSpeakPage,
-  aiAssistantResponsePage,
-  thankYouPage,
+  faceVerificationPage,
   verificationSuccessPage,
-
+  shoppingCartPage,
+  aiAssistantPage,
+  thankYouPage,
 }
 
 extension RouteNameExtensions on RouteName {
   String get name {
     switch (this) {
-      case RouteName.chatInstructionPage:
-        return "chat instruction page";
-      case RouteName.locationPage:
-        return "location page";
-      case RouteName.loginPage:
-        return "login page";
-      case RouteName.queueServicePage:
-        return "queue service page";
-      case RouteName.registerPage:
-        return "register page";
+      //Chatbot
+      case RouteName.welcomeChatBotPage:
+        return "welcome chatBot page";
       case RouteName.splashScreenPage:
         return "splash screen page";
+      case RouteName.loginPage:
+        return "login page";
+      case RouteName.facebookSignIn:
+        return "facebook sign in page";
+      case RouteName.googleSignIn:
+        return "google sign in page";
+      case RouteName.registerPage:
+        return "register page";
+      case RouteName.chatInstructionPage:
+        return "chat instruction page";
+      case RouteName.chatPage:
+        return "chat page";
+      //Kiosk
+      case RouteName.kioskPage:
+        return "kiosk page";
       case RouteName.homePage:
         return "home page";
-      case RouteName.cartPage:
-        return "cart page";
-      case RouteName.productIndividualPage:
-        return "product individual page";
-      case RouteName.productRecommendPage:
-        return "product recommend page";
-      case RouteName.productFilterPage:
+      case RouteName.productSearchPage:
         return "product filter page";
+      case RouteName.productInformationPage:
+        return "product information page";
       case RouteName.promotionPage:
         return "promotion page";
-      case RouteName.aiAssistantPage:
-        return "ai assistant page";
-      case RouteName.aiAssistantChatPage:
-        return "ai assistant chat page";
-      case RouteName.aiAssistantTapToSpeakPage:
-        return "ai assistant tap to speak page";
-      case RouteName.aiAssistantResponsePage:
-        return "ai assistant response page";
-      case RouteName.thankYouPage:
-        return "thank you page";
+      case RouteName.faceVerificationPage:
+        return "face detection page";
       case RouteName.verificationSuccessPage:
         return "verification success page";
+      case RouteName.shoppingCartPage:
+        return "shopping cart page";
+      case RouteName.aiAssistantPage:
+        return "ai assistant page";
+      case RouteName.thankYouPage:
+        return "thank you page";
       default:
         return "";
     }

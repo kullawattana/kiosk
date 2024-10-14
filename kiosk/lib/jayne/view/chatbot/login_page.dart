@@ -1,9 +1,76 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kiosk/jayne/router/routes_name.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+
+  GoogleSignInAccount? _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _currentUser = account;
+      });
+    });
+    _googleSignIn.signInSilently();
+  }
+
+  Future<void> loginGoogle() async {
+    try {
+      await _googleSignIn.signIn();
+      context.pushNamed(RouteName.chatPage.name);
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
+  Future<void> logoutGoogle() => _googleSignIn.disconnect();
+
+  Map<String, dynamic>? _userData;
+  AccessToken? accessToken;
+
+  Future<void> loginFacebook() async {
+    final LoginResult result = await FacebookAuth.instance.login();
+
+    if (result.status == LoginStatus.success) {
+      accessToken = result.accessToken;
+      final userData = await FacebookAuth.instance.getUserData();
+      setState(() {
+        _userData = userData;
+      });
+      context.pushNamed(RouteName.chatPage.name);
+    } else {
+      debugPrint(result.status.toString());
+      debugPrint(result.message.toString());
+    }
+  }
+
+  Future<void> logoutFacebook() async {
+    await FacebookAuth.instance.logOut();
+    setState(() {
+      _userData = null;
+      accessToken = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,10 +173,14 @@ class LoginPage extends StatelessWidget {
                 Center(
                   child: RichText(
                     text: TextSpan(
-                      text: 'chatbot.login_page.create_new_account'.tr(),
+                      text: "${"chatbot.login_page.create_new_account".tr()} ",
                       style: const TextStyle(color: Colors.grey),
                       children: [
                         TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context.pushNamed(RouteName.registerPage.name);
+                            },
                           text: 'chatbot.login_page.sign_up'.tr(),
                           style: const TextStyle(
                             color: Colors.black,
@@ -140,6 +211,8 @@ class LoginPage extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             // TODO Google
+                            //context.pushNamed(RouteName.googleSignIn.name);
+                            loginGoogle();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red[100],
@@ -164,6 +237,7 @@ class LoginPage extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             // TODO Facebook
+                            loginFacebook();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue[100],

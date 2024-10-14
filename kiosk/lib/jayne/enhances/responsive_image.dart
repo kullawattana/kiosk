@@ -62,7 +62,8 @@ class ResponsiveImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    fileThemeIsExist(asset);
+    //TODO Ignore theme
+    //fileThemeIsExist(asset);
 
     if (asset == '') {
       return const SizedBox();
@@ -108,10 +109,10 @@ class ResponsiveImage extends StatelessWidget {
           if (_isFileThemeExist) {
             return SvgPicture.asset('$themeDirectory/$themeName/$asset');
           } else {
-            return SvgPicture.asset("$localPath/$asset");
+            return SvgPicture.asset("$asset");
           }
         } else {
-          return SvgPicture.asset("$localPath/$asset");
+          return SvgPicture.asset("$asset");
         }
       case AssetType.image:
         if (themeDirectory != null && themeDirectory!.isNotEmpty) {
@@ -128,8 +129,8 @@ class ResponsiveImage extends StatelessWidget {
           }
         } else {
           return Image.asset(
-            "$localPath/$asset",
-            fit: fit ?? BoxFit.fitWidth,
+            "$asset",
+            fit: fit ?? BoxFit.fitWidth, //
             color: color,
             colorBlendMode: colorBlendMode,
           );

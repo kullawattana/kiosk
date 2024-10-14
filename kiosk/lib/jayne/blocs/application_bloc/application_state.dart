@@ -8,6 +8,7 @@ enum ApplicationStatus {
 class ApplicationState extends Equatable {
   final ConnectivityResult connectionType;
   final ApplicationStatus status;
+  final String? languageCode;
   final bool toggleLoading;
   final double keyboardHeight;
   final double screenWidth;
@@ -24,6 +25,7 @@ class ApplicationState extends Equatable {
   const ApplicationState({
     this.connectionType = ConnectivityResult.none,
     this.status = ApplicationStatus.init,
+    this.languageCode = "",
     this.toggleLoading = false,
     this.keyboardHeight = 0,
     this.screenWidth = 0,
@@ -36,6 +38,7 @@ class ApplicationState extends Equatable {
   ApplicationState copyWith({
     ConnectivityResult? connectionType,
     ApplicationStatus? status,
+    String? languageCode,
     bool? toggleLoading,
     double? keyboardHeight,
     double? screenWidth,
@@ -49,6 +52,7 @@ class ApplicationState extends Equatable {
     return ApplicationState(
       connectionType: connectionType ?? this.connectionType,
       status: status ?? this.status,
+      languageCode: languageCode ?? this.languageCode,
       toggleLoading: toggleLoading ?? this.toggleLoading,
       screenWidth: screenWidth ?? this.screenWidth,
       screenHeight: screenHeight ?? this.screenHeight,
@@ -63,6 +67,7 @@ class ApplicationState extends Equatable {
   List<Object?> get props => [
         connectionType,
         status,
+        languageCode,
         toggleLoading,
         keyboardHeight,
         screenWidth,

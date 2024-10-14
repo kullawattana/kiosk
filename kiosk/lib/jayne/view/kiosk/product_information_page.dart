@@ -3,15 +3,16 @@ import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kiosk/jayne/router/routes_name.dart';
 
-class ProductIndividualPage extends StatefulWidget {
-  const ProductIndividualPage({super.key});
+class ProductInformationPage extends StatefulWidget {
+  const ProductInformationPage({super.key});
 
   @override
-  State<ProductIndividualPage> createState() => _ProductIndividualPageState();
+  State<ProductInformationPage> createState() => _ProductInformationPageState();
 }
 
-class _ProductIndividualPageState extends State<ProductIndividualPage> {
+class _ProductInformationPageState extends State<ProductInformationPage> {
   int quantity = 1;
   String selectedColor = 'สีดำ';
   String selectedStorage = '256 GB';
@@ -214,6 +215,7 @@ class _ProductIndividualPageState extends State<ProductIndividualPage> {
                 IconButton(
                   onPressed: () {
                     // TODO Action for 'Consult AI' button
+                    context.goNamed(RouteName.aiAssistantPage.name);
                   },
                   icon: const Icon(Icons.support_agent),
                 ),

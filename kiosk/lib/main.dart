@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/blocs/application_bloc/application_cubit.dart';
+import 'package:kiosk/jayne/blocs/product_bloc/product_cubit.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/condition.dart';
 import 'package:kiosk/jayne/language/th_custom_intl.dart';
@@ -112,6 +113,7 @@ class JayneStorageLanguageSystem extends JayneSystem {
   @override
   Future<void> createDependencies(JayneGetItDependencies dependencies) async {
     dependencies.add<SecureStorageLanguageService>(SecureStorageLanguageService());
+    dependencies.add<SecureStorageService>(SecureStorageService());
   }
 }
 
@@ -127,6 +129,7 @@ class JayneBlocInjector extends BlocInjector {
   @override
   injectBlocs(InjectBloc inject) {
     inject(ApplicationCubit());
+    inject(ProductCubit());
   }
 }
 

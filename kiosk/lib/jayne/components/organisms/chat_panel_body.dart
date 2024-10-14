@@ -70,11 +70,11 @@ class _ChatPanelBodyState extends State<ChatPanelBody> with AutomaticKeepAliveCl
               stream: sendMessageStream.streamChatMessage,
               builder: (context, snapshot) {
                 final renderMessages = snapshot.data;
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator(color: ColorTheme.error.red));
-                } else if (snapshot.hasError || (!snapshot.hasData || snapshot.data!.isEmpty)) {
-                  return const SizedBox.shrink();
-                }
+                // if (snapshot.connectionState == ConnectionState.waiting) {
+                //   return Center(child: CircularProgressIndicator(color: ColorTheme.error.red));
+                // } else if (snapshot.hasError || (!snapshot.hasData || snapshot.data!.isEmpty)) {
+                //   return const SizedBox.shrink();
+                // }
                 return AnimatedList(
                   reverse: false,
                   key: sendMessageStream.listKey,

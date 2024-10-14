@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:kiosk/jayne/common/default_color.dart';
 import 'package:kiosk/jayne/components/atoms/floating_button.dart';
-import 'package:kiosk/jayne/components/molecules/message/send_message.dart';
+import 'package:kiosk/jayne/components/molecules/message/send_message_box.dart';
 import 'package:kiosk/jayne/components/organisms/chat_panel_body.dart';
 import 'package:flutter/material.dart';
 
@@ -48,6 +48,7 @@ class _ChatBotState extends State<ChatPage> with WidgetsBindingObserver {
         Timer(duration, scroll);
       }
     }
+
     scroll();
   }
 
@@ -67,9 +68,9 @@ class _ChatBotState extends State<ChatPage> with WidgetsBindingObserver {
         scrollController: scrollController,
         containerKey: containerKey,
       ),
-      bottomNavigationBar: SendMessage(
-        message: '',
-        time: DateTime.now(),
+      bottomNavigationBar: SendMessageBox(
+        scrollController: scrollController,
+        containerKey: containerKey,
       ),
     );
   }

@@ -16,23 +16,21 @@ enum SendMessageButtonState {
   active,
 }
 
-class SendMessage extends StatefulWidget {
+class SendMessageBox extends StatefulWidget {
   final ScrollController scrollController;
   final GlobalKey containerKey;
-  final String customerData;
 
-  const SendMessage({
+  const SendMessageBox({
     super.key,
     required this.scrollController,
     required this.containerKey,
-    required this.customerData,
   });
 
   @override
-  State<SendMessage> createState() => _SendMessageState();
+  State<SendMessageBox> createState() => _SendMessageBoxState();
 }
 
-class _SendMessageState extends State<SendMessage> {
+class _SendMessageBoxState extends State<SendMessageBox> {
   SendMessageButtonState isButtonActive = SendMessageButtonState.disable;
   late TextEditingController _messageController;
 
@@ -79,22 +77,20 @@ class _SendMessageState extends State<SendMessage> {
           condition: messageType != LiveChatMessageType.speechToTextConstant,
           builder: (_) => IntrinsicHeight(
             key: widget.containerKey,
-            child: IgnorePointer(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: spaceBase,
-                  bottom: spaceLarge,
-                  top: spaceBase,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _sendMessageBox(),
-                    _sendMessageButton(),
-                    const WidgetSpacer(),
-                  ],
-                ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: spaceBase,
+                bottom: spaceLarge,
+                top: spaceBase,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sendMessageBox(),
+                  _sendMessageButton(),
+                  const WidgetSpacer(),
+                ],
               ),
             ),
           ),
@@ -149,7 +145,7 @@ class _SendMessageState extends State<SendMessage> {
           child: InkWell(
             borderRadius: BorderRadius.circular(100),
             child: const ResponsiveImage(
-              "",
+              "assets/images/arrow_icon.svg",
               assetType: AssetType.svg,
               baseHeight: 35,
               baseWidth: 35,

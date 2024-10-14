@@ -5,18 +5,40 @@ import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:kiosk/jayne/layouts/popup_container.dart';
 import 'package:kiosk/jayne/layouts/popup_layout.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:kiosk/jayne/repository/service_provider.dart';
+import 'package:kiosk/jayne/router/routes_name.dart';
 
-class ProductFilterPage extends StatefulWidget {
-  const ProductFilterPage({super.key});
+class ProductSearchPage extends StatefulWidget {
+  const ProductSearchPage({super.key});
 
   @override
-  State<ProductFilterPage> createState() => _ProductFilterPageState();
+  State<ProductSearchPage> createState() => _ProductSearchPageState();
 }
 
-class _ProductFilterPageState extends State<ProductFilterPage> {
+class _ProductSearchPageState extends State<ProductSearchPage> {
   String? selectedBrand;
   String? selectedUsage;
   String? selectedPrice;
+
+  bool isSelectRecommendTab = false;
+  bool isSelectMobileTab = false;
+  bool isSelectTabletTab = false;
+  bool isSelectNotebookTab = false;
+  bool isSelectSmartWatchTab = false;
+  bool isSelectEarPhoneTab = false;
+  bool isSelectAccessoriesTab = false;
+
+  @override
+  void initState() {
+    isSelectRecommendTab = true;
+    isSelectMobileTab = false;
+    isSelectTabletTab = false;
+    isSelectNotebookTab = false;
+    isSelectSmartWatchTab = false;
+    isSelectEarPhoneTab = false;
+    isSelectAccessoriesTab = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +57,265 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                       color: Colors.white,
                       child: Column(
                         children: [
-                          MenuItem(label: 'jayne.product_recommend_page.recommend_tab'.tr()),
-                          MenuItem(label: 'jayne.product_recommend_page.mobile_tab'.tr(), isSelected: true),
-                          MenuItem(label: 'jayne.product_recommend_page.tablet_tab'.tr()),
-                          MenuItem(label: "jayne.product_recommend_page.notebook_tab".tr()),
-                          MenuItem(label: 'jayne.product_recommend_page.smartwatch_tab'.tr()),
-                          MenuItem(label: 'jayne.product_recommend_page.earphones_tab'.tr()),
-                          MenuItem(label: 'jayne.product_recommend_page.accessories_tab'.tr()),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isSelectRecommendTab ? Colors.black : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                'jayne.product_recommend_page.recommend_tab'.tr(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: isSelectRecommendTab ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                ServiceProvider().requestProduct(
+                                  userContent: '',
+                                  botContent: '',
+                                  inputText: 'แนะนำสินค้า',
+                                  minPrice: 1000,
+                                  maxPrice: 99999,
+                                  minDiscountPc: 0,
+                                  minDiscountValue: 0,
+                                  minPoint: 0,
+                                );
+                                setState(() {
+                                  isSelectRecommendTab = true;
+                                  isSelectMobileTab = false;
+                                  isSelectTabletTab = false;
+                                  isSelectNotebookTab = false;
+                                  isSelectSmartWatchTab = false;
+                                  isSelectEarPhoneTab = false;
+                                  isSelectAccessoriesTab = false;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isSelectMobileTab ? Colors.black : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                'jayne.product_recommend_page.mobile_tab'.tr(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: isSelectMobileTab ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                ServiceProvider().requestProduct(
+                                  userContent: '',
+                                  botContent: '',
+                                  inputText: 'มือถือ',
+                                  minPrice: 1000,
+                                  maxPrice: 99999,
+                                  minDiscountPc: 0,
+                                  minDiscountValue: 0,
+                                  minPoint: 0,
+                                );
+                                setState(() {
+                                  isSelectRecommendTab = false;
+                                  isSelectMobileTab = true;
+                                  isSelectTabletTab = false;
+                                  isSelectNotebookTab = false;
+                                  isSelectSmartWatchTab = false;
+                                  isSelectEarPhoneTab = false;
+                                  isSelectAccessoriesTab = false;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isSelectTabletTab ? Colors.black : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                'jayne.product_recommend_page.tablet_tab'.tr(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: isSelectTabletTab ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                ServiceProvider().requestProduct(
+                                  userContent: '',
+                                  botContent: '',
+                                  inputText: 'แท็บเล็ต',
+                                  minPrice: 1000,
+                                  maxPrice: 99999,
+                                  minDiscountPc: 0,
+                                  minDiscountValue: 0,
+                                  minPoint: 0,
+                                );
+                                setState(() {
+                                  isSelectRecommendTab = false;
+                                  isSelectMobileTab = false;
+                                  isSelectTabletTab = true;
+                                  isSelectNotebookTab = false;
+                                  isSelectSmartWatchTab = false;
+                                  isSelectEarPhoneTab = false;
+                                  isSelectAccessoriesTab = false;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isSelectNotebookTab ? Colors.black : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                'jayne.product_recommend_page.notebook_tab'.tr(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: isSelectNotebookTab ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                ServiceProvider().requestProduct(
+                                  userContent: '',
+                                  botContent: '',
+                                  inputText: 'โน้ตบุ๊ค',
+                                  minPrice: 1000,
+                                  maxPrice: 99999,
+                                  minDiscountPc: 0,
+                                  minDiscountValue: 0,
+                                  minPoint: 0,
+                                );
+                                setState(() {
+                                  isSelectRecommendTab = false;
+                                  isSelectMobileTab = false;
+                                  isSelectTabletTab = false;
+                                  isSelectNotebookTab = true;
+                                  isSelectSmartWatchTab = false;
+                                  isSelectEarPhoneTab = false;
+                                  isSelectAccessoriesTab = false;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isSelectSmartWatchTab ? Colors.black : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                'jayne.product_recommend_page.smartwatch_tab'.tr(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: isSelectSmartWatchTab ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                ServiceProvider().requestProduct(
+                                  userContent: '',
+                                  botContent: '',
+                                  inputText: 'สมาร์ทวอทช์',
+                                  minPrice: 1000,
+                                  maxPrice: 99999,
+                                  minDiscountPc: 0,
+                                  minDiscountValue: 0,
+                                  minPoint: 0,
+                                );
+                                setState(() {
+                                  isSelectRecommendTab = false;
+                                  isSelectMobileTab = false;
+                                  isSelectTabletTab = false;
+                                  isSelectNotebookTab = false;
+                                  isSelectSmartWatchTab = true;
+                                  isSelectEarPhoneTab = false;
+                                  isSelectAccessoriesTab = false;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isSelectEarPhoneTab ? Colors.black : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                'jayne.product_recommend_page.earphones_tab'.tr(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: isSelectEarPhoneTab ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                ServiceProvider().requestProduct(
+                                  userContent: '',
+                                  botContent: '',
+                                  inputText: 'หูฟัง',
+                                  minPrice: 1000,
+                                  maxPrice: 99999,
+                                  minDiscountPc: 0,
+                                  minDiscountValue: 0,
+                                  minPoint: 0,
+                                );
+                                setState(() {
+                                  isSelectRecommendTab = false;
+                                  isSelectMobileTab = false;
+                                  isSelectTabletTab = false;
+                                  isSelectNotebookTab = false;
+                                  isSelectSmartWatchTab = false;
+                                  isSelectEarPhoneTab = true;
+                                  isSelectAccessoriesTab = false;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isSelectAccessoriesTab ? Colors.black : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                'jayne.product_recommend_page.accessories_tab'.tr(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: isSelectAccessoriesTab ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              onTap: () {
+                                ServiceProvider().requestProduct(
+                                  userContent: '',
+                                  botContent: '',
+                                  inputText: 'อุปกรณ์เสริม',
+                                  minPrice: 1000,
+                                  maxPrice: 99999,
+                                  minDiscountPc: 0,
+                                  minDiscountValue: 0,
+                                  minPoint: 0,
+                                );
+                                setState(() {
+                                  isSelectRecommendTab = false;
+                                  isSelectMobileTab = false;
+                                  isSelectTabletTab = false;
+                                  isSelectNotebookTab = false;
+                                  isSelectSmartWatchTab = false;
+                                  isSelectEarPhoneTab = false;
+                                  isSelectAccessoriesTab = true;
+                                });
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -142,6 +416,21 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                                 ),
                               ),
                               IconButton(
+                                  onPressed: () {
+                                    ServiceProvider().requestProduct(
+                                      userContent: '',
+                                      botContent: '',
+                                      inputText: 'แนะนำ',
+                                      minPrice: 1000,
+                                      maxPrice: 99999,
+                                      minDiscountPc: 0,
+                                      minDiscountValue: 0,
+                                      minPoint: 0,
+                                    );
+                                  },
+                                  icon: const Icon(Icons.search)
+                              ),
+                              IconButton(
                                 icon: const Icon(Icons.clear),
                                 onPressed: () {
                                   // Clear filters
@@ -217,6 +506,7 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                         label: 'ปรึกษา AI',
                         onPressed: () {
                           // TODO AI consultation action
+                          context.pushNamed(RouteName.aiAssistantPage.name);
                         },
                       ),
                     ],
@@ -226,40 +516,6 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MenuItem extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-
-  const MenuItem({
-    super.key,
-    required this.label,
-    this.isSelected = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.black : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        title: Text(
-          label,
-          style: TextStyle(
-            fontSize: 18,
-            color: isSelected ? Colors.white : Colors.black,
-          ),
-        ),
-        onTap: () {
-          // Handle category selection
-        },
       ),
     );
   }
@@ -351,7 +607,5 @@ Future<void> openMethodBottomSheet({
       child: Container(),
     ),
     size: MediaQuery.of(context).size.height <= scaleHeight ? PopupSize.half : PopupSize.medium,
-  ).then((_) async {
-
-  });
+  ).then((_) async {});
 }

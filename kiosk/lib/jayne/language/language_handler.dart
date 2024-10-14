@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kiosk/jayne/blocs/application_bloc/application_cubit.dart';
 import 'package:kiosk/jayne/jayne_getit_dependencies.dart';
 import 'package:kiosk/jayne/secure_storage/secure_storage_service.dart';
@@ -26,16 +25,14 @@ abstract class JayneLocalizationConfig {
 }
 
 Future loadTranslation(Locale locale) async {
-  final translationPath = dotenv.get('TRANSLATION_PATH');
   final storage = JayneGetItDependencies.of<SecureStorageLanguageService>();
-  final info = jsonDecode(await rootBundle.loadString("$translationPath/metadata.json"));
+  final info = jsonDecode(await rootBundle.loadString("translations/metadata.json"));
   final lastModifiedDate = DateTime.parse(info[locale.languageCode]);
   await _loadTranslationFromFile(storage, lastModifiedDate, locale);
 }
 
 Future _loadTranslationFromFile(SecureStorageLanguageService storage, DateTime lastModificationDate, Locale locale) async {
-  final translationPath = dotenv.get('TRANSLATION_PATH');
-  final filePath = '$translationPath/${locale.languageCode}.json';
+  final filePath = 'translations/${locale.languageCode}.json';
   await storage.write(
     key: _translationLastModifiedDateKey(locale),
     value: lastModificationDate.toIso8601String(),
