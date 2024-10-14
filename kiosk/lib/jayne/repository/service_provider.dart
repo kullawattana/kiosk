@@ -44,14 +44,16 @@ class ServiceProvider {
       minDiscountValue: minDiscountValue,
       minPoint: minPoint,
     );
+    final jsonRequest = jsonEncode(request.toJson());
     final response = await http.post(Uri.http(ipAddress, '/chat'),
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      body: request,
+      body: jsonRequest,
     );
     if (response.statusCode == HttpStatus.ok) {
-      final responseApi = BotResponse.fromJson(json.decode(response.body));
+      var decodedResponse = jsonDecode(response.body);
+      final responseApi = BotResponse.fromJson(decodedResponse);
       debugPrint(responseApi.output);
       debugPrint(responseApi.retrievedReferences?[0].content);
       debugPrint(responseApi.retrievedReferences?[0].metadata?.code);

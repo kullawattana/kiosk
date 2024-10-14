@@ -53,14 +53,14 @@ class RetrievedReferences {
 
 class Metadata {
   String? code;
-  int? discount;
-  int? discountValue;
-  int? discountedPrice;
+  double? discount;
+  double? discountValue;
+  double? discountedPrice;
   String? image0;
   String? image1;
   String? image2;
-  int? originalPrice;
-  int? point;
+  double? originalPrice;
+  double? point;
   String? productUrl;
   String? xAmzBedrockKbChunkId;
   String? xAmzBedrockKbDataSourceId;
