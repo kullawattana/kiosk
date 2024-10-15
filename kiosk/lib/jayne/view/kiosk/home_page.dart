@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                             label: 'jayne.home_page.verification'.tr(),
                           ),
                           onTap: () {
-                            context.pushNamed(RouteName.faceVerificationPage.name);
+                            context.pushNamed(RouteName.verificationSuccessPage.name);
                           },
                         ),
                         InkWell(
