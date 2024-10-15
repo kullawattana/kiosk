@@ -1,5 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/blocs/product_bloc/product_state.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,11 +16,12 @@ class ProductInformationPage extends StatefulWidget {
 
 class _ProductInformationPageState extends State<ProductInformationPage> {
   int quantity = 1;
-  String selectedColor = 'สีดำ';
-  String selectedStorage = '256 GB';
+  String selectedColor = "janey.product_individual_page.black".tr();
+  String selectedStorage = "janey.product_individual_page.256GB".tr();
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as ProductInformationPageArguments;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -33,7 +36,6 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Top Row - Image and Details
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -41,20 +43,30 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                 Expanded(
                   child: Column(
                     children: [
-                      Container(
-                        height: 200,
-                        width: 200,
-                        color: Colors.grey[300],
-                        child: const Icon(Icons.image, size: 100), // Placeholder for image
-                      ),
-                      const SizedBox(height: 10),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.arrow_back_ios),
-                          Text('1/4'),
-                          Icon(Icons.arrow_forward_ios),
-                        ],
+                      CarouselSlider(
+                        options: CarouselOptions(
+                          height: 40.0, // height of carousel
+                          autoPlay: true, // auto slide
+                          autoPlayInterval: const Duration(seconds: 3), // duration slide time
+                          enlargeCenterPage: true, // expand image to center
+                          viewportFraction: 0.8, // ratio of image
+                        ),
+                        items: args.images?.map((imagePath) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    image: AssetImage(imagePath),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),
@@ -65,32 +77,46 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('iPhone 16', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                      const Text('฿30,000', style: TextStyle(fontSize: 20, color: Colors.black)),
+                      ResponsiveText(content: args.brandName, textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                      ResponsiveText(content: args.price.toString(), textStyle: const TextStyle(fontSize: 20, color: Colors.black)),
                       const SizedBox(height: 20),
-                      const Text('สี', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      ResponsiveText(
+                        content: "janey.product_individual_page.color".tr(),
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       Row(
                         children: [
                           ColorButton(
-                            colorName: 'สีดำ',
-                            isSelected: selectedColor == 'สีดำ',
-                            onTap: () => setState(() => selectedColor = 'สีดำ'),
+                            colorName: "janey.product_individual_page.black".tr(),
+                            isSelected: selectedColor == "janey.product_individual_page.black".tr(),
+                            onTap: () {
+                              setState(() => selectedColor = "janey.product_individual_page.white".tr());
+                            },
                           ),
                           ColorButton(
-                            colorName: 'สีขาว',
-                            isSelected: selectedColor == 'สีขาว',
-                            onTap: () => setState(() => selectedColor = 'สีขาว'),
+                            colorName: "janey.product_individual_page.white".tr(),
+                            isSelected: selectedColor == "janey.product_individual_page.white".tr(),
+                            onTap: () {
+                              setState(() => selectedColor = "janey.product_individual_page.white".tr());
+                            },
                           ),
                           ColorButton(
-                            colorName: 'สีม่วง',
-                            isSelected: selectedColor == 'สีม่วง',
-                            onTap: () => setState(() => selectedColor = 'สีม่วง'),
+                            colorName: "janey.product_individual_page.purple".tr(),
+                            isSelected: selectedColor == "janey.product_individual_page.purple".tr(),
+                            onTap: () {
+                              setState(() => selectedColor = "janey.product_individual_page.purple".tr());
+                            },
                           ),
                           ColorButton(
-                            colorName: 'สีน้ำตาล',
-                            isSelected: selectedColor == 'สีน้ำตาล',
-                            onTap: () => setState(() => selectedColor = 'สีน้ำตาล'),
+                            colorName: "janey.product_individual_page.brown".tr(),
+                            isSelected: selectedColor == "janey.product_individual_page.brown".tr(),
+                            onTap: () {
+                              setState(() => selectedColor = "janey.product_individual_page.brown".tr());
+                            },
                           ),
                         ],
                       ),
@@ -103,14 +129,18 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                       Row(
                         children: [
                           StorageButton(
-                            storage: '256 GB',
-                            isSelected: selectedStorage == '256 GB',
-                            onTap: () => setState(() => selectedStorage = '256 GB'),
+                            storage: "janey.product_individual_page.256GB".tr(),
+                            isSelected: selectedStorage == "janey.product_individual_page.256GB".tr(),
+                            onTap: () {
+                              setState(() => selectedStorage = "janey.product_individual_page.256GB".tr());
+                            },
                           ),
                           StorageButton(
-                            storage: '512 GB',
-                            isSelected: selectedStorage == '512 GB',
-                            onTap: () => setState(() => selectedStorage = '512 GB'),
+                            storage: "janey.product_individual_page.512GB".tr(),
+                            isSelected: selectedStorage == "janey.product_individual_page.512GB".tr(),
+                            onTap: () {
+                              setState(() => selectedStorage = "janey.product_individual_page.512GB".tr());
+                            },
                           ),
                         ],
                       ),
@@ -136,19 +166,18 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () {
-                          // TODO Action for 'Buy' button
-                          context.pushNamed(RouteName.shoppingCartPage.name);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Colors.black,
-                        ),
-                        child: const ResponsiveText(
-                          content: 'สั่งซื้อ',
-                          textStyle: TextStyle(fontSize: 18),
-                        )
-                      ),
+                          onPressed: () {
+                            // TODO Action for 'Buy' button
+                            context.pushNamed(RouteName.shoppingCartPage.name);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 50),
+                            backgroundColor: Colors.black,
+                          ),
+                          child: ResponsiveText(
+                            content: 'janey.product_individual_page.order'.tr(),
+                            textStyle: const TextStyle(fontSize: 18),
+                          )),
                     ],
                   ),
                 ),
@@ -156,18 +185,15 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
             ),
             const SizedBox(height: 20),
             // Product Description Section
-            const ResponsiveText(
-              content: 'คุณสมบัติ',
-              textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ResponsiveText(
+              content: 'jayne.product_individual_page.feature'.tr(),
+              textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const ResponsiveText(
-              content: 'ควบคุมเต็มตัวด้วยตัวควบคุมกล้อง',
-              textStyle: TextStyle(fontSize: 16),
-            ),
             ResponsiveText(
-              content: 'ตัวควบคุมกล้องให้คุณมีวิธีที่ง่ายขึ้นในการเข้าถึงเครื่องมือของกล้องได้อย่างรวดเร็ว',
-              textStyle: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              //TODO productInformation
+              content: args.productInformation,
+              textStyle: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
           ],
@@ -194,7 +220,19 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                     IconButton(
                       onPressed: () {
                         // TODO Action for 'Cart' button
-                        context.pushNamed(RouteName.shoppingCartPage.name);
+                        context.pushNamed(
+                          RouteName.shoppingCartPage.name,
+                          //TODO
+                          extra: ShoppingCartList(
+                              shoppingCartList: [],
+                              // imageUrl: '',
+                              // brandName: '',
+                              // storage: '',
+                              // quantity: quantity,
+                              // price: 0,
+                              // color: ''
+                          ),
+                        );
                       },
                       icon: const Icon(Icons.shopping_cart),
                     ),
@@ -302,4 +340,18 @@ class StorageButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class ProductInformationPageArguments {
+  final List<String>? images;
+  final String productInformation;
+  final String brandName;
+  final double price;
+
+  ProductInformationPageArguments({
+    required this.images,
+    required this.productInformation,
+    required this.brandName,
+    required this.price,
+  });
 }

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/blocs/product_bloc/product_cubit.dart';
+import 'package:kiosk/jayne/blocs/product_bloc/product_state.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:kiosk/jayne/layouts/popup_container.dart';
 import 'package:kiosk/jayne/layouts/popup_layout.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kiosk/jayne/repository/service_provider.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
+import 'package:kiosk/jayne/view/kiosk/product_information_page.dart';
 
 class ProductSearchPage extends StatefulWidget {
   const ProductSearchPage({super.key});
@@ -44,491 +49,461 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  // Side Menu
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              color: isSelectRecommendTab ? Colors.black : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                'jayne.product_recommend_page.recommend_tab'.tr(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: isSelectRecommendTab ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              onTap: () {
-                                ServiceProvider().requestProduct(
-                                  userContent: '',
-                                  botContent: '',
-                                  inputText: 'แนะนำสินค้า',
-                                  minPrice: 1000,
-                                  maxPrice: 99999,
-                                  minDiscountPc: 0,
-                                  minDiscountValue: 0,
-                                  minPoint: 0,
-                                );
-                                setState(() {
-                                  isSelectRecommendTab = true;
-                                  isSelectMobileTab = false;
-                                  isSelectTabletTab = false;
-                                  isSelectNotebookTab = false;
-                                  isSelectSmartWatchTab = false;
-                                  isSelectEarPhoneTab = false;
-                                  isSelectAccessoriesTab = false;
-                                });
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              color: isSelectMobileTab ? Colors.black : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                'jayne.product_recommend_page.mobile_tab'.tr(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: isSelectMobileTab ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              onTap: () {
-                                ServiceProvider().requestProduct(
-                                  userContent: '',
-                                  botContent: '',
-                                  inputText: 'มือถือ',
-                                  minPrice: 1000,
-                                  maxPrice: 99999,
-                                  minDiscountPc: 0,
-                                  minDiscountValue: 0,
-                                  minPoint: 0,
-                                );
-                                setState(() {
-                                  isSelectRecommendTab = false;
-                                  isSelectMobileTab = true;
-                                  isSelectTabletTab = false;
-                                  isSelectNotebookTab = false;
-                                  isSelectSmartWatchTab = false;
-                                  isSelectEarPhoneTab = false;
-                                  isSelectAccessoriesTab = false;
-                                });
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              color: isSelectTabletTab ? Colors.black : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                'jayne.product_recommend_page.tablet_tab'.tr(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: isSelectTabletTab ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              onTap: () {
-                                ServiceProvider().requestProduct(
-                                  userContent: '',
-                                  botContent: '',
-                                  inputText: 'แท็บเล็ต',
-                                  minPrice: 1000,
-                                  maxPrice: 99999,
-                                  minDiscountPc: 0,
-                                  minDiscountValue: 0,
-                                  minPoint: 0,
-                                );
-                                setState(() {
-                                  isSelectRecommendTab = false;
-                                  isSelectMobileTab = false;
-                                  isSelectTabletTab = true;
-                                  isSelectNotebookTab = false;
-                                  isSelectSmartWatchTab = false;
-                                  isSelectEarPhoneTab = false;
-                                  isSelectAccessoriesTab = false;
-                                });
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              color: isSelectNotebookTab ? Colors.black : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                'jayne.product_recommend_page.notebook_tab'.tr(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: isSelectNotebookTab ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              onTap: () {
-                                ServiceProvider().requestProduct(
-                                  userContent: '',
-                                  botContent: '',
-                                  inputText: 'โน้ตบุ๊ค',
-                                  minPrice: 1000,
-                                  maxPrice: 99999,
-                                  minDiscountPc: 0,
-                                  minDiscountValue: 0,
-                                  minPoint: 0,
-                                );
-                                setState(() {
-                                  isSelectRecommendTab = false;
-                                  isSelectMobileTab = false;
-                                  isSelectTabletTab = false;
-                                  isSelectNotebookTab = true;
-                                  isSelectSmartWatchTab = false;
-                                  isSelectEarPhoneTab = false;
-                                  isSelectAccessoriesTab = false;
-                                });
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              color: isSelectSmartWatchTab ? Colors.black : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                'jayne.product_recommend_page.smartwatch_tab'.tr(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: isSelectSmartWatchTab ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              onTap: () {
-                                ServiceProvider().requestProduct(
-                                  userContent: '',
-                                  botContent: '',
-                                  inputText: 'สมาร์ทวอทช์',
-                                  minPrice: 1000,
-                                  maxPrice: 99999,
-                                  minDiscountPc: 0,
-                                  minDiscountValue: 0,
-                                  minPoint: 0,
-                                );
-                                setState(() {
-                                  isSelectRecommendTab = false;
-                                  isSelectMobileTab = false;
-                                  isSelectTabletTab = false;
-                                  isSelectNotebookTab = false;
-                                  isSelectSmartWatchTab = true;
-                                  isSelectEarPhoneTab = false;
-                                  isSelectAccessoriesTab = false;
-                                });
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              color: isSelectEarPhoneTab ? Colors.black : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                'jayne.product_recommend_page.earphones_tab'.tr(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: isSelectEarPhoneTab ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              onTap: () {
-                                ServiceProvider().requestProduct(
-                                  userContent: '',
-                                  botContent: '',
-                                  inputText: 'หูฟัง',
-                                  minPrice: 1000,
-                                  maxPrice: 99999,
-                                  minDiscountPc: 0,
-                                  minDiscountValue: 0,
-                                  minPoint: 0,
-                                );
-                                setState(() {
-                                  isSelectRecommendTab = false;
-                                  isSelectMobileTab = false;
-                                  isSelectTabletTab = false;
-                                  isSelectNotebookTab = false;
-                                  isSelectSmartWatchTab = false;
-                                  isSelectEarPhoneTab = true;
-                                  isSelectAccessoriesTab = false;
-                                });
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              color: isSelectAccessoriesTab ? Colors.black : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                'jayne.product_recommend_page.accessories_tab'.tr(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: isSelectAccessoriesTab ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              onTap: () {
-                                ServiceProvider().requestProduct(
-                                  userContent: '',
-                                  botContent: '',
-                                  inputText: 'อุปกรณ์เสริม',
-                                  minPrice: 1000,
-                                  maxPrice: 99999,
-                                  minDiscountPc: 0,
-                                  minDiscountValue: 0,
-                                  minPoint: 0,
-                                );
-                                setState(() {
-                                  isSelectRecommendTab = false;
-                                  isSelectMobileTab = false;
-                                  isSelectTabletTab = false;
-                                  isSelectNotebookTab = false;
-                                  isSelectSmartWatchTab = false;
-                                  isSelectEarPhoneTab = false;
-                                  isSelectAccessoriesTab = true;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+      body: BlocConsumer<ProductCubit, ProductState>(
+        key: const Key("product_search_page"),
+        listenWhen: (previous, current) => previous.status != current.status,
+        listener: (context, state) async {
 
-                  // Product Grid with Filters
-                  Expanded(
-                    flex: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ResponsiveText(
-                            content: 'jayne.product_recommend_page.mobile_tab'.tr(),
-                            textStyle: JTextTheme.highlightHeader,
-                          ),
-                          const SizedBox(height: 20),
-                          // Filters
-                          Row(
+        },
+        builder: (context, state) {
+          return SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      // Side Menu
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          color: Colors.white,
+                          child: Column(
                             children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'jayne.product_individual_page.select_brand'.tr(),
-                                    border: const OutlineInputBorder(),
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: isSelectRecommendTab ? Colors.black : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    'jayne.product_recommend_page.recommend_tab'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: isSelectRecommendTab ? Colors.white : Colors.black,
+                                    ),
                                   ),
-                                  value: selectedBrand,
-                                  onChanged: (newValue) {
+                                  onTap: () {
+                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "แนะนำสินค้า");
                                     setState(() {
-                                      selectedBrand = newValue;
+                                      isSelectRecommendTab = true;
+                                      isSelectMobileTab = false;
+                                      isSelectTabletTab = false;
+                                      isSelectNotebookTab = false;
+                                      isSelectSmartWatchTab = false;
+                                      isSelectEarPhoneTab = false;
+                                      isSelectAccessoriesTab = false;
                                     });
                                   },
-                                  items: [
-                                    'Apple',
-                                    'Huawei',
-                                    'Xiaomi',
-                                    'Vivo',
-                                    'Samsung',
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: "jayne.product_individual_page.choose_usage".tr(),
-                                    border: const OutlineInputBorder(),
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: isSelectMobileTab ? Colors.black : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    'jayne.product_recommend_page.mobile_tab'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: isSelectMobileTab ? Colors.white : Colors.black,
+                                    ),
                                   ),
-                                  value: selectedUsage,
-                                  onChanged: (newValue) {
+                                  onTap: () {
+                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "มือถือ");
                                     setState(() {
-                                      selectedUsage = newValue;
+                                      isSelectRecommendTab = false;
+                                      isSelectMobileTab = true;
+                                      isSelectTabletTab = false;
+                                      isSelectNotebookTab = false;
+                                      isSelectSmartWatchTab = false;
+                                      isSelectEarPhoneTab = false;
+                                      isSelectAccessoriesTab = false;
                                     });
                                   },
-                                  items: [
-                                    'ทั่วไป',
-                                    'เล่นเกม',
-                                    'ถ่ายรูป',
-                                    'ธุรกิจ',
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: DropdownButtonFormField<String>(
-                                  decoration: InputDecoration(
-                                    labelText: 'jayne.product_individual_page.highest_price'.tr(),
-                                    border: const OutlineInputBorder(),
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: isSelectTabletTab ? Colors.black : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    'jayne.product_recommend_page.tablet_tab'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: isSelectTabletTab ? Colors.white : Colors.black,
+                                    ),
                                   ),
-                                  value: selectedPrice,
-                                  onChanged: (newValue) {
+                                  onTap: () {
+                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "แท็บเล็ต");
                                     setState(() {
-                                      selectedPrice = newValue;
+                                      isSelectRecommendTab = false;
+                                      isSelectMobileTab = false;
+                                      isSelectTabletTab = true;
+                                      isSelectNotebookTab = false;
+                                      isSelectSmartWatchTab = false;
+                                      isSelectEarPhoneTab = false;
+                                      isSelectAccessoriesTab = false;
                                     });
                                   },
-                                  items: [
-                                    '10000',
-                                    '20000',
-                                    '30000',
-                                    '40000',
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
                                 ),
                               ),
-                              IconButton(
-                                  onPressed: () {
-                                    ServiceProvider().requestProduct(
-                                      userContent: '',
-                                      botContent: '',
-                                      inputText: 'แนะนำ',
-                                      minPrice: 1000,
-                                      maxPrice: 99999,
-                                      minDiscountPc: 0,
-                                      minDiscountValue: 0,
-                                      minPoint: 0,
-                                    );
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: isSelectNotebookTab ? Colors.black : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    'jayne.product_recommend_page.notebook_tab'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: isSelectNotebookTab ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "โน้ตบุ๊ค");
+                                    setState(() {
+                                      isSelectRecommendTab = false;
+                                      isSelectMobileTab = false;
+                                      isSelectTabletTab = false;
+                                      isSelectNotebookTab = true;
+                                      isSelectSmartWatchTab = false;
+                                      isSelectEarPhoneTab = false;
+                                      isSelectAccessoriesTab = false;
+                                    });
                                   },
-                                  icon: const Icon(Icons.search)
+                                ),
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.clear),
-                                onPressed: () {
-                                  // Clear filters
-                                  setState(() {
-                                    selectedBrand = null;
-                                    selectedUsage = null;
-                                    selectedPrice = null;
-                                  });
-                                },
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: isSelectSmartWatchTab ? Colors.black : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    'jayne.product_recommend_page.smartwatch_tab'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: isSelectSmartWatchTab ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "สมาร์ทวอทช์");
+                                    setState(() {
+                                      isSelectRecommendTab = false;
+                                      isSelectMobileTab = false;
+                                      isSelectTabletTab = false;
+                                      isSelectNotebookTab = false;
+                                      isSelectSmartWatchTab = true;
+                                      isSelectEarPhoneTab = false;
+                                      isSelectAccessoriesTab = false;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: isSelectEarPhoneTab ? Colors.black : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    'jayne.product_recommend_page.earphones_tab'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: isSelectEarPhoneTab ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "หูฟัง");
+                                    setState(() {
+                                      isSelectRecommendTab = false;
+                                      isSelectMobileTab = false;
+                                      isSelectTabletTab = false;
+                                      isSelectNotebookTab = false;
+                                      isSelectSmartWatchTab = false;
+                                      isSelectEarPhoneTab = true;
+                                      isSelectAccessoriesTab = false;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: isSelectAccessoriesTab ? Colors.black : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    'jayne.product_recommend_page.accessories_tab'.tr(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: isSelectAccessoriesTab ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "อุปกรณ์เสริม");
+                                    setState(() {
+                                      isSelectRecommendTab = false;
+                                      isSelectMobileTab = false;
+                                      isSelectTabletTab = false;
+                                      isSelectNotebookTab = false;
+                                      isSelectSmartWatchTab = false;
+                                      isSelectEarPhoneTab = false;
+                                      isSelectAccessoriesTab = true;
+                                    });
+                                  },
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          // Product Grid
-                          Expanded(
-                            child: GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 0.75,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
+                        ),
+                      ),
+
+                      // Product Grid with Filters
+                      Expanded(
+                        flex: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ResponsiveText(
+                                content: 'jayne.product_recommend_page.mobile_tab'.tr(),
+                                textStyle: JTextTheme.highlightHeader,
                               ),
-                              itemCount: 6, // Number of products
-                              itemBuilder: (context, index) {
-                                return ProductCard(
-                                  name: index < 3 ? 'iPhone ${16 + index}' : '',
-                                  price: index < 3 ? '${30000 + (5000 * index)}' : '',
-                                );
-                              },
-                            ),
+                              const SizedBox(height: 20),
+                              // Filters
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: DropdownButtonFormField<String>(
+                                      decoration: InputDecoration(
+                                        labelText: 'jayne.product_individual_page.select_brand'.tr(),
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      value: selectedBrand,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          selectedBrand = newValue;
+                                        });
+                                      },
+                                      items: [
+                                        'Apple',
+                                        'Huawei',
+                                        'Xiaomi',
+                                        'Vivo',
+                                        'Samsung',
+                                      ].map((String value) {
+                                        context.read<ProductCubit>().updateSelectBrand(selectBrandName: value);
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: DropdownButtonFormField<String>(
+                                      decoration: InputDecoration(
+                                        labelText: "jayne.product_individual_page.choose_usage".tr(),
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      value: selectedUsage,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          selectedUsage = newValue;
+                                        });
+                                      },
+                                      items: [
+                                        'ทั่วไป',
+                                        'เล่นเกม',
+                                        'ถ่ายรูป',
+                                        'ธุรกิจ',
+                                      ].map((String value) {
+                                        context.read<ProductCubit>().updateSelectUsage(selectUsage: value);
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: DropdownButtonFormField<String>(
+                                      decoration: InputDecoration(
+                                        labelText: 'jayne.product_individual_page.highest_price'.tr(),
+                                        border: const OutlineInputBorder(),
+                                      ),
+                                      value: selectedPrice,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          selectedPrice = newValue;
+                                        });
+                                      },
+                                      items: [
+                                        '10000',
+                                        '20000',
+                                        '30000',
+                                        '40000',
+                                      ].map((String value) {
+                                        context.read<ProductCubit>().updateSelectPrice(selectBrandPrice: value);
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        final selectBrandName = state.selectBrandName;
+                                        final selectUsage = state.selectUsage;
+                                        final selectPrice = state.selectPrice;
+                                        ServiceProvider().requestProduct(
+                                          userContent: '',
+                                          botContent: '',
+                                          inputText: 'แนะนำมือถือ $selectBrandName ใช้ในการ$selectUsage ราคา $selectPrice ',
+                                          minPrice: 1000,
+                                          maxPrice: state.selectPrice,
+                                          minDiscountPc: 0,
+                                          minDiscountValue: 0,
+                                          minPoint: 0,
+                                        );
+                                      },
+                                      icon: const Icon(Icons.search)),
+                                  IconButton(
+                                    icon: const Icon(Icons.clear),
+                                    onPressed: () {
+                                      // Clear filters
+                                      setState(() {
+                                        selectedBrand = null;
+                                        selectedUsage = null;
+                                        selectedPrice = null;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              // Product Grid
+                              Expanded(
+                                child: GridView.builder(
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    childAspectRatio: 0.75,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                  ),
+                                  //itemCount: 6, // Number of products
+                                  itemCount: 3,
+                                  itemBuilder: (context, index) {
+                                    return ListView.builder(
+                                      itemCount: state.productInfo?.length,
+                                      itemBuilder: (context, index) {
+                                        return ProductCard(
+                                          imageUrl: state.productInfo?[index].imageUrl ?? "",
+                                          brandName: state.productInfo?[index].brandName ?? "Iphone",
+                                          price: state.productInfo?[index].price ?? 0.0,
+                                          detail: state.productInfo?[index].detail ?? "",
+                                          images: state.productInfo?[index].images ?? [],
+                                        );
+                                      },
+                                    );
+                                    // return ProductCard(
+                                    //   name: index < 3 ? 'iPhone ${16 + index}' : '',
+                                    //   price: index < 3 ? '${30000 + (5000 * index)}' : '',
+                                    // );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Bottom Navigation
-            Container(
-              color: Colors.black,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // TODO Back action
-                      context.pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      minimumSize: const Size(150, 50),
-                    ),
-                    child: ResponsiveText(
-                      content: "jayne.common.back".tr(),
-                      textStyle: JTextTheme.captionMedium,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      BottomActionButton(
-                        icon: Icons.shopping_cart,
-                        label: 'ตะกร้าสินค้า',
-                        onPressed: () {
-                          // TODO Cart action
-                        },
-                      ),
-                      const SizedBox(width: 10),
-                      BottomActionButton(
-                        icon: Icons.smart_toy,
-                        label: 'ปรึกษา AI',
-                        onPressed: () {
-                          // TODO AI consultation action
-                          context.pushNamed(RouteName.aiAssistantPage.name);
-                        },
+                        ),
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                // Bottom Navigation
+                Container(
+                  color: Colors.black,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // TODO Back action
+                          context.pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          minimumSize: const Size(150, 50),
+                        ),
+                        child: ResponsiveText(
+                          content: "jayne.common.back".tr(),
+                          textStyle: JTextTheme.captionMedium,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          BottomActionButton(
+                            icon: Icons.shopping_cart,
+                            label: 'ตะกร้าสินค้า',
+                            onPressed: () {
+                              // TODO Cart action
+                            },
+                          ),
+                          const SizedBox(width: 10),
+                          BottomActionButton(
+                            icon: Icons.smart_toy,
+                            label: 'ปรึกษา AI',
+                            onPressed: () {
+                              // TODO AI consultation action
+                              context.pushNamed(RouteName.aiAssistantPage.name);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
 
 class ProductCard extends StatelessWidget {
-  final String name;
-  final String price;
+  final String imageUrl;
+  final String brandName;
+  final double price;
+  final String detail;
+  final List<String>? images;
 
   const ProductCard({
     super.key,
-    required this.name,
+    required this.imageUrl,
+    required this.brandName,
     required this.price,
+    required this.detail,
+    required this.images,
   });
 
   @override
@@ -548,20 +523,36 @@ class ProductCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: 80,
-            width: 80,
-            color: Colors.grey[200],
-            child: const Icon(Icons.image, size: 40, color: Colors.grey),
+          // Container(
+          //   height: 80,
+          //   width: 80,
+          //   color: Colors.grey[200],
+          //   child: const Icon(Icons.image, size: 40, color: Colors.grey),
+          // ),
+          ResponsiveImage(
+            imageUrl,
+            assetType: AssetType.network,
+            baseHeight: 80,
+            baseWidth: 80,
+            themeDirectory: "",
+            themeName: "",
           ),
           const SizedBox(height: 10),
-          Text(name, style: const TextStyle(fontSize: 16)),
+          Text(brandName, style: const TextStyle(fontSize: 16)),
           Text('฿ $price', style: const TextStyle(fontSize: 16)),
           IconButton(
             icon: const Icon(Icons.add_shopping_cart),
             onPressed: () {
               // TODO Handle add to cart
-              context.pushNamed(RouteName.productInformationPage.name);
+              context.pushNamed(
+                RouteName.productInformationPage.name,
+                extra: ProductInformationPageArguments(
+                    images: images,
+                    productInformation: detail,
+                    brandName: brandName,
+                    price: price,
+                ),
+              );
             },
           ),
         ],
@@ -597,6 +588,7 @@ class BottomActionButton extends StatelessWidget {
   }
 }
 
+//TODO for chatBot
 Future<void> openMethodBottomSheet({
   required BuildContext context,
 }) async {

@@ -335,3 +335,17 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     );
   }
 }
+
+class ShippingCartPageArguments {
+  final List<String>? images;
+  final String productInformation;
+  final String brandName;
+  final double price;
+
+  ShippingCartPageArguments({
+    required this.images,
+    required this.productInformation,
+    required this.brandName,
+    required this.price,
+  });
+}

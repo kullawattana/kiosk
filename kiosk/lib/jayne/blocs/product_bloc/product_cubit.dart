@@ -8,10 +8,27 @@ import 'package:kiosk/jayne/repository/service_provider.dart';
 class ProductCubit extends Cubit<ProductState> {
   ProductCubit() : super(const ProductState());
 
-  Future<void> getProduct({
+  void updateSelectBrand({required String selectBrandName}) {
+    emit(state.copyWith(selectBrandName: selectBrandName));
+  }
+
+  void updateSelectPrice({required String selectBrandPrice}) {
+    emit(state.copyWith(selectBrandName: selectBrandPrice));
+  }
+
+  void updateSelectUsage({required String selectUsage}) {
+    emit(state.copyWith(selectUsage: selectUsage));
+  }
+
+  Future<void> getProductOnAWSBedrock({
     required String inputText,
   }) async {
     try {
+      emit(
+        state.copyWith(
+          status: ProductStatus.init,
+        ),
+      );
       final response = await ServiceProvider().requestProduct(
         userContent: '',
         botContent: '',
@@ -32,10 +49,15 @@ class ProductCubit extends Cubit<ProductState> {
         List<ProductInfo> productList = [];
         if (responseApi.retrievedReferences != null) {
           for (var reference in responseApi.retrievedReferences!) {
+            List<String> images = [];
+            images.add(reference.metadata?.image0 ?? "");
+            images.add(reference.metadata?.image1 ?? "");
+            images.add(reference.metadata?.image2 ?? "");
             ProductInfo product = ProductInfo(
+              images: images,
               imageUrl: reference.metadata?.image0 ?? "",
               brandName: '',
-              cost: reference.metadata?.originalPrice ?? 0.0,
+              price: reference.metadata?.originalPrice ?? 0.0,
               color: '',
               detail: '',
             );

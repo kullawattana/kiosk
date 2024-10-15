@@ -13,6 +13,9 @@ class ProductState extends Equatable {
   final String detailPromotion;
   final int totalCost;
   final int totalCostWithDiscount;
+  final String selectBrandName;
+  final int selectPrice;
+  final String selectUsage;
 
   const ProductState({
     this.status = ProductStatus.init,
@@ -20,6 +23,9 @@ class ProductState extends Equatable {
     this.detailPromotion = "",
     this.totalCost = 0,
     this.totalCostWithDiscount = 0,
+    this.selectBrandName = "",
+    this.selectPrice = 0,
+    this.selectUsage = "",
   });
 
   ProductState copyWith({
@@ -28,12 +34,18 @@ class ProductState extends Equatable {
     String? detailPromotion,
     int? totalCost,
     int? totalCostWithDiscount,
+    String? selectBrandName,
+    int? selectPrice,
+    String? selectUsage,
   }) {
     return ProductState(
       status: status ?? this.status,
       productInfo: productInfo ?? this.productInfo,
       detailPromotion: detailPromotion ?? this.detailPromotion,
       totalCostWithDiscount: totalCostWithDiscount ?? this.totalCostWithDiscount,
+      selectBrandName: selectBrandName ?? this.selectBrandName,
+      selectPrice: selectPrice ?? this.selectPrice,
+      selectUsage: selectUsage ?? this.selectUsage,
     );
   }
 
@@ -43,29 +55,74 @@ class ProductState extends Equatable {
         productInfo,
         detailPromotion,
         totalCostWithDiscount,
+        selectBrandName,
+        selectPrice,
+        selectUsage,
       ];
 }
 
 class ProductInfo {
+  final List<String> images;
   final String imageUrl;
   final String brandName;
-  final double cost;
+  final double price;
   final String color;
   final String detail;
 
   ProductInfo({
+    required this.images,
     required this.imageUrl,
     required this.brandName,
-    required this.cost,
+    required this.price,
     required this.color,
     required this.detail,
   });
 
   factory ProductInfo.fromJson(Map<String, dynamic> json) => ProductInfo(
+        images: json['images'],
         imageUrl: json['image_url'],
         brandName: json['brand_name'],
-        cost: json['cost'],
+        price: json['price'],
         color: json['color'],
         detail: json['detail'],
       );
+}
+
+class ShoppingCartList {
+  final List<ShoppingCartInfo> shoppingCartList;
+
+  ShoppingCartList ({
+    required this.shoppingCartList,
+  });
+
+  factory ShoppingCartList.fromJson(Map<String, dynamic> json) => ShoppingCartList(
+    shoppingCartList: json['shoppingCartList'],
+  );
+}
+
+class ShoppingCartInfo {
+  final String imageUrl;
+  final String brandName;
+  final String storage;
+  final int quantity;
+  final double price;
+  final String color;
+
+  ShoppingCartInfo({
+    required this.imageUrl,
+    required this.brandName,
+    required this.storage,
+    required this.quantity,
+    required this.price,
+    required this.color,
+  });
+
+  factory ShoppingCartInfo.fromJson(Map<String, dynamic> json) => ShoppingCartInfo(
+    imageUrl: json['imageUrl'],
+    brandName: json['brand_name'],
+    storage: json['storage'],
+    quantity: json['quantity'],
+    price: json['price'],
+    color: json['color'],
+  );
 }
