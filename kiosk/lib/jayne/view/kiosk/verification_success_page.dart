@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/common/app_styles.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
@@ -51,8 +52,7 @@ class VerificationSuccessPage extends StatelessWidget {
             // Button to go back to the main page
             ElevatedButton(
               onPressed: () {
-                // TODO Navigate goto to the cart page
-                context.pushNamed(RouteName.shoppingCartPage.name);
+                context.pushNamed(RouteName.homePage.name);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black, // Button color
@@ -60,7 +60,9 @@ class VerificationSuccessPage extends StatelessWidget {
               ),
               child: ResponsiveText(
                 content: 'jayne.common.back_to_home_page'.tr(),
-                textStyle: JTextTheme.subtitle1,
+                textStyle: JTextTheme.subtitle1.copyWith(
+                  color: colorNeutralWhite,
+                ),
               ),
             ),
           ],

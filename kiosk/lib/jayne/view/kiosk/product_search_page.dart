@@ -6,8 +6,6 @@ import 'package:kiosk/jayne/blocs/product_bloc/product_state.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
-import 'package:kiosk/jayne/layouts/popup_container.dart';
-import 'package:kiosk/jayne/layouts/popup_layout.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kiosk/jayne/repository/service_provider.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
@@ -42,6 +40,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
     isSelectSmartWatchTab = false;
     isSelectEarPhoneTab = false;
     isSelectAccessoriesTab = false;
+    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "แนะนำสินค้า");
     super.initState();
   }
 
@@ -422,10 +421,6 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                         );
                                       },
                                     );
-                                    // return ProductCard(
-                                    //   name: index < 3 ? 'iPhone ${16 + index}' : '',
-                                    //   price: index < 3 ? '${30000 + (5000 * index)}' : '',
-                                    // );
                                   },
                                 ),
                               ),
@@ -523,12 +518,6 @@ class ProductCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Container(
-          //   height: 80,
-          //   width: 80,
-          //   color: Colors.grey[200],
-          //   child: const Icon(Icons.image, size: 40, color: Colors.grey),
-          // ),
           ResponsiveImage(
             imageUrl,
             assetType: AssetType.network,
@@ -586,19 +575,4 @@ class BottomActionButton extends StatelessWidget {
       label: Text(label, style: const TextStyle(color: Colors.black)),
     );
   }
-}
-
-//TODO for chatBot
-Future<void> openMethodBottomSheet({
-  required BuildContext context,
-}) async {
-  const scaleHeight = 690.0;
-  await showPopup(
-    context: context,
-    child: PopupLayout(
-      title: "chatbot.view.chatbot_page.upload_attachment_bottom_sheet_title".tr(),
-      child: Container(),
-    ),
-    size: MediaQuery.of(context).size.height <= scaleHeight ? PopupSize.half : PopupSize.medium,
-  ).then((_) async {});
 }

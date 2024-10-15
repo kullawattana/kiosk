@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:kiosk/jayne/common/app_styles.dart';
+import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:kiosk/jayne/model/response/bot_response.dart';
 import 'package:kiosk/jayne/repository/service_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -89,16 +92,21 @@ class _AIAssistantPageState extends State<AIAssistantPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.black,
         leading: IconButton(
           key: const Key("live_chat_common_app_bar_back_button"),
           icon: const Icon(Icons.arrow_back_sharp),
-          color: Colors.black,
+          color: Colors.white,
           onPressed: (Navigator.canPop(context) //
               ? () => Navigator.maybePop(context)
               : () => Navigator.pop(context)), //app exit
         ),
-        title: const Text("Jayne"),
+        title: ResponsiveText(
+          content: 'Jayne',
+          textStyle: JTextTheme.title1.copyWith(
+            color: colorNeutralWhite,
+          ),
+        )
       ),
       body: Chat(
         messages: messages,

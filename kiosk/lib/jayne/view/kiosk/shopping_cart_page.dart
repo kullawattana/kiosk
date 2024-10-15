@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/blocs/product_bloc/product_cubit.dart';
-import 'package:kiosk/jayne/blocs/product_bloc/product_state.dart';
+import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
@@ -16,11 +16,12 @@ class ShoppingCartPage extends StatefulWidget {
 
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
   int productQuantity = 1;
-  int totalPrice = 0;
+  double totalPrice = 0;
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as ShippingCartPageArguments;
+    totalPrice = context.read<ProductCubit>().state.shoppingCartList[0].price;
+    final storage = context.read<ProductCubit>().state.shoppingCartList[0].storage;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -42,38 +43,31 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-
-              ListView.builder(
-                itemCount: args.shoppingCartList.length,
-                itemBuilder: (context, index) {
-                  final storage = args.shoppingCartList[index].storage;
-                  return buildCartItem(
-                    productName: args.shoppingCartList[index].brandName,
-                    color: args.shoppingCartList[index].color,
-                    storage: 'หน่วยความจำ $storage',
-                    price: args.shoppingCartList[index].price,
-                    quantity: productQuantity,
-                    onRemove: () {
-                      setState(() {
-                        productQuantity = 0;
-                        totalPrice -= 30000;
-                      });
-                    },
-                    onDecrease: () {
-                      if (productQuantity > 1) {
-                        setState(() {
-                          productQuantity--;
-                          totalPrice -= 30000;
-                        });
-                      }
-                    },
-                    onIncrease: () {
-                      setState(() {
-                        productQuantity++;
-                        totalPrice += 30000;
-                      });
-                    },
-                  );
+              buildCartItem(
+                productName: context.read<ProductCubit>().state.shoppingCartList[0].brandName,
+                color: context.read<ProductCubit>().state.shoppingCartList[0].color,
+                storage: 'หน่วยความจำ $storage',
+                price: context.read<ProductCubit>().state.shoppingCartList[0].price,
+                quantity: productQuantity,
+                onRemove: () {
+                  setState(() {
+                    productQuantity = 0;
+                    totalPrice -= 30000;
+                  });
+                },
+                onDecrease: () {
+                  if (productQuantity > 1) {
+                    setState(() {
+                      productQuantity--;
+                      totalPrice -= 30000;
+                    });
+                  }
+                },
+                onIncrease: () {
+                  setState(() {
+                    productQuantity++;
+                    totalPrice += 30000;
+                  });
                 },
               ),
               const SizedBox(height: 10),
@@ -162,11 +156,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 80,
-                width: 80,
-                color: Colors.grey[300],
-                child: const Icon(Icons.image, size: 40), // Placeholder for product image
+              ResponsiveImage(
+                context.read<ProductCubit>().state.shoppingCartList[0].imageUrl,
+                assetType: AssetType.network,
+                baseHeight: 100,
+                baseWidth: 100,
+                themeName: "",
+                themeDirectory: "",
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -259,7 +255,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   }
 
   // Build Price Summary Widget
-  Widget buildPriceSummary(BuildContext context, int totalPrice) {
+  Widget buildPriceSummary(BuildContext context, double totalPrice) {
     context.read<ProductCubit>().updateTotalPriceInShoppingCart(totalPriceInShoppingCart: totalPrice);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,12 +309,4 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
       ],
     );
   }
-}
-
-class ShippingCartPageArguments {
-  final List<ShoppingCartInfo> shoppingCartList;
-
-  ShippingCartPageArguments({
-    required this.shoppingCartList,
-  });
 }

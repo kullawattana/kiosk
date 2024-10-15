@@ -31,7 +31,7 @@ class LiveChatMainRoutes {
           return child;
         },
         //TODO Route
-        //routes: chatBotRoutes,
+        // routes: chatBotRoutes,
         routes: kioskRoutes,
       )
     ],

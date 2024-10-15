@@ -1,10 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/blocs/product_bloc/product_cubit.dart';
 import 'package:kiosk/jayne/blocs/product_bloc/product_state.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
@@ -45,30 +45,13 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                 Expanded(
                   child: Column(
                     children: [
-                      CarouselSlider(
-                        options: CarouselOptions(
-                          height: 40.0, // height of carousel
-                          autoPlay: true, // auto slide
-                          autoPlayInterval: const Duration(seconds: 3), // duration slide time
-                          enlargeCenterPage: true, // expand image to center
-                          viewportFraction: 0.8, // ratio of image
-                        ),
-                        items: args.images?.map((imagePath) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                    image: AssetImage(imagePath),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        }).toList(),
+                      ResponsiveImage(
+                        args.images![0].toString(),
+                        assetType: AssetType.network,
+                        baseHeight: 500,
+                        baseWidth: 500,
+                        themeName: "",
+                        themeDirectory: "",
                       ),
                     ],
                   ),
@@ -193,10 +176,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                           context.read<ProductCubit>().updateTotalShoppingCartList(shoppingCartList: shoppingCardList);
                           // TODO Action for 'Buy' button
                           context.pushNamed(
-                            RouteName.shoppingCartPage.name,
-                            extra: ShoppingCartList(
-                              shoppingCartList: context.read<ProductCubit>().state.shoppingCartList,
-                            ),
+                            RouteName.shoppingCartPage.name, //
                           );
                         },
                         style: ElevatedButton.styleFrom(

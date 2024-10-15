@@ -17,7 +17,7 @@ class ProductState extends Equatable {
   final String selectBrandName;
   final int selectPrice;
   final String selectUsage;
-  final int totalPriceInShoppingCart;
+  final double totalPriceInShoppingCart;
   final String totalColorInShoppingCart;
   final String? memoryInShoppingCart;
   final int? totalQuantityInShoppingCart;
@@ -48,7 +48,7 @@ class ProductState extends Equatable {
     String? selectBrandName,
     int? selectPrice,
     String? selectUsage,
-    int? totalPriceInShoppingCart,
+    double? totalPriceInShoppingCart,
     String? totalColorInShoppingCart,
     String? memoryInShoppingCart,
     int? totalQuantityInShoppingCart,

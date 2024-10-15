@@ -32,7 +32,7 @@ class ProductCubit extends Cubit<ProductState> {
     emit(state.copyWith(totalQuantityInShoppingCart: totalQuantityInShoppingCart));
   }
 
-  void updateTotalPriceInShoppingCart({required int totalPriceInShoppingCart}) {
+  void updateTotalPriceInShoppingCart({required double totalPriceInShoppingCart}) {
     emit(state.copyWith(totalPriceInShoppingCart: totalPriceInShoppingCart));
   }
 
