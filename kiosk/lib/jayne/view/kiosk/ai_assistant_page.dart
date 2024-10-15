@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:kiosk/jayne/model/response/bot_response.dart';
+import 'package:kiosk/jayne/repository/service_provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 class AIAssistantPage extends StatefulWidget {
   const AIAssistantPage({super.key});
@@ -10,133 +16,96 @@ class AIAssistantPage extends StatefulWidget {
 }
 
 class _AIAssistantPageState extends State<AIAssistantPage> {
-  FlutterTts flutterTts = FlutterTts();
-  String _textToSpeak = "Hello, welcome to Flutter text to speech example.";
+  List<types.Message> messages = [];
+  final _user = const types.User(id: '456');
+  final _bot = const types.User(id: "123");
 
-  Future _speak() async {
-    //await flutterTts.setLanguage("en-US");
-    await flutterTts.setLanguage("th-TH");
-    await flutterTts.setPitch(1.0);
-    await flutterTts.speak(_textToSpeak);
+  @override
+  void initState() {
+    super.initState();
+    _loadMessages();
+  }
+
+  types.Message botMessageReply(String message) {
+    return types.TextMessage(
+      author: _bot,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: const Uuid().v4(),
+      text: message,
+    );
+  }
+
+  void _handleSendPressed(types.PartialText message) {
+    final textMessage = types.TextMessage(
+      author: _user,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: const Uuid().v4(),
+      text: message.text,
+    );
+    _addMessage(textMessage);
+  }
+
+  void _addMessage(types.Message message) async {
+    setState(() {
+      messages.insert(0, message);
+    });
+    log("${message.toJson()["text"]}");
+    final response = await ServiceProvider().requestProduct(
+      userContent: '',
+      botContent: '',
+      inputText: '${message.toJson()["text"]}',
+      minPrice: 1000,
+      maxPrice: 99999,
+      minDiscountPc: 0,
+      minDiscountValue: 0,
+      minPoint: 0,
+    );
+    if (response.isSuccess) {
+      var decodedResponse = jsonDecode(response.responseBody);
+      final responseApi = BotResponse.fromJson(decodedResponse);
+      debugPrint(responseApi.output);
+      setState(() {
+        messages.insert(0, botMessageReply(responseApi.output ?? ""));
+      });
+    }
+  }
+
+  void _loadMessages() async {
+    List<types.Message> messagesList = [];
+    Future.delayed(const Duration(milliseconds: 300), () {
+      messagesList.add(types.TextMessage(
+        author: _bot,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: const Uuid().v4(),
+        text: "greeting_message".tr(),
+      ));
+      setState(() {
+        messages = messagesList;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black.withOpacity(0.5),
-        body: Center(
-          child: Container(
-            width: 300,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.red),
-                      onPressed: () {
-                        // TODO Close action
-                      },
-                    ),
-                  ],
-                ),
-                // TODO Avatar and Greeting
-                // greetingWidget()
-              ],
-            ),
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        leading: IconButton(
+          key: const Key("live_chat_common_app_bar_back_button"),
+          icon: const Icon(Icons.arrow_back_sharp),
+          color: Colors.black,
+          onPressed: (Navigator.canPop(context) //
+              ? () => Navigator.maybePop(context)
+              : () => Navigator.pop(context)), //app exit
         ),
-        bottomNavigationBar: Column(
-          children: [
-            //TODO TTS
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  _textToSpeak = value;
-                });
-              },
-              decoration: const InputDecoration(
-                labelText: 'Enter text to speak',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            //TODO Microphone tap action
-            GestureDetector(
-              onTap: () {
-                // TODO Microphone tap action
-              },
-              child: const CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.mic,
-                  size: 36,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            // "Press to speak" text
-            Text(
-              'jayne.ai_assistant_page.press_to_speak'.tr(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        )
+        title: const Text("Jayne"),
+      ),
+      body: Chat(
+        messages: messages,
+        showUserNames: true,
+        onSendPressed: _handleSendPressed,
+        user: _user,
+      ),
     );
   }
-}
-
-Widget speakingWidget() {
-  return Container(
-    height: 60,
-    width: double.infinity,
-    alignment: Alignment.center,
-    child: const Icon(
-      Icons.graphic_eq,
-      color: Colors.white,
-      size: 50,
-    ), // Placeholder for the voice wave animation
-  );
-}
-
-Widget greetingWidget() {
-  return const Column(
-    children: [
-      // Greeting message
-      CircleAvatar(
-        radius: 40,
-        backgroundColor: Colors.white,
-        child: Icon(Icons.smart_toy, size: 40, color: Colors.blue),
-      ),
-      SizedBox(height: 10),
-      Text(
-        'Jayne',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      SizedBox(height: 5),
-      Text(
-        'greeting_message',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-        ),
-      ),
-      SizedBox(height: 20),
-    ],
-  );
 }
