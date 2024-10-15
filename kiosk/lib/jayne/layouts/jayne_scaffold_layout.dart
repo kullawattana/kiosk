@@ -5,16 +5,14 @@ import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/focus_cleaner.dart';
 import 'package:kiosk/jayne/layouts/background_gradient.dart';
 
-class LiveChatFullBodyLayout extends StatelessWidget {
-  final PreferredSizeWidget appBar;
+class JayneScaffoldLayout extends StatelessWidget {
   final Widget body;
   final Widget floatingActionButton;
   final Widget bottomNavigationBar;
   final Color? backgroundColor;
 
-  const LiveChatFullBodyLayout({
+  const JayneScaffoldLayout({
     super.key,
-    required this.appBar,
     required this.body,
     required this.bottomNavigationBar,
     this.backgroundColor,
@@ -27,7 +25,6 @@ class LiveChatFullBodyLayout extends StatelessWidget {
     return FocusCleaner(
       child: Scaffold(
         backgroundColor: bottomBarBackgroundColor,
-        appBar: appBar,
         floatingActionButton: floatingActionButton,
         body: BackgroundGradient(
           child: Container(

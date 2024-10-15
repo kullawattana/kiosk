@@ -15,12 +15,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:kiosk/jayne/model/response/bot_response.dart';
 import 'package:kiosk/jayne/view/chatbot/chat_instruction_page.dart';
 
-class ChatPanelBody extends StatefulWidget {
+class ChatBody extends StatefulWidget {
   final BuildContext liveChatContext;
   final ScrollController scrollController;
   final GlobalKey containerKey;
 
-  const ChatPanelBody({
+  const ChatBody({
     required this.liveChatContext,
     required this.containerKey,
     required this.scrollController,
@@ -28,10 +28,10 @@ class ChatPanelBody extends StatefulWidget {
   });
 
   @override
-  State<ChatPanelBody> createState() => _ChatPanelBodyState();
+  State<ChatBody> createState() => _ChatBodyState();
 }
 
-class _ChatPanelBodyState extends State<ChatPanelBody> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
+class _ChatBodyState extends State<ChatBody> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   @override
   bool get wantKeepAlive => true;
 

@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:kiosk/jayne/common/default_color.dart';
 import 'package:kiosk/jayne/components/atoms/floating_button.dart';
 import 'package:kiosk/jayne/components/molecules/message/send_message_box.dart';
 import 'package:kiosk/jayne/components/organisms/chat_panel_body.dart';
 import 'package:flutter/material.dart';
+import 'package:kiosk/jayne/layouts/jayne_scaffold_layout.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -54,16 +54,8 @@ class _ChatBotState extends State<ChatPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: pageLayoutBackgroundColor,
-      floatingActionButton: ScrollJumpFloatingButton(
-        jumpToBottom: () {
-          setState(() {
-            _jumpToBottom();
-          });
-        },
-      ),
-      body: ChatPanelBody(
+    return JayneScaffoldLayout(
+      body: ChatBody(
         liveChatContext: context,
         scrollController: scrollController,
         containerKey: containerKey,
@@ -71,6 +63,13 @@ class _ChatBotState extends State<ChatPage> with WidgetsBindingObserver {
       bottomNavigationBar: SendMessageBox(
         scrollController: scrollController,
         containerKey: containerKey,
+      ),
+      floatingActionButton: ScrollJumpFloatingButton(
+        jumpToBottom: () {
+          setState(() {
+            _jumpToBottom();
+          });
+        },
       ),
     );
   }
