@@ -59,6 +59,7 @@
   "jayne.cart_page.total_product_price": "ราคาสินค้ารวม",
   "jayne.cart_page.discount": "ส่วนลด",
   "jayne.cart_page.total_order_amount": "รวมยอดสั่งซื้อ",
+  "jayne.cart_page.memory": "หน่วยความจำ",
   "jayne.thank_you_page.app_bar": "ขอบคุณคะ",
   "jayne.thank_you_page.message": "ขอบพระคุณที่ใช้บริการกับเจมาร์ท",
   "jayne.verification_success_page.app_bar": "ยืนยันตัวตน",

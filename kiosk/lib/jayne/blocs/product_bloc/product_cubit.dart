@@ -20,6 +20,26 @@ class ProductCubit extends Cubit<ProductState> {
     emit(state.copyWith(selectUsage: selectUsage));
   }
 
+  void updateColorInShoppingCart({required String totalColorInShoppingCart}) {
+    emit(state.copyWith(totalColorInShoppingCart: totalColorInShoppingCart));
+  }
+
+  void updateMemoryInShoppingCart({required String totalMemoryInShoppingCart}) {
+    emit(state.copyWith(totalColorInShoppingCart: totalMemoryInShoppingCart));
+  }
+
+  void updateQuantityInShoppingCart({required int totalQuantityInShoppingCart}) {
+    emit(state.copyWith(totalQuantityInShoppingCart: totalQuantityInShoppingCart));
+  }
+
+  void updateTotalPriceInShoppingCart({required int totalPriceInShoppingCart}) {
+    emit(state.copyWith(totalPriceInShoppingCart: totalPriceInShoppingCart));
+  }
+
+  void updateTotalShoppingCartList({required List<ShoppingCartInfo> shoppingCartList}) {
+    emit(state.copyWith(shoppingCartList: shoppingCartList));
+  }
+
   Future<void> getProductOnAWSBedrock({
     required String inputText,
   }) async {

@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kiosk/jayne/blocs/product_bloc/product_cubit.dart';
 import 'package:kiosk/jayne/blocs/product_bloc/product_state.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
@@ -95,6 +97,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                             isSelected: selectedColor == "janey.product_individual_page.black".tr(),
                             onTap: () {
                               setState(() => selectedColor = "janey.product_individual_page.white".tr());
+                              context.read<ProductCubit>().updateColorInShoppingCart(totalColorInShoppingCart: selectedColor);
                             },
                           ),
                           ColorButton(
@@ -102,6 +105,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                             isSelected: selectedColor == "janey.product_individual_page.white".tr(),
                             onTap: () {
                               setState(() => selectedColor = "janey.product_individual_page.white".tr());
+                              context.read<ProductCubit>().updateColorInShoppingCart(totalColorInShoppingCart: selectedColor);
                             },
                           ),
                           ColorButton(
@@ -109,6 +113,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                             isSelected: selectedColor == "janey.product_individual_page.purple".tr(),
                             onTap: () {
                               setState(() => selectedColor = "janey.product_individual_page.purple".tr());
+                              context.read<ProductCubit>().updateColorInShoppingCart(totalColorInShoppingCart: selectedColor);
                             },
                           ),
                           ColorButton(
@@ -116,6 +121,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                             isSelected: selectedColor == "janey.product_individual_page.brown".tr(),
                             onTap: () {
                               setState(() => selectedColor = "janey.product_individual_page.brown".tr());
+                              context.read<ProductCubit>().updateColorInShoppingCart(totalColorInShoppingCart: selectedColor);
                             },
                           ),
                         ],
@@ -133,6 +139,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                             isSelected: selectedStorage == "janey.product_individual_page.256GB".tr(),
                             onTap: () {
                               setState(() => selectedStorage = "janey.product_individual_page.256GB".tr());
+                              context.read<ProductCubit>().updateMemoryInShoppingCart(totalMemoryInShoppingCart: selectedStorage);
                             },
                           ),
                           StorageButton(
@@ -140,6 +147,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                             isSelected: selectedStorage == "janey.product_individual_page.512GB".tr(),
                             onTap: () {
                               setState(() => selectedStorage = "janey.product_individual_page.512GB".tr());
+                              context.read<ProductCubit>().updateMemoryInShoppingCart(totalMemoryInShoppingCart: selectedStorage);
                             },
                           ),
                         ],
@@ -154,30 +162,52 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                           ),
                           const Spacer(),
                           IconButton(
-                            onPressed: () => setState(() => quantity = quantity > 1 ? quantity - 1 : 1),
+                            onPressed: () {
+                              setState(() => quantity = quantity > 1 ? quantity - 1 : 1);
+                              context.read<ProductCubit>().updateQuantityInShoppingCart(totalQuantityInShoppingCart: quantity);
+                            },
                             icon: const Icon(Icons.remove_circle_outline),
                           ),
                           Text('$quantity', style: const TextStyle(fontSize: 18)),
                           IconButton(
-                            onPressed: () => setState(() => quantity++),
+                            onPressed: () {
+                              setState(() => quantity++);
+                              context.read<ProductCubit>().updateQuantityInShoppingCart(totalQuantityInShoppingCart: quantity);
+                            },
                             icon: const Icon(Icons.add_circle_outline),
                           ),
                         ],
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
-                          onPressed: () {
-                            // TODO Action for 'Buy' button
-                            context.pushNamed(RouteName.shoppingCartPage.name);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 50),
-                            backgroundColor: Colors.black,
-                          ),
-                          child: ResponsiveText(
-                            content: 'janey.product_individual_page.order'.tr(),
-                            textStyle: const TextStyle(fontSize: 18),
-                          )),
+                        onPressed: () {
+                          List<ShoppingCartInfo> shoppingCardList = [];
+                          shoppingCardList.add(ShoppingCartInfo(
+                            imageUrl: args.images![0].toString(),
+                            brandName: args.brandName,
+                            storage: selectedStorage,
+                            quantity: quantity, // Nullable quantity
+                            price: args.price, // Nullable price
+                            color: selectedColor,
+                          ));
+                          context.read<ProductCubit>().updateTotalShoppingCartList(shoppingCartList: shoppingCardList);
+                          // TODO Action for 'Buy' button
+                          context.pushNamed(
+                            RouteName.shoppingCartPage.name,
+                            extra: ShoppingCartList(
+                              shoppingCartList: context.read<ProductCubit>().state.shoppingCartList,
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: Colors.black,
+                        ),
+                        child: ResponsiveText(
+                          content: 'janey.product_individual_page.order'.tr(),
+                          textStyle: const TextStyle(fontSize: 18),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -220,19 +250,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                     IconButton(
                       onPressed: () {
                         // TODO Action for 'Cart' button
-                        context.pushNamed(
-                          RouteName.shoppingCartPage.name,
-                          //TODO
-                          extra: ShoppingCartList(
-                              shoppingCartList: [],
-                              // imageUrl: '',
-                              // brandName: '',
-                              // storage: '',
-                              // quantity: quantity,
-                              // price: 0,
-                              // color: ''
-                          ),
-                        );
+                        context.pushNamed(RouteName.shoppingCartPage.name);
                       },
                       icon: const Icon(Icons.shopping_cart),
                     ),

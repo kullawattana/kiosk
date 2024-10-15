@@ -59,6 +59,7 @@
   "jayne.cart_page.total_product_price": "Total product price",
   "jayne.cart_page.discount": "discount",
   "jayne.cart_page.total_order_amount": "Total order amount",
+  "jayne.cart_page.memory": "Memory:",
   "jayne.thank_you_page.app_bar": "Thank You",
   "jayne.thank_you_page.message": "Thank you for buy the product with Jaymart.",
   "jayne.verification_success_page.app_bar": "Verification Status",
