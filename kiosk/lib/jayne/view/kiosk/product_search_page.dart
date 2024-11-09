@@ -51,9 +51,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       body: BlocConsumer<ProductCubit, ProductState>(
         key: const Key("product_search_page"),
         listenWhen: (previous, current) => previous.status != current.status,
-        listener: (context, state) async {
-
-        },
+        listener: (context, state) async {},
         builder: (context, state) {
           return SafeArea(
             child: Column(
@@ -277,11 +275,6 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ResponsiveText(
-                                content: 'jayne.product_recommend_page.mobile_tab'.tr(),
-                                textStyle: JTextTheme.highlightHeader,
-                              ),
-                              const SizedBox(height: 20),
                               // Filters
                               Row(
                                 children: [
@@ -367,32 +360,22 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                     ),
                                   ),
                                   IconButton(
-                                      onPressed: () {
-                                        final selectBrandName = state.selectBrandName;
-                                        final selectUsage = state.selectUsage;
-                                        final selectPrice = state.selectPrice;
-                                        ServiceProvider().requestProduct(
-                                          userContent: '',
-                                          botContent: '',
-                                          inputText: 'แนะนำมือถือ $selectBrandName ใช้ในการ$selectUsage ราคา $selectPrice ',
-                                          minPrice: 1000,
-                                          maxPrice: state.selectPrice,
-                                          minDiscountPc: 0,
-                                          minDiscountValue: 0,
-                                          minPoint: 0,
-                                        );
-                                      },
-                                      icon: const Icon(Icons.search)),
-                                  IconButton(
-                                    icon: const Icon(Icons.clear),
                                     onPressed: () {
-                                      // Clear filters
-                                      setState(() {
-                                        selectedBrand = null;
-                                        selectedUsage = null;
-                                        selectedPrice = null;
-                                      });
+                                      final selectBrandName = state.selectBrandName;
+                                      final selectUsage = state.selectUsage;
+                                      final selectPrice = state.selectPrice;
+                                      ServiceProvider().requestProduct(
+                                        userContent: '',
+                                        botContent: '',
+                                        inputText: 'แนะนำมือถือ $selectBrandName ใช้ในการ$selectUsage ราคา $selectPrice ',
+                                        minPrice: 1000,
+                                        maxPrice: state.selectPrice,
+                                        minDiscountPc: 0,
+                                        minDiscountValue: 0,
+                                        minPoint: 0,
+                                      );
                                     },
+                                    icon: const Icon(Icons.search),
                                   ),
                                 ],
                               ),
@@ -433,43 +416,88 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                 ),
                 // Bottom Navigation
                 Container(
-                  color: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.all(16),
+                  color: Colors.grey.shade100,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // TODO Back action
+                      InkWell(
+                        child: const ResponsiveImage(
+                          'assets/images/back.json',
+                          assetType: AssetType.animation,
+                          baseWidth: 120,
+                        ),
+                        onTap: () {
                           context.pop();
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          minimumSize: const Size(150, 50),
-                        ),
-                        child: ResponsiveText(
-                          content: "jayne.common.back".tr(),
-                          textStyle: JTextTheme.captionMedium,
-                        ),
                       ),
                       Row(
                         children: [
-                          BottomActionButton(
-                            icon: Icons.shopping_cart,
-                            label: 'ตะกร้าสินค้า',
-                            onPressed: () {
-                              // TODO Cart action
-                            },
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  child: const ResponsiveImage(
+                                    'assets/images/shopping.json',
+                                    assetType: AssetType.animation,
+                                    baseWidth: 120,
+                                  ),
+                                  onTap: () {
+                                    //TODO Test
+                                    context.pushNamed(
+                                      RouteName.productInformationPage.name,
+                                      extra: ProductInformationPageArguments(
+                                        images: ["https://static-jaymart.com/ecom/public/2YZHC6Q2CNSL1mVMfmbv3XW6zXV.jpg"],
+                                        productInformation: "",
+                                        brandName: "",
+                                        price: 0,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(width: 10),
-                          BottomActionButton(
-                            icon: Icons.smart_toy,
-                            label: 'ปรึกษา AI',
-                            onPressed: () {
-                              // TODO AI consultation action
-                              context.pushNamed(RouteName.aiAssistantPage.name);
-                            },
+                          const Padding(padding: EdgeInsets.all(8.0)),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  child: const ResponsiveImage(
+                                    'assets/images/chatbot.json',
+                                    assetType: AssetType.animation,
+                                    baseWidth: 120,
+                                  ),
+                                  onTap: () {
+                                    context.pushNamed(RouteName.aiAssistantPage.name);
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -536,10 +564,10 @@ class ProductCard extends StatelessWidget {
               context.pushNamed(
                 RouteName.productInformationPage.name,
                 extra: ProductInformationPageArguments(
-                    images: images,
-                    productInformation: detail,
-                    brandName: brandName,
-                    price: price,
+                  images: images,
+                  productInformation: detail,
+                  brandName: brandName,
+                  price: price,
                 ),
               );
             },

@@ -89,46 +89,57 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               // Price Summary Section
               buildPriceSummary(context, totalPrice),
               const SizedBox(height: 20),
-              // Bottom Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // TODO Go back
-                      context.pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      minimumSize: const Size(150, 50),
-                    ),
-                    //jayne.common.back
-                    child: ResponsiveText(
-                      content: 'jayne.common.back'.tr(),
-                      textStyle: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // TODO Confirm purchase
-                      context.pushNamed(RouteName.thankYouPage.name);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(150, 50),
-                    ),
-                    child: ResponsiveText(
-                      content: 'jayne.common.confirm'.tr(),
-                      textStyle: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 16,
+              bottom: 16,
+            ),
+            child: ElevatedButton(
+              onPressed: () {
+                // TODO Go back
+                context.pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                minimumSize: const Size(150, 50),
+              ),
+              //jayne.common.back
+              child: ResponsiveText(
+                content: 'jayne.common.back'.tr(),
+                textStyle: const TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 16,
+              bottom: 16,
+            ),
+            child: ElevatedButton(
+              onPressed: () {
+                // TODO Confirm purchase
+                context.pushNamed(RouteName.thankYouPage.name);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(150, 50),
+              ),
+              child: ResponsiveText(
+                content: 'jayne.common.confirm'.tr(),
+                textStyle: const TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

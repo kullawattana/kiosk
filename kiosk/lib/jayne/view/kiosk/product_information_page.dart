@@ -213,15 +213,15 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextButton(
-              onPressed: () {
-                // TODO Go back action
+            InkWell(
+              child: const ResponsiveImage(
+                'assets/images/back.json',
+                assetType: AssetType.animation,
+                baseWidth: 120,
+              ),
+              onTap: () {
                 context.pop();
               },
-              child: ResponsiveText(
-                content: "jayne.common.back".tr(),
-                textStyle: JTextTheme.captionMedium,
-              ),
             ),
             Row(
               children: [

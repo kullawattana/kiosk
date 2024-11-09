@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -21,22 +22,52 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    //context.read<ApplicationCubit>().changeLanguage(context.locale.languageCode);
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<String> imgUrls = [
+      'https://static-jaymart.com/ecom/public/2YZHC6Q2CNSL1mVMfmbv3XW6zXV.jpg',
+      'https://static-jaymart.com/ecom/public/2YZG2PavlzCwjRLCWlrresb673k.jpg',
+      'https://static-jaymart.com/ecom/public/2lv1cM7Y8fsLb8hoW8hYnaw5gkI.jpg'
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          // Added SingleChildScrollView here
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  CarouselSlider(
+                    options: CarouselOptions(
+                        height: 900.0,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.easeInOut, // Curve for smooth scrolling
+                        enlargeCenterPage: true,
+                        viewportFraction: 0.8,
+                    ),
+                    items: imgUrls.map((url) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: const BoxDecoration(color: Colors.white),
+                            child: Image.network(
+                              url,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
                   const SizedBox(height: 50), // Space for the image if needed
                   const ResponsiveImage(
                     'assets/images/jaymart.png',
@@ -47,9 +78,9 @@ class _HomePageState extends State<HomePage> {
                     themeName: "",
                   ),
                   const SizedBox(height: 50),
-                  const ResponsiveText(
-                    content: 'One stop service for buying smartphone of jaymart shop.',
-                    textStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ResponsiveText(
+                    content: 'jayne.home_page_title'.tr(),
+                    textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 50),
                   Padding(
@@ -63,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         InkWell(
                           child: MenuItemWidget(
-                            icon: Icons.phone_android,
+                            icon: 'assets/images/product.json',
                             label: 'jayne.home_page.product'.tr(),
                           ),
                           onTap: () {
@@ -82,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         InkWell(
                           child: MenuItemWidget(
-                            icon: Icons.local_offer,
+                            icon: 'assets/images/promotion.json',
                             label: 'jayne.home_page.promotion'.tr(),
                           ),
                           onTap: () {
@@ -101,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         InkWell(
                           child: MenuItemWidget(
-                            icon: Icons.person,
+                            icon: 'assets/images/verification.json',
                             label: 'jayne.home_page.verification'.tr(),
                           ),
                           onTap: () {
@@ -110,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         InkWell(
                           child: MenuItemWidget(
-                            icon: Icons.smart_toy,
+                            icon: 'assets/images/chatbot.json',
                             label: 'jayne.home_page.talk_with_janey'.tr(),
                           ),
                           onTap: () {
@@ -173,7 +204,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: ResponsiveText(
                   content: 'jayne.home_page.call_staff'.tr(),
-                  //textStyle: const TextStyle(color: Colors.white),
                   textStyle: JTextTheme.title2.copyWith(
                     color: Colors.white,
                     fontFamily: "",
@@ -189,7 +219,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class MenuItemWidget extends StatelessWidget {
-  final IconData icon;
+  final String icon;
   final String label;
 
   const MenuItemWidget({
@@ -202,7 +232,7 @@ class MenuItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey.shade100,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -215,7 +245,11 @@ class MenuItemWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 400, color: Colors.black),
+          ResponsiveImage(
+            icon,
+            assetType: AssetType.animation,
+            baseWidth: 500,
+          ),
           const SizedBox(height: 10),
           Text(
             label,

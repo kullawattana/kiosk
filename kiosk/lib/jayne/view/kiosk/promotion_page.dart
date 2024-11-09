@@ -1,9 +1,10 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:kiosk/jayne/repository/service_provider.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
 
 class PromotionPage extends StatefulWidget {
@@ -28,6 +29,12 @@ class _PromotionPageState extends State<PromotionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> imgUrls = [
+      'https://static-jaymart.com/ecom/public/2YZHC6Q2CNSL1mVMfmbv3XW6zXV.jpg',
+      'https://static-jaymart.com/ecom/public/2YZG2PavlzCwjRLCWlrresb673k.jpg',
+      'https://static-jaymart.com/ecom/public/2lv1cM7Y8fsLb8hoW8hYnaw5gkI.jpg'
+    ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -41,116 +48,33 @@ class _PromotionPageState extends State<PromotionPage> {
         children: [
           // Sidebar and main content
           Expanded(
-            child: Row(
+            child: Column(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          decoration: BoxDecoration(
-                            color: isSelectRecommendTab ? Colors.black : Colors.transparent,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              'jayne.product_recommend_page.recommend_tab'.tr(),
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: isSelectRecommendTab ? Colors.white : Colors.black,
-                              ),
-                            ),
-                            onTap: () {
-                              ServiceProvider().requestProduct(
-                                userContent: '',
-                                botContent: '',
-                                inputText: 'แนะนำสินค้า',
-                                minPrice: 1000,
-                                maxPrice: 99999,
-                                minDiscountPc: 0,
-                                minDiscountValue: 0,
-                                minPoint: 0,
-                              );
-                              setState(() {
-                                isSelectRecommendTab = true;
-                                isSelectMobileTab = false;
-                              });
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          decoration: BoxDecoration(
-                            color: isSelectMobileTab ? Colors.black : Colors.transparent,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              'jayne.product_recommend_page.mobile_tab'.tr(),
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: isSelectMobileTab ? Colors.white : Colors.black,
-                              ),
-                            ),
-                            onTap: () {
-                              ServiceProvider().requestProduct(
-                                userContent: '',
-                                botContent: '',
-                                inputText: 'มือถือ',
-                                minPrice: 1000,
-                                maxPrice: 99999,
-                                minDiscountPc: 0,
-                                minDiscountValue: 0,
-                                minPoint: 0,
-                              );
-                              setState(() {
-                                isSelectRecommendTab = false;
-                                isSelectMobileTab = true;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 420.0,
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 3),
+                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.easeInOut, // Curve for smooth scrolling
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.8,
                   ),
-                ),
-                // Main content: Promotion or Discount content
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          selectedIndex == 0 ? "jayne.promotion_page.promotion_tab".tr() : "jayne.promotion_page.discount_tab".tr(),
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                  items: imgUrls.map((url) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: Image.network(
+                            url,
+                            fit: BoxFit.cover,
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        // Placeholder for promotions or discounts
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: 3, // Number of promotions/discounts
-                            itemBuilder: (context, index) {
-                              return Container(
-                                height: 120,
-                                margin: const EdgeInsets.only(bottom: 16),
-                                color: Colors.grey[300], // Placeholder for the image
-                                child: const Center(
-                                  child: Icon(Icons.image, size: 60), // Image icon placeholder
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        );
+                      },
+                    );
+                  }).toList(),
                 ),
               ],
             ),
@@ -158,41 +82,78 @@ class _PromotionPageState extends State<PromotionPage> {
           // Bottom Navigation
           Container(
             padding: const EdgeInsets.all(16),
-            color: Colors.black,
+            color: Colors.grey.shade100,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // TODO Go back action
+                InkWell(
+                  child: const ResponsiveImage(
+                    'assets/images/back.json',
+                    assetType: AssetType.animation,
+                    baseWidth: 120,
+                  ),
+                  onTap: () {
                     context.pop();
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    minimumSize: const Size(150, 50),
-                  ),
-                  child: ResponsiveText(
-                    content: "jayne.common.back".tr(),
-                    textStyle: JTextTheme.captionMedium,
-                  ),
                 ),
                 Row(
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.shopping_cart),
-                      onPressed: () {
-                        // TODO Go to cart action
-                      },
-                      color: Colors.white,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            child: const ResponsiveImage(
+                              'assets/images/shopping.json',
+                              assetType: AssetType.animation,
+                              baseWidth: 120,
+                            ),
+                            onTap: () {
+
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.smart_toy),
-                      onPressed: () {
-                        // TODO AI consultation action
-                        context.pushNamed(RouteName.aiAssistantPage.name);
-                      },
-                      color: Colors.white,
+                    const Padding(padding: EdgeInsets.all(8.0)),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            child: const ResponsiveImage(
+                              'assets/images/chatbot.json',
+                              assetType: AssetType.animation,
+                              baseWidth: 120,
+                            ),
+                            onTap: () {
+                              context.pushNamed(RouteName.aiAssistantPage.name);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
