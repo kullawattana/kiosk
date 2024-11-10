@@ -27,9 +27,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final List<String> imgUrls = [
-      'https://static-jaymart.com/ecom/public/2YZHC6Q2CNSL1mVMfmbv3XW6zXV.jpg',
-      'https://static-jaymart.com/ecom/public/2YZG2PavlzCwjRLCWlrresb673k.jpg',
-      'https://static-jaymart.com/ecom/public/2lv1cM7Y8fsLb8hoW8hYnaw5gkI.jpg'
+      'https://static-jaymart.com/ecom/public/2oEltwKzdM5Ru5IvPwfYkosBSeL.jpg',
+      'https://static-jaymart.com/ecom/public/2mHemyeZSvNCLlnKlIIU6t397n1.jpg',
+      'https://static-jaymart.com/ecom/public/2mHey5Kz0nLGlki3aGfQGrVVptt.jpg',
+      'https://static-jaymart.com/ecom/public/2oFIcpmlz9nqyg4pzXQDXxNoZBy.jpg',
+      'https://static-jaymart.com/ecom/public/2mm7LD85mCjlJcV9iymubD4bxsG.jpg',
     ];
 
     return Scaffold(
@@ -44,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   CarouselSlider(
                     options: CarouselOptions(
-                        height: 900.0,
+                        height: 350.0,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 3),
                         autoPlayAnimationDuration: const Duration(milliseconds: 800),

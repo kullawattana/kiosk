@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kiosk/jayne/blocs/product_bloc/product_cubit.dart';
 import 'package:kiosk/jayne/blocs/product_bloc/product_state.dart';
-import 'package:kiosk/jayne/common/theme_color.dart';
+import 'package:kiosk/jayne/components/atoms/widget_spacer.dart';
 import 'package:kiosk/jayne/enhances/responsive_image.dart';
-import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:kiosk/jayne/repository/service_provider.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
@@ -31,6 +30,14 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
   bool isSelectEarPhoneTab = false;
   bool isSelectAccessoriesTab = false;
 
+  static const mobileConst = "mobile";
+  static const tabletConst = "tablet";
+  static const notebookConst = "notebook";
+  static const smartwatchConst = "smartwatch";
+  static const earphoneConst = "earphone";
+  static const accessoriesConst = "accessories";
+  static const recommendConst = "recommend";
+
   @override
   void initState() {
     isSelectRecommendTab = true;
@@ -40,12 +47,70 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
     isSelectSmartWatchTab = false;
     isSelectEarPhoneTab = false;
     isSelectAccessoriesTab = false;
-    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "แนะนำสินค้า");
+    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "ขอข้อมูล promotion", minPrice: 30000, maxPrice: 99999);
     super.initState();
+  }
+
+  String getPrompt({
+    required String type,
+    required String selectBrandName,
+    required String selectUsage,
+    required String selectPrice,
+  }) {
+    switch (type) {
+      case mobileConst:
+        return 'แนะนำมือถือ $selectBrandName';
+      case tabletConst:
+        return 'แนะนำแท็บเล็ต $selectBrandName';
+      case notebookConst:
+        return 'แนะนำโน๊ตบุ๊ค $selectBrandName';
+      case smartwatchConst:
+        return 'แนะนำสมาร์ทวอช $selectBrandName';
+      case earphoneConst:
+        return 'แนะนำหูฟัง $selectBrandName';
+      case accessoriesConst:
+        return 'แนะนำ accessories $selectBrandName';
+      default:
+        return 'แนะนำมือถือ $selectBrandName';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<String> mobileList = [
+      'Aukey',
+      'Xiaomi iOT',
+      'Samsung',
+      'Oppo',
+      'Apple',
+      'Vivo',
+      'Huawei',
+      'Xiaomi',
+      'realme',
+      'Infinix',
+      'Acefast',
+      'Anker',
+      'Commy',
+      'Kakudos',
+      'Fenix Shield',
+      'Belkin',
+      'Kate Spade',
+      'Ugreen',
+      'Veger',
+      'Honor',
+      'Asus',
+      'Acer',
+      'HP',
+      'Dell',
+    ];
+
+    final priceItems = ['10000', '20000', '30000', '40000'].map((String value) {
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+    }).toList();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocConsumer<ProductCubit, ProductState>(
@@ -60,209 +125,311 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   child: Row(
                     children: [
                       // Side Menu
+                      const WidgetSpacer(size: 16),
                       Expanded(
                         flex: 2,
-                        child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: isSelectRecommendTab ? Colors.black : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  title: Text(
-                                    'jayne.product_recommend_page.recommend_tab'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12.0),
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: isSelectRecommendTab ? Colors.red : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.recommend,
                                       color: isSelectRecommendTab ? Colors.white : Colors.black,
                                     ),
+                                    title: Text(
+                                      'jayne.product_recommend_page.recommend_tab'.tr(),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: isSelectRecommendTab ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      final textPrompting = getPrompt(
+                                        type: recommendConst,
+                                        selectBrandName: selectedBrand ?? "",
+                                        selectUsage: selectedUsage ?? "",
+                                        selectPrice: selectedPrice ?? "99999",
+                                      );
+                                      context.read<ProductCubit>().getProductOnAWSBedrock(
+                                            inputText: textPrompting,
+                                            minPrice: 30000,
+                                            maxPrice: int.parse(selectedPrice ?? "99999"),
+                                          );
+                                      setState(() {
+                                        isSelectRecommendTab = true;
+                                        isSelectMobileTab = false;
+                                        isSelectTabletTab = false;
+                                        isSelectNotebookTab = false;
+                                        isSelectSmartWatchTab = false;
+                                        isSelectEarPhoneTab = false;
+                                        isSelectAccessoriesTab = false;
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "แนะนำสินค้า");
-                                    setState(() {
-                                      isSelectRecommendTab = true;
-                                      isSelectMobileTab = false;
-                                      isSelectTabletTab = false;
-                                      isSelectNotebookTab = false;
-                                      isSelectSmartWatchTab = false;
-                                      isSelectEarPhoneTab = false;
-                                      isSelectAccessoriesTab = false;
-                                    });
-                                  },
                                 ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: isSelectMobileTab ? Colors.black : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  title: Text(
-                                    'jayne.product_recommend_page.mobile_tab'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: isSelectMobileTab ? Colors.red : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.smartphone,
                                       color: isSelectMobileTab ? Colors.white : Colors.black,
                                     ),
+                                    title: Text(
+                                      'jayne.product_recommend_page.mobile_tab'.tr(),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: isSelectMobileTab ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      final textPrompting = getPrompt(
+                                        type: mobileConst,
+                                        selectBrandName: selectedBrand ?? "",
+                                        selectUsage: selectedUsage ?? "",
+                                        selectPrice: selectedPrice ?? "99999",
+                                      );
+                                      context.read<ProductCubit>().getProductOnAWSBedrock(
+                                            inputText: textPrompting,
+                                            minPrice: 30000,
+                                            maxPrice: int.parse(selectedPrice ?? "99999"),
+                                          );
+                                      setState(() {
+                                        isSelectRecommendTab = false;
+                                        isSelectMobileTab = true;
+                                        isSelectTabletTab = false;
+                                        isSelectNotebookTab = false;
+                                        isSelectSmartWatchTab = false;
+                                        isSelectEarPhoneTab = false;
+                                        isSelectAccessoriesTab = false;
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "มือถือ");
-                                    setState(() {
-                                      isSelectRecommendTab = false;
-                                      isSelectMobileTab = true;
-                                      isSelectTabletTab = false;
-                                      isSelectNotebookTab = false;
-                                      isSelectSmartWatchTab = false;
-                                      isSelectEarPhoneTab = false;
-                                      isSelectAccessoriesTab = false;
-                                    });
-                                  },
                                 ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: isSelectTabletTab ? Colors.black : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  title: Text(
-                                    'jayne.product_recommend_page.tablet_tab'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: isSelectTabletTab ? Colors.red : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.tablet,
                                       color: isSelectTabletTab ? Colors.white : Colors.black,
                                     ),
+                                    title: Text(
+                                      'jayne.product_recommend_page.tablet_tab'.tr(),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: isSelectTabletTab ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      final textPrompting = getPrompt(
+                                        type: tabletConst,
+                                        selectBrandName: selectedBrand ?? "",
+                                        selectUsage: selectedUsage ?? "",
+                                        selectPrice: selectedPrice ?? "99999",
+                                      );
+                                      context.read<ProductCubit>().getProductOnAWSBedrock(
+                                            inputText: textPrompting,
+                                            minPrice: 30000,
+                                            maxPrice: int.parse(selectedPrice ?? "99999"),
+                                          );
+                                      setState(() {
+                                        isSelectRecommendTab = false;
+                                        isSelectMobileTab = false;
+                                        isSelectTabletTab = true;
+                                        isSelectNotebookTab = false;
+                                        isSelectSmartWatchTab = false;
+                                        isSelectEarPhoneTab = false;
+                                        isSelectAccessoriesTab = false;
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "แท็บเล็ต");
-                                    setState(() {
-                                      isSelectRecommendTab = false;
-                                      isSelectMobileTab = false;
-                                      isSelectTabletTab = true;
-                                      isSelectNotebookTab = false;
-                                      isSelectSmartWatchTab = false;
-                                      isSelectEarPhoneTab = false;
-                                      isSelectAccessoriesTab = false;
-                                    });
-                                  },
                                 ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: isSelectNotebookTab ? Colors.black : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  title: Text(
-                                    'jayne.product_recommend_page.notebook_tab'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: isSelectNotebookTab ? Colors.red : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.computer,
                                       color: isSelectNotebookTab ? Colors.white : Colors.black,
                                     ),
+                                    title: Text(
+                                      'jayne.product_recommend_page.notebook_tab'.tr(),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: isSelectNotebookTab ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      final textPrompting = getPrompt(
+                                        type: notebookConst,
+                                        selectBrandName: selectedBrand ?? "",
+                                        selectUsage: selectedUsage ?? "",
+                                        selectPrice: selectedPrice ?? "99999",
+                                      );
+                                      context.read<ProductCubit>().getProductOnAWSBedrock(
+                                            inputText: textPrompting,
+                                            minPrice: 30000,
+                                            maxPrice: int.parse(selectedPrice ?? "99999"),
+                                          );
+                                      setState(() {
+                                        isSelectRecommendTab = false;
+                                        isSelectMobileTab = false;
+                                        isSelectTabletTab = false;
+                                        isSelectNotebookTab = true;
+                                        isSelectSmartWatchTab = false;
+                                        isSelectEarPhoneTab = false;
+                                        isSelectAccessoriesTab = false;
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "โน้ตบุ๊ค");
-                                    setState(() {
-                                      isSelectRecommendTab = false;
-                                      isSelectMobileTab = false;
-                                      isSelectTabletTab = false;
-                                      isSelectNotebookTab = true;
-                                      isSelectSmartWatchTab = false;
-                                      isSelectEarPhoneTab = false;
-                                      isSelectAccessoriesTab = false;
-                                    });
-                                  },
                                 ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: isSelectSmartWatchTab ? Colors.black : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  title: Text(
-                                    'jayne.product_recommend_page.smartwatch_tab'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: isSelectSmartWatchTab ? Colors.red : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.watch,
                                       color: isSelectSmartWatchTab ? Colors.white : Colors.black,
                                     ),
+                                    title: Text(
+                                      'jayne.product_recommend_page.smartwatch_tab'.tr(),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: isSelectSmartWatchTab ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      final textPrompting = getPrompt(
+                                        type: smartwatchConst,
+                                        selectBrandName: selectedBrand ?? "",
+                                        selectUsage: selectedUsage ?? "",
+                                        selectPrice: selectedPrice ?? "99999",
+                                      );
+                                      context.read<ProductCubit>().getProductOnAWSBedrock(
+                                            inputText: textPrompting,
+                                            minPrice: 30000,
+                                            maxPrice: int.parse(selectedPrice ?? "99999"),
+                                          );
+                                      setState(() {
+                                        isSelectRecommendTab = false;
+                                        isSelectMobileTab = false;
+                                        isSelectTabletTab = false;
+                                        isSelectNotebookTab = false;
+                                        isSelectSmartWatchTab = true;
+                                        isSelectEarPhoneTab = false;
+                                        isSelectAccessoriesTab = false;
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "สมาร์ทวอทช์");
-                                    setState(() {
-                                      isSelectRecommendTab = false;
-                                      isSelectMobileTab = false;
-                                      isSelectTabletTab = false;
-                                      isSelectNotebookTab = false;
-                                      isSelectSmartWatchTab = true;
-                                      isSelectEarPhoneTab = false;
-                                      isSelectAccessoriesTab = false;
-                                    });
-                                  },
                                 ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: isSelectEarPhoneTab ? Colors.black : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  title: Text(
-                                    'jayne.product_recommend_page.earphones_tab'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: isSelectEarPhoneTab ? Colors.red : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.earbuds,
                                       color: isSelectEarPhoneTab ? Colors.white : Colors.black,
                                     ),
+                                    title: Text(
+                                      'jayne.product_recommend_page.earphones_tab'.tr(),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: isSelectEarPhoneTab ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      final textPrompting = getPrompt(
+                                        type: earphoneConst,
+                                        selectBrandName: selectedBrand ?? "",
+                                        selectUsage: selectedUsage ?? "",
+                                        selectPrice: selectedPrice ?? "99999",
+                                      );
+                                      context.read<ProductCubit>().getProductOnAWSBedrock(
+                                            inputText: textPrompting,
+                                            minPrice: 30000,
+                                            maxPrice: int.parse(selectedPrice ?? "99999"),
+                                          );
+                                      setState(() {
+                                        isSelectRecommendTab = false;
+                                        isSelectMobileTab = false;
+                                        isSelectTabletTab = false;
+                                        isSelectNotebookTab = false;
+                                        isSelectSmartWatchTab = false;
+                                        isSelectEarPhoneTab = true;
+                                        isSelectAccessoriesTab = false;
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "หูฟัง");
-                                    setState(() {
-                                      isSelectRecommendTab = false;
-                                      isSelectMobileTab = false;
-                                      isSelectTabletTab = false;
-                                      isSelectNotebookTab = false;
-                                      isSelectSmartWatchTab = false;
-                                      isSelectEarPhoneTab = true;
-                                      isSelectAccessoriesTab = false;
-                                    });
-                                  },
                                 ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: isSelectAccessoriesTab ? Colors.black : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  title: Text(
-                                    'jayne.product_recommend_page.accessories_tab'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: isSelectAccessoriesTab ? Colors.red : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.headset,
                                       color: isSelectAccessoriesTab ? Colors.white : Colors.black,
                                     ),
+                                    title: Text(
+                                      'jayne.product_recommend_page.accessories_tab'.tr(),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: isSelectAccessoriesTab ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      final textPrompting = getPrompt(
+                                        type: accessoriesConst,
+                                        selectBrandName: selectedBrand ?? "",
+                                        selectUsage: selectedUsage ?? "",
+                                        selectPrice: selectedPrice ?? "99999",
+                                      );
+                                      context.read<ProductCubit>().getProductOnAWSBedrock(
+                                            inputText: textPrompting,
+                                            minPrice: 30000,
+                                            maxPrice: int.parse(selectedPrice ?? "99999"),
+                                          );
+                                      setState(() {
+                                        isSelectRecommendTab = false;
+                                        isSelectMobileTab = false;
+                                        isSelectTabletTab = false;
+                                        isSelectNotebookTab = false;
+                                        isSelectSmartWatchTab = false;
+                                        isSelectEarPhoneTab = false;
+                                        isSelectAccessoriesTab = true;
+                                      });
+                                    },
                                   ),
-                                  onTap: () {
-                                    context.read<ProductCubit>().getProductOnAWSBedrock(inputText: "อุปกรณ์เสริม");
-                                    setState(() {
-                                      isSelectRecommendTab = false;
-                                      isSelectMobileTab = false;
-                                      isSelectTabletTab = false;
-                                      isSelectNotebookTab = false;
-                                      isSelectSmartWatchTab = false;
-                                      isSelectEarPhoneTab = false;
-                                      isSelectAccessoriesTab = true;
-                                    });
-                                  },
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -283,21 +450,17 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                       decoration: InputDecoration(
                                         labelText: 'jayne.product_individual_page.select_brand'.tr(),
                                         border: const OutlineInputBorder(),
+                                        filled: true,
+                                        fillColor: Colors.grey.shade200,
                                       ),
                                       value: selectedBrand,
                                       onChanged: (newValue) {
                                         setState(() {
                                           selectedBrand = newValue;
+                                          context.read<ProductCubit>().updateSelectBrand(selectBrandName: selectedBrand ?? "");
                                         });
                                       },
-                                      items: [
-                                        'Apple',
-                                        'Huawei',
-                                        'Xiaomi',
-                                        'Vivo',
-                                        'Samsung',
-                                      ].map((String value) {
-                                        context.read<ProductCubit>().updateSelectBrand(selectBrandName: value);
+                                      items: mobileList.map((String value) {
                                         return DropdownMenuItem<String>(
                                           value: value,
                                           child: Text(value),
@@ -311,6 +474,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                       decoration: InputDecoration(
                                         labelText: "jayne.product_individual_page.choose_usage".tr(),
                                         border: const OutlineInputBorder(),
+                                        filled: true,
+                                        fillColor: Colors.grey.shade200,
                                       ),
                                       value: selectedUsage,
                                       onChanged: (newValue) {
@@ -321,10 +486,11 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                       items: [
                                         'ทั่วไป',
                                         'เล่นเกม',
+                                        'Social Media',
                                         'ถ่ายรูป',
-                                        'ธุรกิจ',
+                                        'งานธุรกิจ',
                                       ].map((String value) {
-                                        context.read<ProductCubit>().updateSelectUsage(selectUsage: value);
+                                        context.read<ProductCubit>().updateSelectUsage(selectUsage: selectedUsage ?? "");
                                         return DropdownMenuItem<String>(
                                           value: value,
                                           child: Text(value),
@@ -338,25 +504,16 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                       decoration: InputDecoration(
                                         labelText: 'jayne.product_individual_page.highest_price'.tr(),
                                         border: const OutlineInputBorder(),
+                                        filled: true,
+                                        fillColor: Colors.grey.shade200,
                                       ),
-                                      value: selectedPrice,
+                                      value: priceItems.any((item) => item.value == selectedPrice) ? selectedPrice : null,
                                       onChanged: (newValue) {
                                         setState(() {
                                           selectedPrice = newValue;
                                         });
                                       },
-                                      items: [
-                                        '10000',
-                                        '20000',
-                                        '30000',
-                                        '40000',
-                                      ].map((String value) {
-                                        context.read<ProductCubit>().updateSelectPrice(selectBrandPrice: value);
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
+                                      items: priceItems,
                                     ),
                                   ),
                                   IconButton(
@@ -364,10 +521,15 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                       final selectBrandName = state.selectBrandName;
                                       final selectUsage = state.selectUsage;
                                       final selectPrice = state.selectPrice;
+                                      setState(() {
+                                        selectedBrand = selectBrandName;
+                                        selectedUsage = selectUsage;
+                                        selectedPrice = selectPrice.toString();
+                                      });
                                       ServiceProvider().requestProduct(
                                         userContent: '',
                                         botContent: '',
-                                        inputText: 'แนะนำมือถือ $selectBrandName ใช้ในการ$selectUsage ราคา $selectPrice ',
+                                        inputText: 'ช่วยแนะนำ $selectBrandName ใช้ในการ$selectUsage',
                                         minPrice: 1000,
                                         maxPrice: state.selectPrice,
                                         minDiscountPc: 0,
@@ -380,29 +542,21 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              // Product Grid
+                              // Product Grid //
                               Expanded(
-                                child: GridView.builder(
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    childAspectRatio: 0.75,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
-                                  ),
-                                  //itemCount: 6, // Number of products
-                                  itemCount: 3,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: state.productInfo?.length,
                                   itemBuilder: (context, index) {
-                                    return ListView.builder(
-                                      itemCount: state.productInfo?.length,
-                                      itemBuilder: (context, index) {
-                                        return ProductCard(
-                                          imageUrl: state.productInfo?[index].imageUrl ?? "",
-                                          brandName: state.productInfo?[index].brandName ?? "Iphone",
-                                          price: state.productInfo?[index].price ?? 0.0,
-                                          detail: state.productInfo?[index].detail ?? "",
-                                          images: state.productInfo?[index].images ?? [],
-                                        );
-                                      },
+                                    return Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: ProductCard(
+                                        imageUrl: state.productInfo?[index].imageUrl ?? "",
+                                        brandName: state.productInfo?[index].brandName ?? "Iphone",
+                                        price: state.productInfo?[index].price ?? 0.0,
+                                        detail: state.productInfo?[index].detail ?? "",
+                                        images: state.productInfo?[index].images ?? [],
+                                      ),
                                     );
                                   },
                                 ),
@@ -421,13 +575,12 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        child: const ResponsiveImage(
-                          'assets/images/back.json',
-                          assetType: AssetType.animation,
-                          baseWidth: 120,
+                      IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 80,
                         ),
-                        onTap: () {
+                        onPressed: () {
                           context.pop();
                         },
                       ),
@@ -436,7 +589,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(100),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey.withOpacity(0.2),
@@ -474,7 +627,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(100),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey.withOpacity(0.2),
@@ -544,13 +697,13 @@ class ProductCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ResponsiveImage(
             imageUrl,
             assetType: AssetType.network,
-            baseHeight: 80,
-            baseWidth: 80,
+            baseHeight: 200,
+            baseWidth: 200,
             themeDirectory: "",
             themeName: "",
           ),

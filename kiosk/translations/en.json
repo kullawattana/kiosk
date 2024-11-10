@@ -71,5 +71,6 @@
   "jayne.common.confirm": "Confirm",
   "jayne.common.cancel" : "Cancel",
   "jayne.ai_assistant_page.press_to_speak" : "Press to speak",
-  "greeting_message": "Hello. My name is Jayne. How can I help you?"
+  "greeting_message": "Hello. My name is Jayne. How can I help you?",
+  "bath": "Bath"
 }

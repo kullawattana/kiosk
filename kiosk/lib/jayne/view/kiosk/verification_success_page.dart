@@ -5,6 +5,7 @@ import 'package:kiosk/jayne/common/theme_color.dart';
 import 'package:kiosk/jayne/enhances/responsive_image.dart';
 import 'package:kiosk/jayne/enhances/responsive_text.dart';
 import 'package:kiosk/jayne/router/routes_name.dart';
+import 'package:kiosk/jayne/view/kiosk/product_information_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class VerificationSuccessPage extends StatelessWidget {
@@ -19,11 +20,7 @@ class VerificationSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: ResponsiveText(
-          content: "jayne.verification_success_page.app_bar".tr(),
-          textStyle: JTextTheme.highlightHeader,
-        ),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         // Center the entire content
@@ -31,37 +28,42 @@ class VerificationSuccessPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ResponsiveText(
-              content: "jayne.verification_success_page.title".tr(),
-              textStyle: JTextTheme.highlightHeader,
-            ),
-            const SizedBox(height: 20),
-            Center(
-              child: QrImageView(
-                data: "https://jaymartstore.com/?srsltid=AfmBOoq8pKz6WmSowi5MhbBmNFO4wBO3KbyxV2-K_ykfyLrc7b2Dqa7M",
-                version: QrVersions.auto,
-                size: 200.0,
+            Expanded(
+              child: Column(
+                children: [
+                  ResponsiveText(
+                    content: "jayne.verification_success_page.title".tr(),
+                    textStyle: JTextTheme.highlightHeader,
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: QrImageView(
+                      data: "https://jaymartstore.com/?srsltid=AfmBOoq8pKz6WmSowi5MhbBmNFO4wBO3KbyxV2-K_ykfyLrc7b2Dqa7M",
+                      version: QrVersions.auto,
+                      size: 200.0,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ResponsiveText(
+                    content: "jayne.verification_success_page.hello_user_name".tr().replaceAll("{userName}", userName),
+                    textStyle: JTextTheme.header,
+                  ),
+                  const SizedBox(height: 40),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
-            ResponsiveText(
-              content: "jayne.verification_success_page.hello_user_name".tr().replaceAll("{userName}", userName),
-              textStyle: JTextTheme.header,
-            ),
-            const SizedBox(height: 40),
             Container(
               padding: const EdgeInsets.all(16),
               color: Colors.grey.shade100,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    child: const ResponsiveImage(
-                      'assets/images/back.json',
-                      assetType: AssetType.animation,
-                      baseWidth: 120,
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      size: 80,
                     ),
-                    onTap: () {
+                    onPressed: () {
                       context.pop();
                     },
                   ),
@@ -70,7 +72,7 @@ class VerificationSuccessPage extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(100),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.2),
@@ -89,12 +91,17 @@ class VerificationSuccessPage extends StatelessWidget {
                                 baseWidth: 120,
                               ),
                               onTap: () {
-
+                                //TODO Test
+                                context.pushNamed(
+                                  RouteName.productInformationPage.name,
+                                  extra: ProductInformationPageArguments(
+                                    images: ["https://static-jaymart.com/ecom/public/2YZHC6Q2CNSL1mVMfmbv3XW6zXV.jpg"],
+                                    productInformation: "",
+                                    brandName: "",
+                                    price: 0,
+                                  ),
+                                );
                               },
-                            ),
-                            const Text(
-                              "ตะกร้าสินค้า",
-                              style: const TextStyle(fontSize: 18),
                             ),
                           ],
                         ),
@@ -103,7 +110,7 @@ class VerificationSuccessPage extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(100),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.2),
@@ -124,10 +131,6 @@ class VerificationSuccessPage extends StatelessWidget {
                               onTap: () {
                                 context.pushNamed(RouteName.aiAssistantPage.name);
                               },
-                            ),
-                            const Text(
-                              "ปรึกษา AI",
-                              style: const TextStyle(fontSize: 18),
                             ),
                           ],
                         ),

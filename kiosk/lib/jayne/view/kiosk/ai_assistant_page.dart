@@ -92,7 +92,7 @@ class _AIAssistantPageState extends State<AIAssistantPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.red,
         leading: IconButton(
           key: const Key("live_chat_common_app_bar_back_button"),
           icon: const Icon(Icons.arrow_back_sharp),

@@ -18,10 +18,15 @@ class WelcomeKioskPage extends StatelessWidget {
             const ResponsiveImage(
               'assets/images/jaymart.png',
               assetType: AssetType.image,
-              baseHeight: 100,
-              baseWidth: 100,
+              baseHeight: 80,
+              baseWidth: 80,
               themeDirectory: "",
               themeName: "",
+            ),
+            const ResponsiveImage(
+              'assets/images/retail.json',
+              assetType: AssetType.animation,
+              baseWidth: 500,
             ),
             const WidgetSpacer(),
             SizedBox(
@@ -31,13 +36,13 @@ class WelcomeKioskPage extends StatelessWidget {
                   text: TextSpan(
                     text: "${"Welcome to Kiosk (One stop service)"}   ",
                     style: const TextStyle(color: Colors.grey),
-                    children: [
+                    children: [ //
                       TextSpan(
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             context.pushNamed(RouteName.homePage.name);
                           },
-                        text: '> click',
+                        text: 'click here',
                         style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,

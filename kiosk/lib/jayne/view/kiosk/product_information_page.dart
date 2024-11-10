@@ -63,7 +63,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ResponsiveText(content: args.brandName, textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                      ResponsiveText(content: args.price.toString(), textStyle: const TextStyle(fontSize: 20, color: Colors.black)),
+                      ResponsiveText(content: "${args.price } ${"bath".tr()}", textStyle: const TextStyle(fontSize: 70, color: Colors.black)),
                       const SizedBox(height: 20),
                       ResponsiveText(
                         content: "janey.product_individual_page.color".tr(),
@@ -185,7 +185,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                         ),
                         child: ResponsiveText(
                           content: 'janey.product_individual_page.order'.tr(),
-                          textStyle: const TextStyle(fontSize: 18),
+                          textStyle: const TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
                     ],
@@ -213,13 +213,12 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InkWell(
-              child: const ResponsiveImage(
-                'assets/images/back.json',
-                assetType: AssetType.animation,
-                baseWidth: 120,
+            IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                size: 30,
               ),
-              onTap: () {
+              onPressed: () {
                 context.pop();
               },
             ),

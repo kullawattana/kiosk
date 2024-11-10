@@ -42,6 +42,8 @@ class ProductCubit extends Cubit<ProductState> {
 
   Future<void> getProductOnAWSBedrock({
     required String inputText,
+    required int minPrice,
+    required int maxPrice
   }) async {
     try {
       emit(
@@ -53,8 +55,8 @@ class ProductCubit extends Cubit<ProductState> {
         userContent: '',
         botContent: '',
         inputText: inputText,
-        minPrice: 1000,
-        maxPrice: 99999,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
         minDiscountPc: 0,
         minDiscountValue: 0,
         minPoint: 0,

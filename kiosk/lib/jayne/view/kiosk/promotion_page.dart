@@ -30,19 +30,17 @@ class _PromotionPageState extends State<PromotionPage> {
   @override
   Widget build(BuildContext context) {
     final List<String> imgUrls = [
-      'https://static-jaymart.com/ecom/public/2YZHC6Q2CNSL1mVMfmbv3XW6zXV.jpg',
-      'https://static-jaymart.com/ecom/public/2YZG2PavlzCwjRLCWlrresb673k.jpg',
-      'https://static-jaymart.com/ecom/public/2lv1cM7Y8fsLb8hoW8hYnaw5gkI.jpg'
+      'https://static-jaymart.com/ecom/public/2oEltwKzdM5Ru5IvPwfYkosBSeL.jpg',
+      'https://static-jaymart.com/ecom/public/2mHemyeZSvNCLlnKlIIU6t397n1.jpg',
+      'https://static-jaymart.com/ecom/public/2mHey5Kz0nLGlki3aGfQGrVVptt.jpg',
+      'https://static-jaymart.com/ecom/public/2oFIcpmlz9nqyg4pzXQDXxNoZBy.jpg',
+      'https://static-jaymart.com/ecom/public/2mm7LD85mCjlJcV9iymubD4bxsG.jpg',
     ];
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        //jayne.promotion_page.app_bar
-        title: ResponsiveText(
-          content: "jayne.promotion_page.app_bar".tr(),
-          textStyle: JTextTheme.highlightHeader,
-        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -52,7 +50,7 @@ class _PromotionPageState extends State<PromotionPage> {
               children: [
                 CarouselSlider(
                   options: CarouselOptions(
-                    height: 420.0,
+                    height: 350.0,
                     autoPlay: true,
                     autoPlayInterval: const Duration(seconds: 3),
                     autoPlayAnimationDuration: const Duration(milliseconds: 800),
@@ -86,13 +84,12 @@ class _PromotionPageState extends State<PromotionPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  child: const ResponsiveImage(
-                    'assets/images/back.json',
-                    assetType: AssetType.animation,
-                    baseWidth: 120,
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 80,
                   ),
-                  onTap: () {
+                  onPressed: () {
                     context.pop();
                   },
                 ),
@@ -119,9 +116,7 @@ class _PromotionPageState extends State<PromotionPage> {
                               assetType: AssetType.animation,
                               baseWidth: 120,
                             ),
-                            onTap: () {
-
-                            },
+                            onTap: () {},
                           ),
                         ],
                       ),
