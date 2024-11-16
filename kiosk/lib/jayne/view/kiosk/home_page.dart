@@ -81,6 +81,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 50),
                   ResponsiveText(
+                    textAlign: TextAlign.center,
                     content: 'jayne.home_page_title'.tr(),
                     textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
@@ -250,7 +251,7 @@ class MenuItemWidget extends StatelessWidget {
           ResponsiveImage(
             icon,
             assetType: AssetType.animation,
-            baseWidth: 500,
+            baseWidth: 300,
           ),
           const SizedBox(height: 10),
           Text(

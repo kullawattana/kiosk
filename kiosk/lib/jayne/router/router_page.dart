@@ -7,7 +7,6 @@ import 'package:kiosk/jayne/view/chatbot/login_page.dart';
 import 'package:kiosk/jayne/view/chatbot/register_page.dart';
 import 'package:kiosk/jayne/view/chatbot/welcome_chatbot_page.dart';
 import 'package:kiosk/jayne/view/kiosk/ai_assistant_page.dart';
-import 'package:kiosk/jayne/view/kiosk/face_verification_page.dart';
 import 'package:kiosk/jayne/view/kiosk/home_page.dart';
 import 'package:kiosk/jayne/view/kiosk/product_information_page.dart';
 import 'package:kiosk/jayne/view/kiosk/product_search_page.dart';
@@ -188,18 +187,6 @@ final kioskRoutes = [
             context: context,
             key: state.pageKey,
             child: const PromotionPage(),
-            arguments: state.extra,
-          );
-        },
-      ),
-      GoRoute(
-        name: RouteName.faceVerificationPage.name,
-        path: 'face_verification',
-        pageBuilder: (context, state) {
-          return buildPage(
-            context: context,
-            key: state.pageKey,
-            child: const FaceVerificationPage(),
             arguments: state.extra,
           );
         },

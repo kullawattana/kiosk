@@ -63,7 +63,7 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ResponsiveText(content: args.brandName, textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                      ResponsiveText(content: "${args.price } ${"bath".tr()}", textStyle: const TextStyle(fontSize: 70, color: Colors.black)),
+                      ResponsiveText(content: "${args.price } ${"bath".tr()}", textStyle: const TextStyle(fontSize: 50, color: Colors.black)),
                       const SizedBox(height: 20),
                       ResponsiveText(
                         content: "janey.product_individual_page.color".tr(),
@@ -192,18 +192,6 @@ class _ProductInformationPageState extends State<ProductInformationPage> {
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 20),
-            // Product Description Section
-            ResponsiveText(
-              content: 'jayne.product_individual_page.feature'.tr(),
-              textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            ResponsiveText(
-              //TODO productInformation
-              content: args.productInformation,
-              textStyle: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
           ],

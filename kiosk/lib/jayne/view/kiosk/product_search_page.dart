@@ -127,7 +127,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                       // Side Menu
                       const WidgetSpacer(size: 16),
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 12.0),
                           child: Container(
